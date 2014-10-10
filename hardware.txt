@@ -1,0 +1,11 @@
+Configurazione hardware arietta
+
+output 
+PA24 - pin 11
+PA25 - pin 13
+PA26 - pin 15
+PA27 - pin 17
+
+input
+PA22 - pin 8
+PA21 - pin 10

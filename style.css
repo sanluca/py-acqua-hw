@@ -1,0 +1,838 @@
+html{margin:0;padding:0}
+
+body {
+	margin: 0px;
+	padding: 0px;
+	color: #E20A0A;
+	font-family: verdana, arial, helvetica, sans-serif;/*Tahoma, Geneva, sans-serif;*/
+	font-size: 15px;
+	line-height: 1.5em; 
+	background-color: #0097d6;
+	background-image: url(images/templatemo_body.jpg);
+	background-repeat: repeat-y;
+	background-position: center;
+}
+
+div#header{background-color:#9CF}
+
+div#header h1{margin:0;line-height:70px;margin-left:20px}
+
+div#navigation{background-color: #9cf;border-bottom: 1px solid #787878;padding-left: 20px}
+div#navigation ul{list-style-type: none;margin: 0;padding: 0;white-space: nowrap}
+div#navigation li{display: inline;margin: 0;padding: 0}
+div#navigation li a{text-decoration: none;border: 1px solid #787878;padding: 0px 0.3em;
+    background: #ccc;color: #036}
+div#navigation li a:hover{background-color: #f0f0f0}
+div#navigation li#activelink a{border-bottom: 1px solid #fff;background-color: #fff;color: #603}
+
+
+/* 
+	Blue Dream
+	Written by Teylor Feliz  http://www.admixweb.com
+*/
+
+
+table { background:#D3E4E5;
+ border:1px solid gray;
+ border-collapse:collapse;
+ color:#fff;
+ font:normal 13px verdana, arial, helvetica, sans-serif;
+}
+caption { border:1px solid #5C443A;
+ color:#5C443A;
+ font-weight:bold;
+ letter-spacing:20px;
+ padding:6px 4px 8px 0px;
+ text-align:center;
+ text-transform:uppercase;
+}
+td, th { color:#F50B0B;
+ padding:.4em;
+}
+tr { border:1px dotted gray;
+}
+thead th, tfoot th { background:#5C443A;
+ color:#FFFFFF;
+ padding:3px 10px 3px 10px;
+ text-align:left;
+ text-transform:uppercase;
+}
+tbody td a { color:#363636;
+ text-decoration:none;
+}
+tbody td a:visited { color:gray;
+ text-decoration:line-through;
+}
+tbody td a:hover { text-decoration:underline;
+}
+tbody th a { color:#363636;
+ font-weight:normal;
+ text-decoration:none;
+}
+tbody th a:hover { color:#363636;
+}
+tbody td+td+td+td a { background-image:url('bullet_blue.png');
+ background-position:left center;
+ background-repeat:no-repeat;
+ color:#03476F;
+ padding-left:15px;
+}
+tbody td+td+td+td a:visited { background-image:url('bullet_white.png');
+ background-position:left center;
+ background-repeat:no-repeat;
+}
+tbody th, tbody td { text-align:center;
+ vertical-align:top;
+}
+tfoot td { background:#5C443A;
+ color:#FFFFFF;
+ padding-top:3px;
+}
+.odd { background:#fff;
+}
+tbody tr:hover { background:#99BCBF;
+ border:1px solid #03476F;
+ color:#000000;
+}
+a, a:link, a:visited { color: #0066CC; text-decoration: none; }
+a:hover { color: #CC3300; text-decoration: underline; }
+
+p { margin: 0px; padding: 0; }
+img { border: none; }
+
+h1, h2, h3, h4, h5, h6 { color: #1C0AEB; }
+h1 { font-size: 40px; font-weight: normal; margin: 0 0 30px 0; padding: 5px 0; }
+h2 { font-size: 28px; font-weight: normal; margin: 0 0 20px 0; padding: 0; }
+h3 { font-size: 21px; margin: 0 0 15px 0; padding: 0; padding: 0; color: #000; font-weight: normal; }
+h4 { font-size: 18px; margin: 0 0 20px 0; padding: 0; color: #333; }
+h5 { font-size: 16px; margin: 0 0 10px 0; padding: 0; color: #333; }
+h6 { font-size: 14px; margin: 0 0 5px 0; padding: 0; color: #333; }
+
+.cleaner { clear: both; width: 100%; height: 0px; font-size: 0px;  }
+.cleaner_h10 { clear: both; width:100%; height: 10px; }
+.cleaner_h20 { clear: both; width:100%; height: 20px; }
+.cleaner_h30 { clear: both; width:100%; height: 30px; }
+.cleaner_h40 { clear: both; width:100%; height: 40px; }
+.cleaner_h50 { clear: both; width:100%; height: 50px; }
+.cleaner_h60 { clear: both; width:100%; height: 60px; }
+
+
+.float_l { float: left; }
+.float_r { float: right; }
+
+.image_wrapper { display: inline-block; padding: 4px; border: 1px solid #fff; background: none; margin-bottom: 10px; }
+.image_fl { float: left; margin: 3px 15px 0 0; }
+.image_fr { float: right; margin: 3px 0 0 15px; }
+
+blockquote { font-style: italic; margin-left: 10px;}
+cite { font-weight: bold; color:#3b3823; }
+cite span { color: #696443; }
+em { color: #000; }
+
+.tmo_list { margin: 20px 0; padding: 0; list-style: none; }
+.tmo_list li { background: transparent url(images/templatemo_list.png) no-repeat scroll 0 0px; margin:0 0 20px; padding:0 0 0 25px; 	line-height: 1em; }
+.tmo_list li a { color: #fff; }
+.tmo_list li a:hover { color: #ff4301; }
+
+
+.button a { color: #333; font-weight: bold; }
+
+.button a span { color: #de3f00; font-size: 18px; }
+
+.button a:hover { color: #de3f00; text-decoration: none; }
+
+#templatemo_wrapper { 
+	width: 970px;
+	margin: 0 auto;
+}
+
+#templatemo_header {
+	width: 740px;
+	height: 180px;
+	padding: 0 100px 0 130px;
+	background: url(images/templatemo_header.png) top no-repeat ;
+}
+
+#templatemo_header  #site_title {
+	float: left;
+	margin: 60px 0 0 60px;
+}
+
+#templatemo_header  #site_title a {
+	margin: 0px;
+	padding: 0px;
+	font-size: 40px;
+	color: #ffffff;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#templatemo_header  #site_title a span {
+	display: block;
+	text-align: right;
+	font-size: 14px;
+	color: #fff;
+	font-weight: normal;
+	margin-left: 5px;
+}
+
+#social_box {
+	float: right;
+	display: inline-block;
+	margin: 10px 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+#social_box li {
+	display: block;
+	float: left;
+	padding: 0;
+	margin: 0;
+}
+
+#social_box li a {
+	width: 46px;
+	height: 46px;
+	margin-right: 5px;
+}
+
+
+/* menu */
+
+#templatemo_menu {
+	clear: both;
+	width: 950px;
+	height: 122px;
+	padding: 0 10px;
+	margin-bottom: 20px;
+	background: url(images/templatemo_menu.png) no-repeat top;
+	margin-left: -130px;
+}
+
+#templatemo_menu .home a {
+	float: left;
+	width: 52px;
+	height: 52px;
+	margin: 9px 19px;
+	background: url(images/templatemo_home.png) no-repeat center;
+}
+
+#templatemo_menu .home a:hover {
+	background: url(images/templatemo_home_hover.png) no-repeat center;
+}
+
+/* calendario su download.php */
+#calendarDiv{
+	position:absolute;
+	width:205px;
+	border:1px solid #317082;
+	padding:1px;
+	background-color: #FFF;
+	font-family:arial;
+	font-size:10px;
+	padding-bottom:20px;
+	visibility:hidden;
+}
+#calendarDiv span,#calendarDiv img{
+	float:left;
+}
+#calendarDiv .selectBox,#calendarDiv .selectBoxOver{
+	
+	line-height:12px;
+	padding:1px;
+	cursor:pointer;
+	padding-left:2px;
+}
+
+#calendarDiv .selectBoxTime,#calendarDiv .selectBoxTimeOver{	
+	line-height:12px;
+	padding:1px;
+	cursor:pointer;
+	padding-left:2px;
+}
+
+#calendarDiv td{
+	padding:3px;
+	margin:0px;
+	font-size:10px;
+}
+
+
+
+#calendarDiv .selectBox{
+	border:1px solid #E2EBED;		
+	color: #E2EBED;
+	position:relative;
+}
+#calendarDiv .selectBoxOver{
+	border:1px solid #FFF;
+	background-color: #317082;
+	color: #FFF;
+	position:relative;
+}
+#calendarDiv .selectBoxTime{
+	border:1px solid #317082;		
+	color: #317082;
+	position:relative;
+}
+#calendarDiv .selectBoxTimeOver{
+	border:1px solid #216072;	
+	color: #216072;
+	position:relative;
+}
+
+#calendarDiv .topBar{
+	height:16px;
+	padding:2px;
+	background-color: #317082;
+
+
+}
+#calendarDiv .activeDay{	/* Active day in the calendar */
+	color:#FF0000;
+}
+#calendarDiv .todaysDate{
+	height:17px;
+	line-height:17px;
+	padding:2px;
+	background-color: #E2EBED;
+	text-align:center;
+	position:absolute;
+	bottom:0px;
+	width:201px;
+}
+#calendarDiv .todaysDate div{
+	float:left;
+}
+	
+#calendarDiv .timeBar{
+	height:17px;
+	line-height:17px;
+	background-color: #E2EBED;
+	width:72px;
+	color:#FFF;
+	position:absolute;
+	right:0px;
+}
+
+#calendarDiv .timeBar div{
+	float:left;
+	margin-right:1px;
+}
+
+
+#calendarDiv .monthYearPicker{
+	background-color: #E2EBED;
+	border:1px solid #AAAAAA;
+	position:absolute;
+	color: #317082;
+	left:0px;
+	top:15px;
+	z-index:1000;
+	display:none;
+
+}
+#calendarDiv #monthSelect{
+	width:70px;
+}
+#calendarDiv .monthYearPicker div{
+	float:none;
+	clear:both;	
+	padding:1px;
+	margin:1px;	
+	cursor:pointer;
+}
+#calendarDiv .monthYearActive{
+	background-color:#317082;
+	color: #E2EBED;
+}
+
+#calendarDiv td{
+	text-align:right;
+	cursor:pointer;
+}
+
+#calendarDiv .topBar img{
+	cursor:pointer;
+}
+#calendarDiv .topBar div{
+	float:left;
+	margin-right:1px;
+}
+
+
+#templatemo_menu ul {
+	float: left;
+	display: inline-block;
+	height: 50px;
+	margin: 0;
+	padding: 10px 0;
+	list-style: none;
+}
+
+#templatemo_menu ul li {
+	padding: 0;
+	margin: 0;
+	display: inline-block;
+}
+
+#templatemo_menu ul li a {
+	float: left;
+	display: block;
+	height: 45px;
+	width: 116px;
+	padding: 5px 0 0 0;
+	font-size: 12px;
+	color: #666;	
+
+	text-align: center;
+	text-decoration: none;
+	font-weight: normal;
+	outline: none;
+	border: none;
+	background: url(images/templatemo_menu_divider.gif) repeat-y right;
+}
+
+#templatemo_menu ul li a span {
+	display: block;
+	font-size: 20px;
+	font-weight: normal;
+	color: #333;
+}
+
+#templatemo_menu ul li .last {
+	background: none;
+}
+
+#templatemo_menu ul li a:hover, #templatemo_menu ul .current {
+	color: #a13c03;
+}
+
+ #templatemo_menu ul li a:hover span, #templatemo_menu ul .current span {
+	 color: #a13c03;
+ }
+
+#templatemo_menu ul li a span:hover {
+	color: #a13c03;
+}
+/* end of menu */
+
+/* content */
+
+#templatemo_content_wrapper {
+	width: 802px;
+	padding: 0 68px 0 100px;
+}
+
+#templatemo_content_top {
+	width: 802px;
+	height: 10px;
+	background: url(images/templatemo_content_top.png) no-repeat;
+	margin-left:100px;
+}
+
+#templatemo_content_bottom {
+	width: 802px;
+	height: 10px;
+	background: url(images/templatemo_content_bottom.png) no-repeat;
+}
+	
+#templatemo_content {
+	padding: 20px 5px;
+	background: url(images/templatemo_content.png) repeat-y;
+}
+
+
+#templatemo_content p {
+	margin-bottom: 10px;
+}
+
+#templatemo_content h2 {
+	margin-left: -46px;
+	height: 36px;
+	padding: 12px 0 0 46px;
+	text-shadow: 1px 1px 1px #555;
+	margin-bottom: 10px;
+	font-weight: bold;
+	background: url(images/templatemo_h2.png) no-repeat;
+}
+
+.col_w340 {
+	width: 340px;
+}
+
+.col_w220 {
+	width: 220px;
+}
+
+.news_box {
+	clear: both;
+	margin-bottom: 30px;
+	padding-bottom: 30px;
+	border-bottom: 1px dashed #fff;
+}
+
+.news_box .news_meta {
+	margin-bottom: 10px;
+}
+
+.news_box img {
+	float: left;
+	width: 240px;
+	height: 180px;
+	margin-right: 30px;
+	border: 1px solid #fff;
+	padding: 4px;
+}
+
+.news_box_last {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+
+.service_box {
+	width: 340px;
+	margin-bottom: 40px;
+}
+
+.service_box img {
+	float: left;
+	width: 48px;
+	height: 48px;
+}
+
+.service_box .sb_right {
+	float: right;
+	width: 260px;
+}
+
+.comment{
+	font-weight: bold;
+}
+
+/* end of content */
+
+/* sp_box */
+
+#templatemo_sp_box {
+	width: 740px;
+	height: 140px;
+	margin: 20px 70px 0 100px;
+	padding: 30px;
+	color: #eac5b8;
+	background: url(images/templatemo_sp_box.png) no-repeat;
+}
+
+
+#templatemo_sp_box h4 {
+	color: #fff;
+}
+
+#templatemo_sp_box img {
+	float: left;
+	width: 80px;
+	height: 80px;
+}
+
+#templatemo_sp_box .right {
+	float: right;
+	width: 240px;
+}
+
+#templatemo_sp_box p {
+	margin-bottom: 15px;
+}
+
+#templatemo_sp_box .button a span { color: #fff; }
+#templatemo_sp_box .button a { color: #000;	 }
+#templatemo_sp_box .button a:hover { color: #fff; }
+
+/* end of sp_box */
+
+
+#contact_form {
+	float: left;
+	padding: 0;
+}
+
+#contact_form form {
+	margin: 0px;
+	padding: 0px;
+}
+
+#contact_form form .input_field {
+	width: 300px;
+	padding: 5px 0;
+	background: #FFFFFF;
+	border: 1px solid #CCCCCC;
+}
+
+#contact_form form label {
+	display: block;
+	width: 100px;
+	margin-bottom: 5px;
+	font-size: 14px;	
+}
+
+#contact_form form textarea {
+	width: 335px;
+	height: 200px;
+	background: #FFFFFF;
+	border: 1px solid #CCCCCC;
+}
+
+.submit_btn {
+	margin: 0px;
+	padding: 5px 10px;
+	color: #FFFFFF;
+	background: #0099FF;
+	border: 1px solid #FFFFFF;
+}
+
+/* footer */
+
+#templatemo_footer {
+	width: 770px;
+	padding: 20px 100px;;
+	text-align: right;
+	color: #12526d;
+}
+
+#templatemo_footer a {
+	color: #000;
+}
+
+p,h2{
+	margin:2px;
+}
+
+h1{
+	font-size:2.4em;
+	margin:2px;
+}
+h2{
+	font-size:1.3em;
+}
+.weekButton{
+	width:80px;
+	font-size:0.8em;
+	font-family:arial;
+}
+#weekScheduler_container{
+	border:1px solid #000;
+	width:986px;
+}
+
+.weekScheduler_appointments_day{	/* Column for each day */
+	width:130px;
+	float:left;
+	background-color: #FFFFD5;
+	border-right:1px solid #F6DBA2;
+	position:relative;
+}
+#weekScheduler_top{
+	background-color:buttonface;
+	height:20px;
+	border-bottom:1px solid #ACA899;
+}
+.calendarContentTime,.spacer{
+	background-color:buttonface;
+	text-align:center;
+	font-family:arial;
+	font-size:28px;
+	line-height:<?php echo $rowHeight; ?>px;
+	height:<?php echo $rowHeight; ?>px;	/* Height of hour rows */
+
+	border-right:1px solid #ACA899;
+	width:50px;
+}
+
+.weekScheduler_appointmentHour{	/* Small squares for each hour inside the appointment div */
+	height:<?php echo $rowHeight; ?>px; /* Height of hour rows */
+	border-bottom:1px solid #F6DBA2;
+}
+
+.spacer{
+	height:20px;
+	float:left;
+}
+
+#weekScheduler_hours{
+	width:50px;
+	float:left;
+}
+.calendarContentTime{
+	border-bottom:1px solid #ACA899;
+
+}
+
+#weekScheduler_appointments{	/* Big div for appointments */
+	width:917px;
+	float:left;
+}
+.calendarContentTime .content_hour{
+	font-size:10px;
+	text-decoration:superscript;
+	vertical-align:top;
+	line-height:<?php echo $rowHeight; ?>px;
+}
+
+#weekScheduler_top{
+	position:relative;
+	clear:both;
+}
+#weekScheduler_content{
+	clear:both;
+	height:540px;
+	position:relative;
+	overflow:auto;
+}
+.days div{
+	width:130px;
+	float:left;
+	background-color:buttonface;
+	text-align:center;
+	font-family:arial;
+	height:20px;
+	font-size:0.9em;
+	line-height:20px;
+	border-right:1px solid #ACA899;
+}
+
+.weekScheduler_anAppointment{	/* A new appointment */
+	position:absolute;
+	background-color:#FFF;
+	border:1px solid #000;
+	z-index:1000;
+	overflow:hidden;
+
+
+}
+
+.weekScheduler_appointment_header{	/* Appointment header row */
+	height:4px;
+	background-color:#ACA899;
+}
+.weekScheduler_appointment_headerActive{ /* Appointment header row  - when active*/
+	height:4px;
+	background-color:#00F;
+}
+
+.weekScheduler_appointment_textarea{	/* Textarea where you edit appointments */
+	font-size:0.7em;
+	font-family:arial;
+}
+
+.weekScheduler_appointment_txt{
+	font-size:0.7em;
+	font-family:arial;
+	padding:2px;
+	padding-top:5px;
+	overflow:hidden;
+
+}
+
+.weekScheduler_appointment_footer{
+	position:absolute;
+	bottom:-1px;
+	border-top:1px solid #000;
+	height:4px;
+	width:100%;
+	font-size:0.8em;
+	background-color:#000;
+}
+
+.weekScheduler_appointment_time{
+	position:absolute;
+	border:1px solid #000;
+	right:1px;
+	top:5px;
+	width:50px;
+	height:12px;
+	z-index:100000;
+	font-size:0.7em;
+	padding:1px;
+	background-color:#F6DBA2;
+}
+.eventIndicator{
+	background-color:#00F;
+	z-index:50;
+	display:none;
+	position:absolute;
+}
+
+.input {
+    border: 1px solid #006;
+    background: #ffc;
+    text-align:center;
+    width:80px;
+}
+.input:hover {
+    border: 1px solid #f00;
+    background: #ff6;
+}
+.button{
+  width: 110px;
+  height: 30px;
+  padding: 5px 16px 3px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border: 2px solid #ccc;
+  position: relative;
+
+  /* Label */
+  font-family: Lucida Sans, Helvetica, sans-serif;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: rgba(10, 10, 10, 0.5) 1px 2px 2px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.aqua{
+  background-color: rgba(60, 132, 198, 0.8);
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 90%, from(rgba(28, 91, 155, 0.8)), to(rgba(108, 191, 255, .9)));
+  border-top-color: #8ba2c1;
+  border-right-color: #5890bf;
+  border-bottom-color: #4f93ca;
+  border-left-color: #768fa5;
+  -webkit-box-shadow: rgba(66, 140, 240, 0.5) 0px 10px 16px;
+  -moz-box-shadow: rgba(66, 140, 240, 0.5) 0px 10px 16px; /* FF 3.5+ */
+}
+.button .glare {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  height: 1px;
+  width: 142px;
+  padding: 8px 0;
+  background-color: rgba(255, 255, 255, 0.25);
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 95%, from(rgba(255, 255, 255, 0.7)), to(rgba(255, 255, 255, 0)));
+}
+div.scroll {
+height: 100px;
+width: 350px;
+overflow: auto;
+border: 1px solid #666;
+background-color: #ccc;
+padding: 8px;
+}
+
+fieldset {
+display: block;
+-webkit-margin-start: 109px;
+-webkit-margin-end: 78px;
+-webkit-padding-before: 0.35em;
+-webkit-padding-start: 0.75em;
+-webkit-padding-end: 0.75em;
+-webkit-padding-after: 0.625em;
+border: 0px groove threedface;
+border-image: initial;
+}
