@@ -13,13 +13,16 @@
 # (at your option) any later version.                                                                          
 ###################################################################################################
 import time,sys,os,ablib
-from database import *
+from database_sqlite import *
 from tools import *
 
 class Myplcd():
     pos=0
     db=Mydata()
-    lcd = ablib.Daisy24(0,0x3E)
+    try:
+        lcd = ablib.Daisy24(0,0x3E)
+    except:
+        pass
     
     def actualTime(self):
         actualTime=time.localtime()

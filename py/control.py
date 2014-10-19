@@ -18,7 +18,7 @@ from threading import Thread
 from baseconfig import *
 sys.path.append("%slib" %workingDir)
 #db
-from database import *
+from database_sqlite import *
 from ablib import Pin
 #import ablib
 from tools import *
@@ -29,14 +29,7 @@ from tools import *
 
 class MyThread(Thread):
     db=Mydata()
-    sun=0
-    cal=0
-    man=0
     array=[]
-    array1=[]
-    array2=[]
-    array3=[]
-    array4=[]
     rel1=0
     rel2=0
     rel3=0
@@ -47,6 +40,7 @@ class MyThread(Thread):
     rele4 = Pin('J4.19','OUTPUT')
     
     def actualtime(self):
+        logCritical("time")
         actualTime=time.localtime()
         self.year=actualTime[0]
         self.month=actualTime[1]
@@ -57,6 +51,7 @@ class MyThread(Thread):
     def status(self,status_id):
         self.actualtime()
         x = self.db.view_configure()
+        #logCritical("status %s" %x)
         for b in x:
             id=int(b[0])
             label=b[1]
@@ -65,23 +60,16 @@ class MyThread(Thread):
             sunrise=int(b[12])
             
             if id==status_id:
-                #logCritical("status idd %s" %idd)
-                #pass
+
                 if man == 1 and calendar == 0 and sunrise == 0:
-                    #self.man=1
-                    #logCritical("manual %s" %idd)
                     self.manual(id)
-                    #logCritical("manual %s" %idd)
                 if man == 0 and calendar == 1 and sunrise == 0:
-                    #self.cal=1
                     self.db_calendar(id,label)
-                    #logCritical("calendar %s %s" %idd,self.label)
                 if man == 0 and calendar == 0 and sunrise == 1:
                     pass
             
                 
     def manual(self,manual_id):
-        #logCritical("id 1 %s" %iddd)
         while True:
             try:
                 self.actualtime()
@@ -94,25 +82,15 @@ class MyThread(Thread):
                     stop_hour=int(b[4])
                     stop_min=int(b[5])
                     man=int(b[10])
-                    #logCritical("dentro b in x manual")
-                    #logCritical("id 2 %s" %iddd)
-                    #logCritical("idd %s" %self.idd)
                     if id==manual_id:
                         self.array.append([start_hour,start_min,stop_hour,stop_min,man])
-                        #logCritical("idddddd %s" %iddd)
 
                 for interval in self.array:
-                    #logCritical("for interval")
                     if interval[4]==1:
-                        #logCritical("if interval")
                         actual= (int(self.hour)*60)+int(self.minute)
-                        #logCritical("actual %s" %actual)
                         minon= (int(interval[0])*60)+int(interval[1])
-                        #logCritical("minon %s" %minon)
                         minoff=(int(interval[2])*60)+int(interval[3])
-                        #logCritical("minoff %s" %minoff)
                         if actual >= minon and actual <= minoff:
-                            #logCritical("dentro interval %s" %iddd)
                             if manual_id==1:
                                 self.rel1=1
                             if manual_id==2:
@@ -132,100 +110,10 @@ class MyThread(Thread):
                                 self.rel4=0
                 break
             except:
+                #logCritical("except")
                 pass
     def sunrise(self,id):
         pass
-        
-    def db_configure(self):
-        while True:
-            try:
-                self.actualtime()
-                x = self.db.view_configure()
-                self.array1=[]
-                self.array2=[]
-                self.array3=[]
-                self.array4=[]
-                for b in x:
-                    self.id=int(b[0])
-                    self.start_hour=int(b[2])
-                    self.start_min=int(b[3])
-                    self.stop_hour=int(b[4])
-                    self.stop_min=int(b[5])
-                    self.rele11=int(b[6])
-                    self.rele22=int(b[7])
-                    self.rele33=int(b[8])
-                    self.rele44=int(b[9])
-                    self.manual=int(b[10])
-                    self.calendar=int(b[11])
-                    self.sunrise=int(b[12])
-                    
-                    if self.id==1:
-                        self.array1.append([self.start_hour,self.start_min,self.stop_hour,self.stop_min,self.manual,self.calendar,self.sunrise])
-                        
-                    if self.id==2:
-                        self.array2.append([self.start_hour,self.start_min,self.stop_hour,self.stop_min,self.manual,self.calendar,self.sunrise])
-                        
-                    if self.id==3:
-                        self.array3.append([self.start_hour,self.start_min,self.stop_hour,self.stop_min,self.manual,self.calendar,self.sunrise])
-                        
-                    if self.id==4:
-                        self.array4.append([self.start_hour,self.start_min,self.stop_hour,self.stop_min,self.manual,self.calendar,self.sunrise])
-                        
-                for interval in self.array1:
-                    if interval[4]==1:
-                        actual= (int(self.hour)*60)+int(self.minute)
-                        minon= (int(interval[0])*60)+int(interval[1])
-                        minoff=(int(interval[2])*60)+int(interval[3])
-                        if actual >= minon and actual <= minoff:
-                            self.rel1=1
-                        else:
-                            self.rel1=0
-                            
-                for interval in self.array2:
-                    if interval[4]==1:
-                        actual= (int(self.hour)*60)+int(self.minute)
-                        minon= (int(interval[0])*60)+int(interval[1])
-                        minoff=(int(interval[2])*60)+int(interval[3])
-                        if actual >= minon and actual <= minoff:
-                            self.rel2=1
-                        else:
-                            self.rel2=0
-                            
-                for interval in self.array3:
-                    if interval[4]==1:
-                        actual= (int(self.hour)*60)+int(self.minute)
-                        minon= (int(interval[0])*60)+int(interval[1])
-                        minoff=(int(interval[2])*60)+int(interval[3])
-                        if actual >= minon and actual <= minoff:
-                            self.rel3=1
-                        else:
-                            self.rel3=0
-                            
-                for interval in self.array4:
-                    if interval[4]==1:
-                        actual= (int(self.hour)*60)+int(self.minute)
-                        minon= (int(interval[0])*60)+int(interval[1])
-                        minoff=(int(interval[2])*60)+int(interval[3])
-                        if actual >= minon and actual <= minoff:
-                            self.rel4=1
-                        else:
-                            self.rel4=0
-                break
-            except Exception,e:
-                logCritical("db configure control %s" %e)
-                time.sleep(0.5)
-                if e[0] == 2006:
-                    time.sleep(5)
-                    command=("/etc/init.d/mysql restart")
-                    os.system(command)
-                    time.sleep(5)
-            	    self.db.riavvio_db()
-                    try:
-                        host=smtplib.SMTP ("127.0.0.1")
-                        ret=host.sendmail("luca@example.com", "sanluca78@gmail.com", "reboot mysql")
-                    except:
-                        pass
-
      #id, uid , m ,d ,y ,start_ '00:00:00',end '00:00:00',title ,text 
      #(id,timestamp,title,description,url,email,cat,starttime,endtime,day,month,year,approved,priority,user,timezone   
      #il titolo deve avere i nomi rele1 rele2 rele3 rele4
@@ -288,10 +176,9 @@ class MyThread(Thread):
     def run(self):
         z=1
         while True:
-            #self.db_configure()
+            #logCritical("while")
             self.actualtime()
             self.status(int(z))
-            #logCritical("z %s" %z)
             z+=1
             if z==4:
                 z=1

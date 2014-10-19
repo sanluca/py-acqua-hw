@@ -17,7 +17,7 @@ from threading import Thread
 from baseconfig import *
 sys.path.append("%slib" %workingDir)
 #db
-from database import *
+#from database_sqlite import *
 from paglcd import *
 import ablib
 from tools import *
@@ -27,7 +27,10 @@ class MyButton(Thread):
     plcd=Myplcd()
     pos=0
     enter=False
-    lcd = ablib.Daisy24(0,0x3F)
+    try:
+        lcd = ablib.Daisy24(0,0x3F)
+    except:
+        pass
     #lcd = ablib.Daisy24()
     ledlcd=False
     press1=False
@@ -91,8 +94,8 @@ class MyButton(Thread):
                         #time.sleep(5)
                         command=("shutdown -h now")
                         os.system(command)
-            except:
-                pass
+            #except:
+                #pass
 
 #            if self.lcd.pressed(2):
 #                if self.pos==2:
@@ -103,18 +106,20 @@ class MyButton(Thread):
 #                    self.menuSet=False
 #                    self.plcd.pagina(self.pos,True)
 
-            if i==1200:
-                self.plcd.pagina(0,True)
-                self.ledlcd=False
-                self.lcd.backlightoff()
-                i=0
+                if i==1200:
+                    self.plcd.pagina(0,True)
+                    self.ledlcd=False
+                    self.lcd.backlightoff()
+                    i=0
                 
-            if self.ledlcd==True:
-                i+=1
-                self.lcd.backlighton()
-                self.press1=True
+                if self.ledlcd==True:
+                    i+=1
+                    self.lcd.backlighton()
+                    self.press1=True
                 
-            if self.ledlcd==False and z>=1200:
-                self.plcd.pagina(0,True)
-                z=0
-                self.press1=False
+                if self.ledlcd==False and z>=1200:
+                    self.plcd.pagina(0,True)
+                    z=0
+                    self.press1=False
+            except:
+                pass

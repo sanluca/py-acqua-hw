@@ -75,15 +75,15 @@ setInterval('displaytime()', 1000);
 
 <?php
 // richiamo il file di configurazione
-require 'mysql.php';
+require 'sqlite.php';
 $data = new db();
  
 // richiamo le funzioni visualizzazione
-$data->connetti();
+//$data->connetti();
 
 $real_time=$data->view_real_time();
 $configure=$data->view_configure();
-$work=$data->view_work();
+//$work=$data->view_work();
 
 //power $work[6]
 /*if ($work[6]==1){
@@ -142,7 +142,7 @@ else{
 </tr>
 </table></div>
 <?php 
-$data->disconnetti();
+//$data->disconnetti();
 ?></div>
 </body>
 </html>

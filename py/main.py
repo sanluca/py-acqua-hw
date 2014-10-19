@@ -19,7 +19,7 @@ from baseconfig import *
 sys.path.append("%slib" %workingDir)
 from tools import *
 import daemon
-from database import *
+from database_sqlite import *
 from control import *
 from button import *
 from storage import *
