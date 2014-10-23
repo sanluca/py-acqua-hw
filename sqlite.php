@@ -2,36 +2,44 @@
 class db {
 // implementazione della classe db...
 //db
-$sq = sqlite_open("/var/tmp/real_time.db", 0666, $sqlite_error);
-if(!$sq)
-{
-    die(“Errore Sqlite: “.$sqlite_error);
-}
+//$db = new PDO("sqlite:///media/data/py-acqua-hw/py/db/configure.db"); 
 
+//$result = $db->query("select * from configure where id=1"); 
+//$conf = $result->fetch(PDO::FETCH_ARRAY);
  
+$db = new PDO("sqlite:///var/tmp/real_time.db");
+$db_conf = new PDO("sqlite:///media/data/py-acqua-hw/py/db/configure.db"); 
+//if(!$sq)
+//{
+ //   die(“Errore Sqlite: “.$sqlite_error);
+//}
 
 //database view real_time
 public function view_real_time(){
-$result=sqlite_query($sq,"select * from real_time where id=1 ");
-$real_time = sqlite_fetch_array($result);
-return $real_time;
-sqlite_close($sq);
+	$result=$db->query("select * from real_time where id=1 ");
+	$real_time = $result->fetch(PDO::FETCH_ARRAY);
+	$db->close();
+	return $real_time;
 }
 //database view configure
 public function view_configure(){
-	$result=sqlite_query($sq,"select * from configure where id=1 ");
-	$work=sqlite_fetch_array($result);
-	return $work;
+	$result=$db_conf->query("select * from configure where id=1 ");
+	$conf=$result->fetch(PDO::FETCH_ARRAY);
+	$db_conf->close();
+	return $conf;
 }
 
 public function view_configure1(){
-	$result=sqlite_query($sq,"select * from configure");
+	$result=$db_conf->query("select * from configure");
+	$conf=$result->fetch(PDO::FETCH_ARRAY);
+	$db_conf->close();
 	return $result;
 }
 
 //database update configure
 public function update_configure($par,$value,$id){
-	sqlite_query($sq,"update configure set $par='$value' where id='$id'");
+	$db_conf->query("update configure set $par='$value' where id='$id'");
+	$db_conf->close();
 }
 
 }?>

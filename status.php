@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 if(isset($_GET['lang']))
 {
 $lang =$_GET['lang'];
@@ -75,37 +75,18 @@ setInterval('displaytime()', 1000);
 
 <?php
 // richiamo il file di configurazione
-require 'sqlite.php';
-$data = new db();
- 
+//require 'sqlite.php';
+//$data = new db();
+$db = new PDO("sqlite:/var/tmp/real_time.db");
+$result=$db->query("select * from real_time");// where id=1");
+$real_time = $result->fetch(PDO::FETCH_ASSOC);//fetch(PDO::FETCH_ARRAY);
+
+//$db->close();
 // richiamo le funzioni visualizzazione
-//$data->connetti();
 
-$real_time=$data->view_real_time();
-$configure=$data->view_configure();
-//$work=$data->view_work();
+//$real_time=$data->view_real_time();
+//$configure=$data->view_configure();
 
-//power $work[6]
-/*if ($work[6]==1){
-	$img=(" <img src=images/signal_ok.gif>");
-	$ah=(time()-$work[1])/3600;
-	$ao=0;}
-else{
-	$img=(" <img src=images/signal_clear.gif>");
-	$ah=0;
-	$ao=(time()-$work[2])/3600;
-	}
-	if($manual[4]==1){
-		$mod="Calendar";}
-		else{
-			$mod="Manual";}
-			
-				if($manual[8]==1){
-		$cel="Cel";}
-		else{
-			$cel="No Cel";}
-	
-*/	
 ?>
 <div id="templatemo_content_wrapper">
 	
@@ -126,23 +107,15 @@ else{
 </tr>
 <tr>
 <td><?php echo $output[12] ?></td>
-<td><?php echo $work[1] ?></td>
-<!--<td><?php echo $output[13] ?></td>
-<td><?php echo $img; ?></td>-->
+<td></td>
 </tr>
 <tr>
-<!--<td><?php echo $output[14] ?></td>
-<td><?php echo round($ah,2) ;?></td>
-<td><?php echo $output[15] ?></td>
-<td><?php echo round(($work[7]/3600),2) ;?></td>-->
+
 </tr>
 <tr>
-<!--<td><?php echo $output[16] ?></td>
-<td><?php echo round($ao,2) ;?></td>-->
+
 </tr>
 </table></div>
-<?php 
-//$data->disconnetti();
-?></div>
+</div>
 </body>
 </html>

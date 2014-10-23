@@ -51,11 +51,11 @@ require("{$lang}.php");
 </div></div>
 <?php
 // richiamo il file di configurazione
-require 'mysql.php';
+require 'sqlite.php';
 $data = new db();
  
 // richiamo le funzioni visualizzazione
-$data->connetti();
+//$data->connetti();
 $day = date("d");
 $month = date("m");
 $year = date("Y");

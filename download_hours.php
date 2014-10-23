@@ -1,5 +1,5 @@
 <?php
-require 'mysql.php';
+require 'sqlite.php';
 $data = new db();
 $daData = $_POST['theDate2'];
 $aData = $_POST['theDate3'];
@@ -7,7 +7,7 @@ $array = explode(".",$daData);
 $array1 = explode(".",$aData);
  
 // richiamo le funzioni visualizzazione
-$data->connetti();
+//$data->connetti();
 
 $hours=$data->view_hours($array[0],$array1[0],$array[1],$array1[1],$array[2],$array1[2]);
  

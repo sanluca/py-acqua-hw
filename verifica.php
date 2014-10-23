@@ -2,11 +2,11 @@
 session_start(); //inizio la sessione
 //includo i file necessari a collegarmi al db con relativo script di accesso
 // richiamo il file di configurazione
-require 'mysql.php';
+require 'sqlite.php';
 $data = new db();
  
 // richiamo le funzioni visualizzazione
-$data->connetti();
+//$data->connetti();
 
 //mi collego
 //mysql_select_db("$db_database",$connessione); 

@@ -65,11 +65,11 @@ require("{$lang}.php");
 </div></div>
 <?php
 // richiamo il file di configurazione
-require 'mysql.php';
+require 'qlite.php';
 $data = new db();
  
 // richiamo le funzioni visualizzazione
-$data->connetti();
+//$data->connetti();
 
 $configure=$data->view_configure1();
 $numfields = mysql_num_fields($configure);

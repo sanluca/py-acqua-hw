@@ -1,5 +1,5 @@
 <?php 
-session_start();
+//session_start();
 if(isset($_GET['lang']))
 {
 $lang =$_GET['lang'];
@@ -20,7 +20,8 @@ $lang = "it";
 
 # Includo il file di linguaggio interessato
 require("{$lang}.php");
-include('mysql.php'); ?>
+//include('sqlite.php'); 
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
