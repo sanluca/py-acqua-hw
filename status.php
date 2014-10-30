@@ -75,17 +75,16 @@ setInterval('displaytime()', 1000);
 
 <?php
 // richiamo il file di configurazione
-//require 'sqlite.php';
-//$data = new db();
+
 $db = new PDO("sqlite:/var/tmp/real_time.db");
-$result=$db->query("select * from real_time");// where id=1");
-$real_time = $result->fetch(PDO::FETCH_ASSOC);//fetch(PDO::FETCH_ARRAY);
 
-//$db->close();
-// richiamo le funzioni visualizzazione
+$sql = $db->prepare("SELECT * FROM real_time where id=1");
+$sql->execute();
+$data = $sql->fetchAll();
+foreach($data as $real_time){
+	$real_time = $real_time;
+}
 
-//$real_time=$data->view_real_time();
-//$configure=$data->view_configure();
 
 ?>
 <div id="templatemo_content_wrapper">
@@ -100,6 +99,10 @@ $real_time = $result->fetch(PDO::FETCH_ASSOC);//fetch(PDO::FETCH_ARRAY);
 <td><?php echo $real_time[1]; ?></td>
 <td><?php echo $output[8] ?></td>
 <td><?php echo $real_time[2]; ?></td>
+</tr>
+<tr>
+<td><?php echo $output[9] ?></td>
+<td><?php echo $real_time[3] ?></td>
 </tr>
 <tr>
 <td><?php echo $output[11] ?></td>

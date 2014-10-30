@@ -65,60 +65,69 @@ require("{$lang}.php");
 </div></div>
 <?php
 // richiamo il file di configurazione
-require 'qlite.php';
-$data = new db();
+//cursor.execute("create table if not exists configure (Id INTEGER PRIMARY KEY, label VARCHAR(150), start_hour INT, start_min INT, stop_hour INT, stop_min INT, rele1 INT, rele2 INT, rele3 INT, rele4 INT, manual INT, calendar INT, sunrise INT);")
+$db = new PDO("sqlite:/media/data/py-acqua-hw/py/db/configure.db");
+
+$sql = $db->prepare("SELECT * FROM configure");
+$sql->execute();
+$data = $sql->fetchAll();
+foreach($data as $real_time){
+	$configure = $real_time;
+}
  
 // richiamo le funzioni visualizzazione
 //$data->connetti();
 
-$configure=$data->view_configure1();
-$numfields = mysql_num_fields($configure);
+//$rows = $sql->numRows();
+
+$numfields = 4;
 
 // valorizzazione delle variabili con i parametri dal form pulsante save
 if(isset($_POST['submit'])&&($_POST['submit']=="Save")){
 $a=1;
 $b=0;
+echo "sono dentro save";
 $id = $_POST['id'];
+
   if(isset($_POST['ore'])){
-  	 $label = addslashes(filter_var($_POST['label'], FILTER_SANITIZE_STRING));
+  	echo "sono dentro ore";
+  	$label = addslashes(filter_var($_POST['label'], FILTER_SANITIZE_STRING));
     $ore = addslashes(filter_var($_POST['ore'], FILTER_SANITIZE_STRING));
     $minuti = addslashes(filter_var($_POST['minuti'], FILTER_SANITIZE_STRING));
     $ore_stop = addslashes(filter_var($_POST['ore_stop'], FILTER_SANITIZE_STRING));
     $minuti_stop = addslashes(filter_var($_POST['minuti_stop'], FILTER_SANITIZE_STRING));
+    //se non fa update settare i permessi chmod -R a+xrw
+    $sql=$db->prepare("update configure set label='$label', start_hour='$ore', start_min='$minuti', stop_hour='$ore_stop', stop_min='$minuti_stop' where id='$id'");
+    $sql->execute();
+    //$db->commit();
     
-	 $data->update_configure('label',$label,$id);    
-    $data->update_configure('start_hour',$ore,$id);
-    $data->update_configure('start_min',$minuti,$id);
-    $data->update_configure('stop_hour',$ore_stop,$id);
-    $data->update_configure('stop_min',$minuti_stop,$id);
-    
-    if($id == 1) {
-    	$data->update_configure('rele1',1,$id);}
-    elseif($id == 2) { $data->update_configure('rele2',1,$id);}
-    elseif($id == 3) { $data->update_configure('rele3',1,$id);}
-    elseif($id == 4) { $data->update_configure('rele4',1,$id);}
+    if($id == 1) { $sql=$db->prepare("update configure set rele1='$a' where id='$id'");$sql->execute();}
+    elseif($id == 2) { $sql=$db->prepare("update configure set rele2='$a' where id='$id'");$sql->execute();}
+    elseif($id == 3) { $sql=$db->prepare("update configure set rele3='$a' where id='$id'");$sql->execute();}
+    elseif($id == 4) { $sql=$db->prepare("update configure set rele4='$a' where id='$id'");$sql->execute();}
     
     $autor = $_POST['auto'];
-    
+    	echo "sono dentro auto";
     	if($autor == 1){
-    	$data->update_configure('calendar',$a,$id);
-    	$data->update_configure('manual',$b,$id);
-    	$data->update_configure('sunrise',$b,$id);
+    		$sql=$db->prepare("update configure set calendar='$a', manual='$b', sunrise='$b' where id='$id'");
+    		$sql->execute();
+    		//$db->commit();
     		}
     		elseif($autor == 2) {
-    		$data->update_configure('calendar',$b,$id);
-    		$data->update_configure('manual',$a,$id);
-    		$data->update_configure('sunrise',$b,$id);
+    			$sql=$db->prepare("update configure set calendar='$b', manual='$a', sunrise='$b' where id='$id'");
+    		$sql->execute();
+    		//$db->commit();
     			}
     			
     		elseif($autor == 3) {
-    		$data->update_configure('calendar',$b,$id);
-    		$data->update_configure('manual',$b,$id);
-    		$data->update_configure('sunrise',$a,$id);
+    			$sql=$db->prepare("update configure set calendar='$b', manual='$b', sunrise='$a' where id='$id'");
+    		$sql->execute(); 
+    		//$db->commit();
     			}
     				
     	}
-    echo '<script language=javascript>document.location.href="configure.php"</script>'; 	}
+    echo '<script language=javascript>document.location.href="configure.php"</script>'; 	
+}
 
 elseif(isset($_POST['submit'])&&($_POST['submit']=="Uphours")){
 	if(isset($_POST['tot_hours'])){
@@ -126,60 +135,6 @@ elseif(isset($_POST['submit'])&&($_POST['submit']=="Uphours")){
     $tot = $tot*3600;
 			$data->update_work('tot',$tot);
 }}
-
-elseif(isset($_POST['submit'])&&($_POST['submit']=="Scan")){
-	if ($manual[5]==1){
-	echo "<script type='text/javascript'>alert('Bluetooth Active! Disable');</script>";
-}
-else{
-	$data->update_man('scan',1);
-}}
-elseif(isset($_POST['submit'])&&($_POST['submit']=="Cancel")){
-	$id=$_POST['id'];
-	$data->delete_bluetooth($id);
-}
-elseif(isset($_POST['submit'])&&($_POST['submit']=="Modify")){
-	$id=$_POST['id'];
-	$scan=$_POST['scan'];
-	$data->update_bluetooth($scan,$id);
-}
-
-elseif(isset($_POST['submit'])&&($_POST['submit']=="Conhours")){
-	if(isset($_POST['con_hours'])){
-    $con = addslashes(filter_var($_POST['con_hours'], FILTER_SANITIZE_STRING));
-			$data->update_work('con',$con);
-		}}
-		
-elseif(isset($_POST['submit'])&&($_POST['submit']=="MinTemp")){
-	if(isset($_POST['mintemperature'])){
-    $mintemperature=addslashes(filter_var($_POST['mintemperature'], FILTER_SANITIZE_STRING));
-    $data->update_man('mintemp',$mintemperature);
-		}}
-		
-elseif(isset($_POST['submit'])&&($_POST['submit']=="+")){
-	$a=isset($_POST['temperature']);
-	$b=$a+1;
-	
-}
-	
-if ($manual[4]==1){
-	$check_cal='CHECKED';
-//	$check_man='';
-}
-else{
-//	$check_cal='';
-	$check_man='CHECKED';
-	}
-	
-	if ($manual[6]==1){
-	$check_blu='CHECKED';
-}
-else{
-	$check_blu='';
-	}
-	
-	$tot_ho1=$work[3]/3600;
-	$tot_ho=round($tot_ho1,2);
 
 ?>
 
@@ -223,9 +178,9 @@ else{
 </tr>
 
 <tr>
-<td><input type="radio" name="auto" value="1" <?php print "$check_cal" ?> /></td>
-<td><input type="radio" name="auto" value="2" <?php print "$check_man" ?>/></td>
-<td><input type="radio" name="auto" value="3" <?php print "$check_alba" ?>/></td>
+<td><input type="radio" name="auto" value="1"  /></td>
+<td><input type="radio" name="auto" value="2" /></td>
+<td><input type="radio" name="auto" value="3" /></td>
 
 </tr>
 </table></td></tr>
@@ -243,18 +198,31 @@ else{
 <td><?php echo $output[20] ?></td></tr>
 <tr><td><?php echo $output[21] ?></td></tr>
 <tr><td>
-<div class="scroll"><?php echo "<table>\n<tr>";
-for ($i=0; $i < $numfields; $i++) 
-  { 
-   echo '<th>'.mysql_field_name($configure, $i).'</th>'; 
-   }
-   echo "</tr>\n";
-   
-   while ($row = mysql_fetch_row($configure)) 
-  {
-   echo '<tr><td>'.implode($row,'</td><td>')."</td></tr>\n"; 
-  }
-echo "</table>\n";?></div>
+<div class="scroll"><table><?php
+
+$sql = $db->prepare('SELECT * FROM configure');
+$sql->execute();
+$result = $sql->fetchAll();
+
+
+foreach($result as $row) {
+	echo "Id: " . $row['Id'] . "\n";
+	echo "Label: " . $row['label'] . "\n";
+	echo "Start Ora: " . $row['start_hour'] . "\n";
+	echo "Start Minuti: " . $row['start_min'] . "\n";
+	echo "Stop Ora: " . $row['stop_hour'] . "\n";
+	echo "Stop Minuti: " . $row['stop_min'] . "\n";
+	echo "Rele1: " . $row['rele1'] . "\n";
+	echo "Rele2: " . $row['rele2'] . "\n";
+	echo "Rele3: " . $row['rele3'] . "\n";
+	echo "Rele4: " . $row['rele4'] . "\n";
+	echo "Manual: " . $row['manual'] . "\n";
+	echo "Calendar: " . $row['calendar'] . "\n";
+	echo "SunRise: " . $row['sunrise'] . "<br/>\n";
+	echo "\n";
+}
+
+?></table></div>
 </td></tr>
 
 </table></td>
@@ -265,38 +233,28 @@ echo "</table>\n";?></div>
 <td><table>
 <tr>
 <td><?php echo $output[12] ?></td>
-<td><?php echo $output[27] ?></td>
-<td><?php echo $output[18] ?></td>
+
 </tr>
 <tr>
-<td><input class="input" type="text" name="tot_hours" value="<?php echo "$tot_ho" ?>"/></td>
-<td><input class="input" type="text" name="con_hours" value="<?php echo "$work[5]" ?>"/></td>
-<td><input class="input" type="text" name="mintemperature" value="<?php echo "$manual[3]" ?>"/></td>
+<td><input class="input" type="text" name="tot_hours" value=""/></td>
+
+
 </tr>
-<tr><td><input class="button aqua" name="submit" type="submit" value="Uphours"></td>
-<td><input  class="button aqua" name="submit" type="submit" value="Conhours"></td>
-<td><input  class="button aqua" name="submit" type="submit" value="MinTemp"></td></tr>
+<tr><td><input class="button aqua" name="submit" type="submit" value="UpPulse"></td>
+
+</tr>
 </table></td>
 
 <td>
 
-<table><th><?php echo $output[28] ?></th>
-<tr>
-<td><?php echo $output[29] ?></td>
-<td><?php echo $output[30] ?></td>
-</tr>
-<tr>
-<td><input class="input" type="text" name="email" /></td>
-<td><input type="checkbox" name="activate_email" /></td>
-</tr>
-</table></td>
+</td>
 
 </tr>
 </form>
 </table></div>
 
 <?php 
-$data->disconnetti();
+//$data->disconnetti();
 ?>
 
 </div></div>
