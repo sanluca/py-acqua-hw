@@ -1,9 +1,0 @@
-<?php
-$week[1]="Niedziela";
-$week[2]="Poniedzia³ek";
-$week[3]="Wtorek";
-$week[4]="Œroda";
-$week[5]="Czwartek";
-$week[6]="Pi¹tek";
-$week[7]="Sobota";
-?>

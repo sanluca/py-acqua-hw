@@ -1,9 +1,0 @@
-<?php
-$week[1]="Pazar";
-$week[2]="Pazartesi";
-$week[3]="Salý";
-$week[4]="Çarþamba";
-$week[5]="Perþembe";
-$week[6]="Cuma";
-$week[7]="Cumartesi";
-?>
