@@ -12,15 +12,16 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.                                                                          
 ###################################################################################################
-import time,sys,smtplib
-from datetime import *
+import time,sys,smtplib,ephem,datetime
+#from datetime import *
+#from datetime import datetime, timedelta
+#from time import localtime, strftime
 from threading import Thread
 from baseconfig import *
 sys.path.append("%slib" %workingDir)
 #db
 from database_sqlite import *
 from ablib import Pin
-#import ablib
 from tools import *
 #PA24 'J4.11'  :  56, #PA24
 #PA25 'J4.13'  :  57, #PA25
@@ -40,7 +41,6 @@ class MyThread(Thread):
     rele4 = Pin('J4.19','OUTPUT')
     
     def actualtime(self):
-        logCritical("time")
         actualTime=time.localtime()
         self.year=actualTime[0]
         self.month=actualTime[1]
@@ -66,7 +66,7 @@ class MyThread(Thread):
                 if man == 0 and calendar == 1 and sunrise == 0:
                     self.db_calendar(id,label)
                 if man == 0 and calendar == 0 and sunrise == 1:
-                    pass
+                    self.sunrise(id)
             
                 
     def manual(self,manual_id):
@@ -112,33 +112,97 @@ class MyThread(Thread):
             except:
                 #logCritical("except")
                 pass
-    def sunrise(self,id):
-        pass
+    def sunrise(self,sunrise_id):
+        self.actualtime()
+        x = self.db.view_sunrise()
+        llong=x[1]
+        llat=x[2]
+        
+        actual= (int(self.hour)*60)+int(self.minute)
+        o=ephem.Observer()
+        o.lat= '%s' %llat
+        o.long= '%s' %llong
+        #logCritical("olat %s olong %s" %(o.lat,o.long))
+        s=ephem.Sun()
+        s.compute()
+        
+        fmt = "%H:%M"
+
+        sunrise=ephem.localtime(o.previous_rising(ephem.Sun())) #Sunrise
+        noon=ephem.localtime(o.next_transit   (ephem.Sun(), start=sunrise)) #Solar noon
+        sunset=ephem.localtime(o.next_setting   (ephem.Sun())) 
+        #Sunset
+        #logCritical("sunrise %s noon %s sunset %s" %(sunrise,noon,sunset))
+        
+        #logCritical("sunrises %s sunsets %s" %(sunrise.strftime(fmt),sunset.strftime(fmt)))
+        newsunrise=sunrise.strftime(fmt)
+        newnoon=noon.strftime(fmt)
+        newsunset=sunset.strftime(fmt)
+        
+        #sunrise 2014-11-01 06:49:09.000005 noon 2014-11-01 11:52:59.000005 sunset 2014-11-01 16:56:13.000005
+        campistart=newsunrise.split(':')
+        campiend=newsunset.split(':')
+        ho,mo=campiend
+        hh,mm=campistart
+        minon= (int(hh)*60)+int(mm)
+        minoff=(int(ho)*60)+int(mo)
+        minact=(int(self.hour)*60)+int(self.minute)
+        power=False
+        if minact >= minon and minact <= minoff:
+            power=True
+        
+        if power==True:
+            if sunrise_id==1:
+                self.rel1=1
+            if sunrise_id==2:
+                self.rel2=1
+            if sunrise_id==3:
+                self.rel3=1
+            if sunrise_id==4:
+                self.rel4=1
+                
+        elif power==False:
+            if sunrise_id==1:
+                self.rel1=0
+            if sunrise_id==2:
+                self.rel2=0
+            if sunrise_id==3:
+                self.rel3=0
+            if sunrise_id==4:
+                self.rel4=0
+                
+        
      #id, uid , m ,d ,y ,start_ '00:00:00',end '00:00:00',title ,text 
      #(id,timestamp,title,description,url,email,cat,starttime,endtime,day,month,year,approved,priority,user,timezone   
      #il titolo deve avere i nomi rele1 rele2 rele3 rele4
+     #2014-0-30 formata data 15:00 formato ora
     def db_calendar(self,id,label):
         try:
             self.actualtime()
-            x = self.db.view_calendarix(self.month,self.day,self.year)
+            #logCritical("calendar")
+            indata="%s-%s-%s" %(self.year,self.month,self.day)
+            zerodata="9999-00-00"
+            x = self.db.view_calendar(indata,zerodata)
             self.arrayy=[]
             for b in x:
-                m=int(b[10])
-                d=int(b[9])
-                y=int(b[11])
-                start=b[7]
-                end=b[8]
-                title=str(b[2])
-                text=int(b[3])
-                campistart=start.split(':')
-                campiend=end.split(':')
-                ho,mo=campiend
-                hh,mm=campistart
-                if title== "%s" %label :
+                title=str(b[3])
+                sdate=(b[15])
+                edate=(b[16])
+                stime=(b[18])
+                etime=(b[19])
+                #logCritical("control calendar binx")
+                #verificaahiamo che stia o nel giorno attuale o nell'intervallo
+                if (sdate == indata and edate == zerodata) or (sdate <= indata and edate >= indata):
+                    #logCritical("sdate edate calendar")
+                    campistart=stime.split(':')
+                    campiend=etime.split(':')
+                    ho,mo=campiend
+                    hh,mm=campistart
+                    if title== "%s" %label :
                     #minuti in 24H 1440
-                    minon= (int(hh)*60)+int(mm)
-                    minoff=(int(ho)*60)+int(mo)
-                    self.arrayy.append([minon,minoff,text])
+                        minon= (int(hh)*60)+int(mm)
+                        minoff=(int(ho)*60)+int(mo)
+                        self.arrayy.append([minon,minoff])
                     
             minact=(int(self.hour)*60)+int(self.minute)
             power=False
@@ -146,7 +210,6 @@ class MyThread(Thread):
             for interval in self.arrayy:
                 if minact>=interval[0] and minact <=interval[1]:
                     power=True
-                    intervall=interval[2]
 
             if power==True:
                 if id==1:
@@ -180,7 +243,7 @@ class MyThread(Thread):
             self.actualtime()
             self.status(int(z))
             z+=1
-            if z==4:
+            if z==5:
                 z=1
             
             if self.rel1==1:

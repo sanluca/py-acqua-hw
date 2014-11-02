@@ -86,11 +86,11 @@ $numfields = 4;
 if(isset($_POST['submit'])&&($_POST['submit']=="Save")){
 $a=1;
 $b=0;
-echo "sono dentro save";
+//echo "sono dentro save";
 $id = $_POST['id'];
 
   if(isset($_POST['ore'])){
-  	echo "sono dentro ore";
+  	//echo "sono dentro ore";
   	$label = addslashes(filter_var($_POST['label'], FILTER_SANITIZE_STRING));
     $ore = addslashes(filter_var($_POST['ore'], FILTER_SANITIZE_STRING));
     $minuti = addslashes(filter_var($_POST['minuti'], FILTER_SANITIZE_STRING));
@@ -136,6 +136,16 @@ elseif(isset($_POST['submit'])&&($_POST['submit']=="Uphours")){
 			$data->update_work('tot',$tot);
 }}
 
+elseif(isset($_POST['submit'])&&($_POST['submit']=="Coordinate")){
+	if(isset($_POST['long'])){
+		$long = addslashes(filter_var($_POST['long'], FILTER_SANITIZE_STRING));
+		$lat = addslashes(filter_var($_POST['lat'], FILTER_SANITIZE_STRING));
+		
+		$sql=$db->prepare("update sunrise set long='$long', lat='$lat' where id=1");
+		$sql->execute();
+		
+	}}
+
 ?>
 
 <div id="templatemo_content_wrapper">
@@ -149,7 +159,7 @@ elseif(isset($_POST['submit'])&&($_POST['submit']=="Uphours")){
 <table><th><?php echo $output[25] ?></th>
 
 <tr>
-<td><?php echo $output[27] ?></td>
+<td><?php echo $output[27] ?></td><td><?php echo $output[28] ?></td>
 </tr>
 
 <tr>
@@ -223,7 +233,24 @@ foreach($result as $row) {
 }
 
 ?></table></div>
-</td></tr>
+</td></tr><tr><td>
+
+<div class="scroll"><table>
+<?php
+
+$sql = $db->prepare('SELECT * FROM sunrise');
+$sql->execute();
+$result = $sql->fetchAll();
+
+
+foreach($result as $row) {
+	echo "Long: " . $row['long'] . "\n";
+	echo "Lat: " . $row['lat'] . "\n";
+	echo "\n";
+}
+
+?>
+</table></div></td></tr>
 
 </table></td>
 
@@ -244,10 +271,16 @@ foreach($result as $row) {
 
 </tr>
 </table></td>
-
 <td>
-
-</td>
+<table>
+<tr>
+<td><?php echo $output[33]?></td></tr>
+<tr><td><?php echo $output[34]?></td><td><?php echo $output[35]?></td></tr>
+<tr><td><input class="input" type="text" name="long" value=""/></td>
+<td><input class="input" type="text" name="lat" value=""/></td></tr>
+<tr><td><input class="button aqua" name="submit" type="submit" value="Coordinate"></td></tr>
+</tr>
+</table></td>
 
 </tr>
 </form>

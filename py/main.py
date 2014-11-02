@@ -25,7 +25,7 @@ from button import *
 from storage import *
 
 db=Mydata()
-db.create_db()
+#db.create_db()
 #db.populate_db()
 
 class mainprogram(daemon.DaemonApp):

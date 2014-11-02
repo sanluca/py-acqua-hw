@@ -21,17 +21,39 @@ class Mydata():
         self.db_real_time = '/var/tmp/real_time.db'
         db_is_new = not os.path.exists(self.db_real_time)
         conn = lite.connect(self.db_real_time)
+        if db_is_new:
+            conn.execute("create table if not exists real_time (Id INTEGER PRIMARY KEY, temp_h2o FLOAT, ph FLOAT, pulse INT);")
+            conn.execute("insert into real_time (temp_h2o, ph, pulse) values (%f , %f, %d)" %(0,0,0))
+        conn.commit()
         conn.close()
         
         self.db_configure = '/media/data/py-acqua-hw/py/db/configure.db'
         db_is_new = not os.path.exists(self.db_configure)
         conn = lite.connect(self.db_configure)
+        if db_is_new:            
+            conn.execute("create table if not exists configure (Id INTEGER PRIMARY KEY, label VARCHAR(150), start_hour INT, start_min INT, stop_hour INT, stop_min INT, rele1 INT, rele2 INT, rele3 INT, rele4 INT, manual INT, calendar INT, sunrise INT);")
+            conn.execute("create table if not exists sunrise (Id INTEGER PRIMARY KEY, long FLOAT, lat FLOAT);")
+            conn.execute("insert into sunrise (long, lat) values ('%s' , '%s')" %('12.6500','45.9500'))
+            a=0
+            while a<4:
+                conn.execute("insert into configure (label, start_hour, start_min, stop_hour, stop_min, rele1, rele2, rele3, rele4, manual, calendar, sunrise) values ('%s',%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)" %('label',0,0,0,0,0,0,0,0,0,0,0))
+                a=a+1
+        conn.commit()
         conn.close()
+        command=("chmod 777 /media/data/py-acqua-hw/py/db/configure.db")
+        os.system(command)
         
         self.db_storage = '/media/data/py-acqua-hw/py/db/storage.db'
         db_is_new = not os.path.exists(self.db_storage)
         conn = lite.connect(self.db_storage)
+        if db_is_new:
+            conn.execute("create table if not exists storage (Id INTEGER PRIMARY KEY, temp_h2o FLOAT, ph FLOAT, pulse INT, hour INT, day INT, month INT, year INT, lu INT);")
+        conn.commit()
         conn.close()
+        command=("chmod 777 /media/data/py-acqua-hw/py/db/storage.db")
+        os.system(command)
+        
+        self.db_calendar = '/media/data/py-acqua-hw/luxcal410-calendar/db/mycal.cdb'
         
     def db_con_real(self):
         self.con_real_time = lite.connect(self.db_real_time)
@@ -45,6 +67,10 @@ class Mydata():
         self.con_storage = lite.connect(self.db_storage)
         return self.con_storage.cursor()
     
+    def db_con_calendar(self):
+        self.con_calendar = lite.connect(self.db_calendar)
+        return self.con_calendar.cursor()
+    
     def create_db(self):
         
         cursor=self.db_con_real()
@@ -56,6 +82,7 @@ class Mydata():
         self.con_storage.commit()
         cursor=self.db_con_conf()
         cursor.execute("create table if not exists configure (Id INTEGER PRIMARY KEY, label VARCHAR(150), start_hour INT, start_min INT, stop_hour INT, stop_min INT, rele1 INT, rele2 INT, rele3 INT, rele4 INT, manual INT, calendar INT, sunrise INT);")
+        cursor.execute("create table if not exists sunrise (Id INTEGER PRIMARY KEY, long FLOAT, lat FLOAT);")
         self.con_configure.commit()
         
     def populate_db(self):
@@ -80,7 +107,6 @@ class Mydata():
         self.database_close()
         self.database_conn()
         
-	
     def save_real_time(self,temp_h2o,ph):
         cursor = self.db_con_real()
         cursor.execute("insert into real_time values (?,?,?)",(None, temp_h2o, ph))
@@ -95,10 +121,7 @@ class Mydata():
         cursor = self.db_con_real()
         cursor.execute("select * from real_time where id = 1") 
         return cursor.fetchone()
-        #r=self.con_real_time.store_result()
         self.con_real_time.close()
-        #for row in r.fetch_row(0):
-            #return row
 			
         #(pulse, hour, day, month, year)
     def save_storage(self,temp_h2o, ph, pulse,hour,day,month,year,lu):
@@ -131,25 +154,21 @@ class Mydata():
         cursor = self.db_con_conf()
         cursor.execute("select * from configure")
         return cursor.fetchall()
-        #r=self.con_configure.store_result() #rende disponibili i risultati
         self.con_configure.close()
-        #for x in r.fetch_row(0):
-        #x=r.fetch_row(0)
-        #return x
-        
 
-    #id, uid , m ,d ,y ,start_ '00:00:00',end '00:00:00',title ,text       
-    def view_calendar(self,m,d,y):
-        self.db.query("select * from pec_mssgs where m='%s' and d='%s' and y='%s'" %(m,d,y))
-        r=self.db.store_result()
-        results=r.fetch_row(0)
-        return results
+    def view_sunrise(self):
+        cursor=self.db_con_conf()
+        cursor.execute("select * from sunrise where id = 1")
+        return cursor.fetchone()
+        self.con_configure.close()
+
+    def update_sunrise(self,par,value):
+        cursor = self.db_con_conf()
+        cursor.execute("update sunrise set %s=%f where id = 1" %(par,value))
+        self.con_configure.commit()
     
-    def view_calendarix(self,month,day,year):
-        self.db.query("select * from calendar_events where month='%s' and day='%s' and year='%s'" %(month,day,year))
-        r=self.db.store_result()
-        results=r.fetch_row(0)
-        return results
-    
-    def delete_row_calendar(self,day,month,year):
-        self.db.query("delete from calendar where day=%d and month=%d and year=%d" % (day,month,year))
+    def view_calendar(self,sDate,eDate):
+        cursor=self.db_con_calendar()
+        cursor.execute("select * from events where sDate<='%s' and eDate>='%s'" %(sDate,eDate))
+        return cursor.fetchall()
+        self.con_calendar.close()
