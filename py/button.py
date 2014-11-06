@@ -49,9 +49,11 @@ class MyButton(Thread):
 
     def run(self):
         if self.intro==True:
+            self.lcd.backlighton()
             self.plcd.pagina(-1,False)
             self.intro=False
-            time.sleep(40)
+            self.ledlcd=True
+            time.sleep(20)
             
         self.plcd.pagina(0,True)
         i=0

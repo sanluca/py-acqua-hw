@@ -12,7 +12,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.                                                                          
 ###################################################################################################
-import time,sys,smtplib,ephem,datetime
+import time,sys,smtplib,ephem,datetime,pytz
 #from datetime import *
 #from datetime import datetime, timedelta
 #from time import localtime, strftime
@@ -55,19 +55,25 @@ class MyThread(Thread):
         for b in x:
             id=int(b[0])
             label=b[1]
-            man=int(b[10])
-            calendar=int(b[11])
-            sunrise=int(b[12])
+            man=int(b[6])
+            calendar=int(b[7])
+            sunrise=int(b[8])
+            temperature=int(b[9])
+            ph=int(b[10])
             
             if id==status_id:
 
-                if man == 1 and calendar == 0 and sunrise == 0:
+                if man == 1 and calendar == 0 and sunrise == 0 and temperature == 0 and ph == 0:
                     self.manual(id)
-                if man == 0 and calendar == 1 and sunrise == 0:
+                if man == 0 and calendar == 1 and sunrise == 0 and temperature == 0 and ph == 0:
                     self.db_calendar(id,label)
-                if man == 0 and calendar == 0 and sunrise == 1:
+                if man == 0 and calendar == 0 and sunrise == 1 and temperature == 0 and ph == 0:
                     self.sunrise(id)
-            
+                
+                if temperature== 1:
+                    self.temperature(id)
+                if ph==1:
+                    self.ph(id)
                 
     def manual(self,manual_id):
         while True:
@@ -81,7 +87,7 @@ class MyThread(Thread):
                     start_min=int(b[3])
                     stop_hour=int(b[4])
                     stop_min=int(b[5])
-                    man=int(b[10])
+                    man=int(b[6])
                     if id==manual_id:
                         self.array.append([start_hour,start_min,stop_hour,stop_min,man])
 
@@ -113,12 +119,14 @@ class MyThread(Thread):
                 #logCritical("except")
                 pass
     def sunrise(self,sunrise_id):
-        self.actualtime()
         x = self.db.view_sunrise()
         llong=x[1]
         llat=x[2]
+        zone1=x[3]
+        zone='%s' %zone1
         
-        actual= (int(self.hour)*60)+int(self.minute)
+        my_date = datetime.datetime.now(pytz.timezone(zone))
+        
         o=ephem.Observer()
         o.lat= '%s' %llat
         o.long= '%s' %llong
@@ -127,26 +135,30 @@ class MyThread(Thread):
         s.compute()
         
         fmt = "%H:%M"
-
-        sunrise=ephem.localtime(o.previous_rising(ephem.Sun())) #Sunrise
-        noon=ephem.localtime(o.next_transit   (ephem.Sun(), start=sunrise)) #Solar noon
-        sunset=ephem.localtime(o.next_setting   (ephem.Sun())) 
-        #Sunset
-        #logCritical("sunrise %s noon %s sunset %s" %(sunrise,noon,sunset))
         
-        #logCritical("sunrises %s sunsets %s" %(sunrise.strftime(fmt),sunset.strftime(fmt)))
+        utc_sun= o.previous_rising(ephem.Sun()).datetime().replace(tzinfo=pytz.utc)
+        utc_set=o.previous_setting(ephem.Sun()).datetime().replace(tzinfo=pytz.utc)
+        
+        sunrise= utc_sun.astimezone(pytz.timezone(zone))
+        sunset= utc_set.astimezone(pytz.timezone(zone))
+        
         newsunrise=sunrise.strftime(fmt)
-        newnoon=noon.strftime(fmt)
+        #newnoon=noon.strftime(fmt)
         newsunset=sunset.strftime(fmt)
-        
+
+        actual=my_date.strftime(fmt)
+        #logCritical("actual %s" %actual)
         #sunrise 2014-11-01 06:49:09.000005 noon 2014-11-01 11:52:59.000005 sunset 2014-11-01 16:56:13.000005
         campistart=newsunrise.split(':')
         campiend=newsunset.split(':')
+        campiactual=actual.split(':')
         ho,mo=campiend
         hh,mm=campistart
+        ha,ma=campiactual
         minon= (int(hh)*60)+int(mm)
         minoff=(int(ho)*60)+int(mo)
-        minact=(int(self.hour)*60)+int(self.minute)
+        minact=(int(ha)*60)+int(ma)
+        #logCritical("minon %s minoff %s minact %s" %(minon,minoff,minact))
         power=False
         if minact >= minon and minact <= minoff:
             power=True
@@ -174,7 +186,7 @@ class MyThread(Thread):
         
      #id, uid , m ,d ,y ,start_ '00:00:00',end '00:00:00',title ,text 
      #(id,timestamp,title,description,url,email,cat,starttime,endtime,day,month,year,approved,priority,user,timezone   
-     #il titolo deve avere i nomi rele1 rele2 rele3 rele4
+     #il titolo deve avere le label
      #2014-0-30 formata data 15:00 formato ora
     def db_calendar(self,id,label):
         try:
@@ -190,8 +202,7 @@ class MyThread(Thread):
                 edate=(b[16])
                 stime=(b[18])
                 etime=(b[19])
-                #logCritical("control calendar binx")
-                #verificaahiamo che stia o nel giorno attuale o nell'intervallo
+                #verifico se sta nel giorno attuale o nell'intervallo
                 if (sdate == indata and edate == zerodata) or (sdate <= indata and edate >= indata):
                     #logCritical("sdate edate calendar")
                     campistart=stime.split(':')
@@ -234,7 +245,78 @@ class MyThread(Thread):
         except Exception,e:
             logCritical("control calendar %s" %e)
             time.sleep(0.5)
+    
+    def temperature(self,temp_id):
+        e=self.db.view_real_time()
+        temp_real=e[1]
+        
+        x = self.db.view_configure()
+        for b in x:
+            id=int(b[0])
+            temp = b[11]
+            if temp_id==id:
+                if temp_real >= temp:
+                    power =False
+                else:
+                    power = True
+            
+            if power==True:
+                if id==1:
+                    self.rel1=1
+                if id==2:
+                    self.rel2=1
+                if id==3:
+                    self.rel3=1
+                if id==4:
+                    self.rel4=1
+                
+            elif power==False:
+                if id==1:
+                    self.rel1=0
+                if id==2:
+                    self.rel2=0
+                if id==3:
+                    self.rel3=0
+                if id==4:
+                    self.rel4=0
 
+            
+        
+                
+    def ph(self,ph_id):
+        e=self.db.view_real_time()
+        ph_real=e[2]
+        
+        x = self.db.view_configure()
+        for b in x:
+            id=int(b[0])
+            ph = b[12]
+            if ph_id==id:
+                if ph_real>=ph:
+                    power=False
+                else:
+                    power=True
+            if power==True:
+                if id==1:
+                    self.rel1=1
+                if id==2:
+                    self.rel2=1
+                if id==3:
+                    self.rel3=1
+                if id==4:
+                    self.rel4=1
+                
+            elif power==False:
+                if id==1:
+                    self.rel1=0
+                if id==2:
+                    self.rel2=0
+                if id==3:
+                    self.rel3=0
+                if id==4:
+                    self.rel4=0
+
+        
             
     def run(self):
         z=1
@@ -266,4 +348,4 @@ class MyThread(Thread):
             else:
                 self.rele4.off()
 
-            time.sleep(10)
+            time.sleep(20)

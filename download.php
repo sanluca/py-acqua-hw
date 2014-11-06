@@ -51,8 +51,9 @@ require("{$lang}.php");
 </div></div>
 <?php
 // richiamo il file di configurazione
-require 'sqlite.php';
-$data = new db();
+//require 'sqlite.php';
+//$data = new db();
+$db = new PDO("sqlite:/media/data/py-acqua-hw/py/db/storage.db");
  
 // richiamo le funzioni visualizzazione
 //$data->connetti();
@@ -63,9 +64,9 @@ $cal1 = array($day,$month,$year);
 $cal1=implode(".", $cal1);
 
 //temp_h2o, ph, pulse, hour, day, month, year, lu
-$work=$data->view_work1($day,$day,$month,$month,$year,$year);
+//$work=$data->view_work1($day,$day,$month,$month,$year,$year);
  
-$numfields = mysql_num_fields($work);
+//$numfields = mysql_num_fields($work);
 
 ?>
 
@@ -73,18 +74,27 @@ $numfields = mysql_num_fields($work);
 <div id="templatemo_content">
 <table><FORM name=form action="download_hours.php" method='POST'>
 <tr>
-<td><div class="scroll"><?php echo "<table>\n<tr>";
-for ($i=0; $i < $numfields; $i++) 
-  { 
-   echo '<th>'.mysql_field_name($work, $i).'</th>'; 
-   }
-   echo "</tr>\n";
-   
-   while ($row = mysql_fetch_row($work)) 
-  {
-   echo '<tr><td>'.implode($row,'</td><td>')."</td></tr>\n"; 
-  }
-echo "</table>\n";?></div></td>
+<td><div class="scroll"><?php
+//Id INTEGER PRIMARY KEY, temp_h2o FLOAT, ph FLOAT, pulse INT, hour INT, day INT, month INT, year INT, lu INT
+$sql = $db->prepare('SELECT * FROM storage');
+$sql->execute();
+$result = $sql->fetchAll();
+
+
+foreach($result as $row) {
+	echo "Id: " . $row['Id'] . "\n";
+	echo "Temperature: " . $row['temp_h2o'] . "\n";
+	echo "PH: " . $row['ph'] . "\n";
+	echo "Pulse: " . $row['pulse'] . "\n";
+	echo "Ora: " . $row['hour'] . "\n";
+	echo "Day: " . $row['day'] . "\n";
+	echo "Mese: " . $row['month'] . "\n";
+	echo "Year: " . $row['year'] . "\n";
+	echo "Len: " . $row['lu'] . "<br/>\n";
+	echo "\n";
+}
+
+?></div></td>
 
 </tr>
 
@@ -107,7 +117,7 @@ echo "</table>\n";?></div></td>
 <td></td>
 </table></form></div>
 <?php 
-$data->disconnetti();
+//$data->disconnetti();
 ?></div></div>
 </body>
 </html>

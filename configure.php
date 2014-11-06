@@ -99,15 +99,28 @@ $id = $_POST['id'];
     //se non fa update settare i permessi chmod -R a+xrw
     $sql=$db->prepare("update configure set label='$label', start_hour='$ore', start_min='$minuti', stop_hour='$ore_stop', stop_min='$minuti_stop' where id='$id'");
     $sql->execute();
-    //$db->commit();
-    
-    if($id == 1) { $sql=$db->prepare("update configure set rele1='$a' where id='$id'");$sql->execute();}
-    elseif($id == 2) { $sql=$db->prepare("update configure set rele2='$a' where id='$id'");$sql->execute();}
-    elseif($id == 3) { $sql=$db->prepare("update configure set rele3='$a' where id='$id'");$sql->execute();}
-    elseif($id == 4) { $sql=$db->prepare("update configure set rele4='$a' where id='$id'");$sql->execute();}
     
     $autor = $_POST['auto'];
-    	echo "sono dentro auto";
+    $temp = $_POST['check1'];
+    $ph = $_POST['check2'];
+    
+    	if($temp ==1){
+    		$sql=$db->prepare("update configure set temperature='$a'");
+    		$sql->execute();}
+    		else{
+    			$sql=$db->prepare("update configure set temperature='$b'");
+    			$sql->execute();
+    		}
+    		
+    		if($ph ==1){
+    			$sql=$db->prepare("update configure set ph='$a'");
+    			$sql->execute();}
+    			else{
+    				$sql=$db->prepare("update configure set ph='$b'");
+    				$sql->execute();
+    			}
+    		
+    		
     	if($autor == 1){
     		$sql=$db->prepare("update configure set calendar='$a', manual='$b', sunrise='$b' where id='$id'");
     		$sql->execute();
@@ -140,11 +153,32 @@ elseif(isset($_POST['submit'])&&($_POST['submit']=="Coordinate")){
 	if(isset($_POST['long'])){
 		$long = addslashes(filter_var($_POST['long'], FILTER_SANITIZE_STRING));
 		$lat = addslashes(filter_var($_POST['lat'], FILTER_SANITIZE_STRING));
+		$zone =addslashes(filter_var($_POST['zone'], FILTER_SANITIZE_STRING));
 		
-		$sql=$db->prepare("update sunrise set long='$long', lat='$lat' where id=1");
+		$sql=$db->prepare("update sunrise set long='$long', lat='$lat', timezone='$zone' where id=1");
 		$sql->execute();
 		
 	}}
+	
+	elseif(isset($_POST['submit'])&&($_POST['submit']=="SetTemp")){
+		$id = $_POST['id'];
+		if(isset($_POST['setemp'])){
+			$temp = addslashes(filter_var($_POST['setemp'], FILTER_SANITIZE_STRING));
+	
+			$sql=$db->prepare("update configure set setemp='$temp' where id='$id'");
+			$sql->execute();
+	
+		}}
+		
+		elseif(isset($_POST['submit'])&&($_POST['submit']=="SetPh")){
+			$id = $_POST['id'];
+			if(isset($_POST['setph'])){
+				$ph = addslashes(filter_var($_POST['setph'], FILTER_SANITIZE_STRING));
+		
+				$sql=$db->prepare("update configure set setph='$ph' where id='$id'");
+				$sql->execute();
+		
+			}}
 
 ?>
 
@@ -185,12 +219,16 @@ elseif(isset($_POST['submit'])&&($_POST['submit']=="Coordinate")){
 <td><?php echo $output[1] ?></td>
 <td><?php echo $output[19] ?></td>
 <td><?php echo $output[26] ?></td>
+<td><?php echo $output[7] ?></td>
+<td><?php echo $output[8] ?></td>
 </tr>
 
 <tr>
 <td><input type="radio" name="auto" value="1"  /></td>
 <td><input type="radio" name="auto" value="2" /></td>
 <td><input type="radio" name="auto" value="3" /></td>
+<td><input type="checkbox" name="check1" value="1" /></td>
+<td><input type="checkbox" name="check2" value="1" /></td>
 
 </tr>
 </table></td></tr>
@@ -222,13 +260,13 @@ foreach($result as $row) {
 	echo "Start Minuti: " . $row['start_min'] . "\n";
 	echo "Stop Ora: " . $row['stop_hour'] . "\n";
 	echo "Stop Minuti: " . $row['stop_min'] . "\n";
-	echo "Rele1: " . $row['rele1'] . "\n";
-	echo "Rele2: " . $row['rele2'] . "\n";
-	echo "Rele3: " . $row['rele3'] . "\n";
-	echo "Rele4: " . $row['rele4'] . "\n";
 	echo "Manual: " . $row['manual'] . "\n";
 	echo "Calendar: " . $row['calendar'] . "\n";
-	echo "SunRise: " . $row['sunrise'] . "<br/>\n";
+	echo "SunRise: " . $row['sunrise'] . "\n";
+	echo "Temperature: " . $row['temperature'] . "\n";
+	echo "PH: " . $row['ph'] . "\n";
+	echo "Set Temp: " . $row['setemp'] . "\n";
+	echo "Set PH: " . $row['setph'] . "<br/>\n";
 	echo "\n";
 }
 
@@ -246,6 +284,7 @@ $result = $sql->fetchAll();
 foreach($result as $row) {
 	echo "Long: " . $row['long'] . "\n";
 	echo "Lat: " . $row['lat'] . "\n";
+	echo "TimeZone: " . $row['timezone'] . "\n";
 	echo "\n";
 }
 
@@ -260,24 +299,32 @@ foreach($result as $row) {
 <td><table>
 <tr>
 <td><?php echo $output[12] ?></td>
+<td><?php echo $output[7] ?></td>
+<td><?php echo $output[8] ?></td>
 
 </tr>
 <tr>
 <td><input class="input" type="text" name="tot_hours" value=""/></td>
+<td><input class="input" type="text" name="setemp" value=""/></td>
+<td><input class="input" type="text" name="setph" value=""/></td>
 
 
 </tr>
 <tr><td><input class="button aqua" name="submit" type="submit" value="UpPulse"></td>
+<td><input class="button aqua" name="submit" type="submit" value="SetTemp"></td>
+<td><input class="button aqua" name="submit" type="submit" value="SetPh"></td>
 
 </tr>
 </table></td>
+
 <td>
 <table>
 <tr>
 <td><?php echo $output[33]?></td></tr>
-<tr><td><?php echo $output[34]?></td><td><?php echo $output[35]?></td></tr>
+<tr><td><?php echo $output[34]?></td><td><?php echo $output[35]?></td><td><?php echo $output[36]?></td></tr>
 <tr><td><input class="input" type="text" name="long" value=""/></td>
-<td><input class="input" type="text" name="lat" value=""/></td></tr>
+<td><input class="input" type="text" name="lat" value=""/></td>
+<td><input class="input" type="text" name="zone" value=""/></td></tr>
 <tr><td><input class="button aqua" name="submit" type="submit" value="Coordinate"></td></tr>
 </tr>
 </table></td>

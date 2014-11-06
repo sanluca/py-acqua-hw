@@ -31,12 +31,12 @@ class Mydata():
         db_is_new = not os.path.exists(self.db_configure)
         conn = lite.connect(self.db_configure)
         if db_is_new:            
-            conn.execute("create table if not exists configure (Id INTEGER PRIMARY KEY, label VARCHAR(150), start_hour INT, start_min INT, stop_hour INT, stop_min INT, rele1 INT, rele2 INT, rele3 INT, rele4 INT, manual INT, calendar INT, sunrise INT);")
-            conn.execute("create table if not exists sunrise (Id INTEGER PRIMARY KEY, long FLOAT, lat FLOAT);")
-            conn.execute("insert into sunrise (long, lat) values ('%s' , '%s')" %('12.6500','45.9500'))
+            conn.execute("create table if not exists configure (Id INTEGER PRIMARY KEY, label VARCHAR(150), start_hour INT, start_min INT, stop_hour INT, stop_min INT, manual INT, calendar INT, sunrise INT, temperature INT, ph INT, setemp FLOAT, setph INT);")
+            conn.execute("create table if not exists sunrise (Id INTEGER PRIMARY KEY, long FLOAT, lat FLOAT, timezone VARCHAR(150));")
+            conn.execute("insert into sunrise (long, lat, timezone) values ('%s' , '%s' , '%s')" %('12.6500','45.9500','Europe/Rome'))
             a=0
             while a<4:
-                conn.execute("insert into configure (label, start_hour, start_min, stop_hour, stop_min, rele1, rele2, rele3, rele4, manual, calendar, sunrise) values ('%s',%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)" %('label',0,0,0,0,0,0,0,0,0,0,0))
+                conn.execute("insert into configure (label, start_hour, start_min, stop_hour, stop_min, manual, calendar, sunrise, temperature, ph,setemp,setph) values ('%s',%d, %d, %d, %d, %d, %d, %d, %d, %d,%f,%d)" %('label',0,0,0,0,0,0,0,0,0,0,0))
                 a=a+1
         conn.commit()
         conn.close()
@@ -81,7 +81,7 @@ class Mydata():
         cursor.execute("create table if not exists storage (Id INTEGER PRIMARY KEY, temp_h2o FLOAT, ph FLOAT, pulse INT, hour INT, day INT, month INT, year INT, lu INT);")
         self.con_storage.commit()
         cursor=self.db_con_conf()
-        cursor.execute("create table if not exists configure (Id INTEGER PRIMARY KEY, label VARCHAR(150), start_hour INT, start_min INT, stop_hour INT, stop_min INT, rele1 INT, rele2 INT, rele3 INT, rele4 INT, manual INT, calendar INT, sunrise INT);")
+        cursor.execute("create table if not exists configure (Id INTEGER PRIMARY KEY, label VARCHAR(150), start_hour INT, start_min INT, stop_hour INT, stop_min INT, rele1 INT, rele2 INT, rele3 INT, rele4 INT, manual INT, calendar INT, sunrise INT, temp INT);")
         cursor.execute("create table if not exists sunrise (Id INTEGER PRIMARY KEY, long FLOAT, lat FLOAT);")
         self.con_configure.commit()
         

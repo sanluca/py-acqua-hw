@@ -35,3 +35,4 @@ $output[32] = "Rele4";
 $output[33] = "Coordinate";
 $output[34] = "Longitudine";
 $output[35] = "Latitudine";
+$output[36] = "TimeZone";
