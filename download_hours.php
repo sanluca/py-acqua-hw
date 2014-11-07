@@ -1,6 +1,7 @@
 <?php
-require 'sqlite.php';
-$data = new db();
+//require 'sqlite.php';
+//$data = new db();
+$db = new PDO("sqlite:/media/data/py-acqua-hw/py/db/storage.db");
 $daData = $_POST['theDate2'];
 $aData = $_POST['theDate3'];
 $array = explode(".",$daData);

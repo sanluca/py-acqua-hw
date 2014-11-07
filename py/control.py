@@ -47,6 +47,26 @@ class MyThread(Thread):
         self.day=actualTime[2]
         self.hour=actualTime[3]
         self.minute=actualTime[4]
+
+    def power_rele_on(self,id):
+        if id==1:
+            self.rel1=1
+        if id==2:
+            self.rel2=1
+        if id==3:
+            self.rel3=1
+        if id==4:
+            self.rel4=1
+    
+    def power_rele_off(self,id):
+        if id==1:
+            self.rel1=0
+        if id==2:
+            self.rel2=0
+        if id==3:
+            self.rel3=0
+        if id==4:
+            self.rel4=0
         
     def status(self,status_id):
         self.actualtime()
@@ -97,95 +117,71 @@ class MyThread(Thread):
                         minon= (int(interval[0])*60)+int(interval[1])
                         minoff=(int(interval[2])*60)+int(interval[3])
                         if actual >= minon and actual <= minoff:
-                            if manual_id==1:
-                                self.rel1=1
-                            if manual_id==2:
-                                self.rel2=1
-                            if manual_id==3:
-                                self.rel3=1
-                            if manual_id==4:
-                                self.rel4=1
-                        else:
-                            if manual_id==1:
-                                self.rel1=0
-                            if manual_id==2:
-                                self.rel2=0
-                            if manual_id==3:
-                                self.rel3=0
-                            if manual_id==4:
-                                self.rel4=0
-                break
-            except:
-                #logCritical("except")
-                pass
-    def sunrise(self,sunrise_id):
-        x = self.db.view_sunrise()
-        llong=x[1]
-        llat=x[2]
-        zone1=x[3]
-        zone='%s' %zone1
-        
-        my_date = datetime.datetime.now(pytz.timezone(zone))
-        
-        o=ephem.Observer()
-        o.lat= '%s' %llat
-        o.long= '%s' %llong
-        #logCritical("olat %s olong %s" %(o.lat,o.long))
-        s=ephem.Sun()
-        s.compute()
-        
-        fmt = "%H:%M"
-        
-        utc_sun= o.previous_rising(ephem.Sun()).datetime().replace(tzinfo=pytz.utc)
-        utc_set=o.previous_setting(ephem.Sun()).datetime().replace(tzinfo=pytz.utc)
-        
-        sunrise= utc_sun.astimezone(pytz.timezone(zone))
-        sunset= utc_set.astimezone(pytz.timezone(zone))
-        
-        newsunrise=sunrise.strftime(fmt)
-        #newnoon=noon.strftime(fmt)
-        newsunset=sunset.strftime(fmt)
+                            self.power_rele_on(manual_id)
 
-        actual=my_date.strftime(fmt)
-        #logCritical("actual %s" %actual)
-        #sunrise 2014-11-01 06:49:09.000005 noon 2014-11-01 11:52:59.000005 sunset 2014-11-01 16:56:13.000005
-        campistart=newsunrise.split(':')
-        campiend=newsunset.split(':')
-        campiactual=actual.split(':')
-        ho,mo=campiend
-        hh,mm=campistart
-        ha,ma=campiactual
-        minon= (int(hh)*60)+int(mm)
-        minoff=(int(ho)*60)+int(mo)
-        minact=(int(ha)*60)+int(ma)
-        #logCritical("minon %s minoff %s minact %s" %(minon,minoff,minact))
-        power=False
-        if minact >= minon and minact <= minoff:
-            power=True
+                        else:
+                            self.power_rele_off(manual_id)
+                break
+            except Exception,e:
+                logCritical("control manual %s" %e)
+                time.sleep(1)
+    def sunrise(self,sunrise_id):
+        try:
+            x = self.db.view_sunrise()
+            llong=x[1]
+            llat=x[2]
+            zone1=x[3]
+            zone='%s' %zone1
         
-        if power==True:
-            if sunrise_id==1:
-                self.rel1=1
-            if sunrise_id==2:
-                self.rel2=1
-            if sunrise_id==3:
-                self.rel3=1
-            if sunrise_id==4:
-                self.rel4=1
-                
-        elif power==False:
-            if sunrise_id==1:
-                self.rel1=0
-            if sunrise_id==2:
-                self.rel2=0
-            if sunrise_id==3:
-                self.rel3=0
-            if sunrise_id==4:
-                self.rel4=0
-                
+            my_date = datetime.datetime.now(pytz.timezone(zone))
         
-     #id, uid , m ,d ,y ,start_ '00:00:00',end '00:00:00',title ,text 
-     #(id,timestamp,title,description,url,email,cat,starttime,endtime,day,month,year,approved,priority,user,timezone   
+            o=ephem.Observer()
+            o.lat= '%s' %llat
+            o.long= '%s' %llong
+            #logCritical("olat %s olong %s" %(o.lat,o.long))
+            s=ephem.Sun()
+            s.compute()
+        
+            fmt = "%H:%M"
+        
+            utc_sun= o.previous_rising(ephem.Sun()).datetime().replace(tzinfo=pytz.utc)
+            utc_set=o.previous_setting(ephem.Sun()).datetime().replace(tzinfo=pytz.utc)
+        
+            sunrise= utc_sun.astimezone(pytz.timezone(zone))
+            #noon=utc_noon.astimezone(pytz.timezone(zone))
+            sunset= utc_set.astimezone(pytz.timezone(zone))
+        
+            newsunrise=sunrise.strftime(fmt)
+            #newnoon=noon.strftime(fmt)
+            newsunset=sunset.strftime(fmt)
+
+            actual=my_date.strftime(fmt)
+            #logCritical("actual %s" %actual)
+            #sunrise 2014-11-01 06:49:09.000005 noon 2014-11-01 11:52:59.000005 sunset 2014-11-01 16:56:13.000005
+            campistart=newsunrise.split(':')
+            campiend=newsunset.split(':')
+            campiactual=actual.split(':')
+            ho,mo=campiend
+            hh,mm=campistart
+            ha,ma=campiactual
+            minon= (int(hh)*60)+int(mm)
+            minoff=(int(ho)*60)+int(mo)
+            minact=(int(ha)*60)+int(ma)
+            #logCritical("minon %s minoff %s minact %s" %(minon,minoff,minact))
+            power=False
+            if minact >= minon and minact <= minoff:
+                power=True
+        
+            if power==True:
+                self.power_rele_on(sunrise_id)
+                
+            elif power==False:
+                self.power_rele_off(sunrise_id)
+                
+        except Exception,e:
+            logCritical("control sunrise %s" %e)
+            time.sleep(1)
+
      #il titolo deve avere le label
      #2014-0-30 formata data 15:00 formato ora
     def db_calendar(self,id,label):
@@ -202,7 +198,7 @@ class MyThread(Thread):
                 edate=(b[16])
                 stime=(b[18])
                 etime=(b[19])
-                #verifico se sta nel giorno attuale o nell'intervallo
+                #da rivedere
                 if (sdate == indata and edate == zerodata) or (sdate <= indata and edate >= indata):
                     #logCritical("sdate edate calendar")
                     campistart=stime.split(':')
@@ -223,28 +219,14 @@ class MyThread(Thread):
                     power=True
 
             if power==True:
-                if id==1:
-                    self.rel1=1
-                if id==2:
-                    self.rel2=1
-                if id==3:
-                    self.rel3=1
-                if id==4:
-                    self.rel4=1
+                self.power_rele_on(id)
                 
             elif power==False:
-                if id==1:
-                    self.rel1=0
-                if id==2:
-                    self.rel2=0
-                if id==3:
-                    self.rel3=0
-                if id==4:
-                    self.rel4=0
+                self.power_rele_off(id)
                 
         except Exception,e:
             logCritical("control calendar %s" %e)
-            time.sleep(0.5)
+            time.sleep(1)
     
     def temperature(self,temp_id):
         e=self.db.view_real_time()
@@ -261,24 +243,26 @@ class MyThread(Thread):
                     power = True
             
             if power==True:
-                if id==1:
-                    self.rel1=1
-                if id==2:
-                    self.rel2=1
-                if id==3:
-                    self.rel3=1
-                if id==4:
-                    self.rel4=1
+                self.power_rele_on(temp_id)
+               # if id==1:
+                #    self.rel1=1
+                #if id==2:
+                #    self.rel2=1
+                #if id==3:
+                #    self.rel3=1
+                #if id==4:
+                 #   self.rel4=1
                 
             elif power==False:
-                if id==1:
-                    self.rel1=0
-                if id==2:
-                    self.rel2=0
-                if id==3:
-                    self.rel3=0
-                if id==4:
-                    self.rel4=0
+                self.power_rele_off(temp_id)
+               # if id==1:
+                 #   self.rel1=0
+                #if id==2:
+                 #   self.rel2=0
+                #if id==3:
+                 #   self.rel3=0
+                #if id==4:
+                  #  self.rel4=0
 
             
         
@@ -297,24 +281,26 @@ class MyThread(Thread):
                 else:
                     power=True
             if power==True:
-                if id==1:
-                    self.rel1=1
-                if id==2:
-                    self.rel2=1
-                if id==3:
-                    self.rel3=1
-                if id==4:
-                    self.rel4=1
+                self.power_rele_on(ph_id)
+                #if id==1:
+                 #   self.rel1=1
+               # if id==2:
+                 #   self.rel2=1
+                #if id==3:
+                  #  self.rel3=1
+                #if id==4:
+                  #  self.rel4=1
                 
             elif power==False:
-                if id==1:
-                    self.rel1=0
-                if id==2:
-                    self.rel2=0
-                if id==3:
-                    self.rel3=0
-                if id==4:
-                    self.rel4=0
+                self.power_rele_off(ph_id)
+                #if id==1:
+                 #   self.rel1=0
+               # if id==2:
+                #    self.rel2=0
+                #if id==3:
+                #    self.rel3=0
+                #if id==4:
+                   # self.rel4=0
 
         
             

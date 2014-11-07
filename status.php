@@ -59,7 +59,7 @@ setInterval('displaytime()', 1000);
 <div id="templatemo_header">
 <div id="site_title"><h1>Py-Acqua</h1></div>
 <div id="templatemo_menu">
-	<div class="home"><a href="index.php"></a></div>
+	<div class="home"><a href="status.php"></a></div>
 <ul>
     <li><a href="status.php"><?php echo $output[0] ?></a></li>
     <li><a href="luxcal410-calendar/index.php"><?php echo $output[1] ?></a></li>
