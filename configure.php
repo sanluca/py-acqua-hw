@@ -35,6 +35,18 @@ require("{$lang}.php");
 ?>
 <html>
 <head>
+
+<script type="text/javascript">
+<!--
+function popuptimezone()
+{
+	var stile = "top=10, left=10, width=250, height=200, status=no, menubar=no, toolbar=no scrollbars=yes";
+   
+  window.open("timezone.html","",stile);
+}
+//-->
+</script>
+
 <title>Py-Acqua</title>
 
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" >
@@ -325,7 +337,8 @@ foreach($result as $row) {
 <tr><td><input class="input" type="text" name="long" value=""/></td>
 <td><input class="input" type="text" name="lat" value=""/></td>
 <td><input class="input" type="text" name="zone" value=""/></td></tr>
-<tr><td><input class="button aqua" name="submit" type="submit" value="Coordinate"></td></tr>
+<tr><td><input class="button aqua" name="submit" type="submit" value="Coordinate"></td>
+<td><a href="javascript:popuptimezone()">Timezone</a></td></tr>
 </tr>
 </table></td>
 

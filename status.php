@@ -85,6 +85,33 @@ foreach($data as $real_time){
 	$real_time = $real_time;
 }
 
+$db2 = new PDO("sqlite:/media/data/py-acqua-hw/py/db/configure.db");
+$sql2 = $db2->prepare("SELECT * FROM sunrise where id=1");
+$sql2->execute();
+$data2 = $sql2->fetchAll();
+foreach($data2 as $sun){
+	$sun = $sun;
+}
+
+$timezone=$sun[3];
+$latitude=$sun[2];
+$longitude=$sun[1];
+
+date_default_timezone_set($timezone);
+
+$zenith = 90+(50/60);
+$tzoffset = date("Z")/60 / 60;
+
+$today = date("H:i");
+$time_format = 'H:i';
+
+$sunrise = date_sunrise(time(), SUNFUNCS_RET_STRING, $latitude, $longitude, $zenith, $tzoffset);
+$sunrise_time = date($time_format, strtotime(date("Y-m-d") . ' '. $sunrise));
+
+$sunset = date_sunset(time(), SUNFUNCS_RET_STRING, $latitude, $longitude, $zenith, $tzoffset);
+$sunset_time = date($time_format, strtotime(date("Y-m-d") . ' '. $sunset));
+
+
 
 ?>
 <div id="templatemo_content_wrapper">
@@ -102,11 +129,18 @@ foreach($data as $real_time){
 </tr>
 <tr>
 <td><?php echo $output[9] ?></td>
-<td><?php echo $real_time[3] ?></td>
+<td><?php echo $real_time[3]; ?></td>
 </tr>
 <tr>
 <td><?php echo $output[11] ?></td>
 <td><span id="servertime"></span></td>
+</tr>
+<tr>
+<td><?php echo $output[37] ?></td>
+<td><?php echo $today; ?></td>
+<td><?php echo $output[26] ?></td>
+<td><?php echo $sunrise_time; ?></td>
+<td><?php echo $sunset_time; ?></td>
 </tr>
 <tr>
 <td><?php echo $output[12] ?></td>
