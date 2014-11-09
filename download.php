@@ -39,10 +39,9 @@ require("{$lang}.php");
 <div class="home"><a href="status.php"></a></div>
 <ul>
     <li><a href="status.php"><?php echo $output[0] ?></a></li>
-    <li><a href="luxcal410-calendar/index.php"><?php echo $output[1] ?></a></li>
+    <li><a href="calendar.php"><?php echo $output[1] ?></a></li>
     <li><a href="download.php"><?php echo $output[2] ?></a></li>
     <li><a href="configure.php"><?php echo $output[3] ?></a></li>
-    <li><a href="logout.php"><?php echo $output[4] ?></a></li>
     <li><?php echo "<a href='" . $_SERVER['PHP_SELF'] . "?lang=it'>IT</a>";
 	      echo "<a href='" . $_SERVER['PHP_SELF'] . "?lang=en'>EN</a>";
 	    ?></li>  

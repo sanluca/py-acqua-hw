@@ -340,7 +340,6 @@ echo <<<TXT
 <head>
 <meta charset="utf-8">
 <title>{$set['calendarTitle']}</title>
-<a href="../status.php">Py-Acqua Home</a>
 <meta name="description" content="LuxCal web calendar - a LuxSoft product">
 <meta name="author" content="Roel Buining">
 <meta name="robots" content="nofollow">

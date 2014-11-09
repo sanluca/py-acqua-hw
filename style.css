@@ -824,6 +824,14 @@ border: 1px solid #666;
 background-color: #ccc;
 padding: 8px;
 }
+div.scroll.calendar {
+height: 600px;
+width: 760px;
+overflow: auto;
+border: 1px solid #666;
+background-color: #ccc;
+padding: 8px;
+}
 
 fieldset {
 display: block;
