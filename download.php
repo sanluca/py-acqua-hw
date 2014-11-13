@@ -73,7 +73,17 @@ $cal1=implode(".", $cal1);
 <div id="templatemo_content">
 <table><FORM name=form action="download_hours.php" method='POST'>
 <tr>
-<td><div class="scroll"><?php
+<td><div class="scroll"><table>
+<th>Id</th>
+<th>Temperatura</th>
+<th>PH</th>
+<th>Impulsi</th>
+<th>Ora</th>
+<th>Giorno</th>
+<th>Mese</th>
+<th>Anno</th>
+<th>Num</th>
+<?php
 //Id INTEGER PRIMARY KEY, temp_h2o FLOAT, ph FLOAT, pulse INT, hour INT, day INT, month INT, year INT, lu INT
 $sql = $db->prepare('SELECT * FROM storage');
 $sql->execute();
@@ -81,19 +91,20 @@ $result = $sql->fetchAll();
 
 
 foreach($result as $row) {
-	echo "Id: " . $row['Id'] . "\n";
-	echo "Temperature: " . $row['temp_h2o'] . "\n";
-	echo "PH: " . $row['ph'] . "\n";
-	echo "Pulse: " . $row['pulse'] . "\n";
-	echo "Ora: " . $row['hour'] . "\n";
-	echo "Day: " . $row['day'] . "\n";
-	echo "Mese: " . $row['month'] . "\n";
-	echo "Year: " . $row['year'] . "\n";
-	echo "Len: " . $row['lu'] . "<br/>\n";
-	echo "\n";
+	echo "<tr>";
+	echo "<td>" . $row['Id'] . "</td>";
+	echo "<td>" . $row['temp_h2o'] . "</td>";
+	echo "<td>" . $row['ph'] . "</td>";
+	echo "<td>" . $row['pulse'] . "</td>";
+	echo "<td>" . $row['hour'] . "</td>";
+	echo "<td>" . $row['day'] . "</td>";
+	echo "<td>" . $row['month'] . "</td>";
+	echo "<td>" . $row['year'] . "</td>";
+	echo "<td>" . $row['lu'] . "</td>";
+	echo "</tr>";
 }
 
-?></div></td>
+?></table></div></td>
 
 </tr>
 

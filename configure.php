@@ -257,7 +257,21 @@ elseif(isset($_POST['submit'])&&($_POST['submit']=="Coordinate")){
 <td><?php echo $output[20] ?></td></tr>
 <tr><td><?php echo $output[21] ?></td></tr>
 <tr><td>
-<div class="scroll"><table><?php
+<div class="scroll"><table>
+<th>Id</th>
+<th>Label</th>
+<th>Start Ora</th>
+<th>Start Minuti</th>
+<th>Stop Ora</th>
+<th>Stop Minuti</th>
+<th>Manuale</th>
+<th>Calendario</th>
+<th>Alba</th>
+<th>Temperatura</th>
+<th>PH</th>
+<th>Set Temp</th>
+<th>Set PH</th>
+<?php
 
 $sql = $db->prepare('SELECT * FROM configure');
 $sql->execute();
@@ -265,20 +279,21 @@ $result = $sql->fetchAll();
 
 
 foreach($result as $row) {
-	echo "Id: " . $row['Id'] . "\n";
-	echo "Label: " . $row['label'] . "\n";
-	echo "Start Ora: " . $row['start_hour'] . "\n";
-	echo "Start Minuti: " . $row['start_min'] . "\n";
-	echo "Stop Ora: " . $row['stop_hour'] . "\n";
-	echo "Stop Minuti: " . $row['stop_min'] . "\n";
-	echo "Manual: " . $row['manual'] . "\n";
-	echo "Calendar: " . $row['calendar'] . "\n";
-	echo "SunRise: " . $row['sunrise'] . "\n";
-	echo "Temperature: " . $row['temperature'] . "\n";
-	echo "PH: " . $row['ph'] . "\n";
-	echo "Set Temp: " . $row['setemp'] . "\n";
-	echo "Set PH: " . $row['setph'] . "<br/>\n";
-	echo "\n";
+	echo "<tr>";
+	echo "<td>" . $row['Id'] . "</td>";
+	echo "<td>" . $row['label'] . "</td>";
+	echo "<td>" . $row['start_hour'] . "</td>";
+	echo "<td>" . $row['start_min'] . "</td>";
+	echo "<td>" . $row['stop_hour'] . "</td>";
+	echo "<td>" . $row['stop_min'] . "</td>";
+	echo "<td>" . $row['manual'] . "</td>";
+	echo "<td>" . $row['calendar'] . "</td>";
+	echo "<td>" . $row['sunrise'] . "</td>";
+	echo "<td>" . $row['temperature'] . "</td>";
+	echo "<td>" . $row['ph'] . "</td>";
+	echo "<td>" . $row['setemp'] . "</td>";
+	echo "<td>" . $row['setph'] . "</td>";
+	echo "</tr>";
 }
 
 ?></table></div>
