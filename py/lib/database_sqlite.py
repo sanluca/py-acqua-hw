@@ -33,7 +33,9 @@ class Mydata():
         if db_is_new:            
             conn.execute("create table if not exists configure (Id INTEGER PRIMARY KEY, label VARCHAR(150), start_hour INT, start_min INT, stop_hour INT, stop_min INT, manual INT, calendar INT, sunrise INT, temperature INT, ph INT, setemp FLOAT, setph INT);")
             conn.execute("create table if not exists sunrise (Id INTEGER PRIMARY KEY, long FLOAT, lat FLOAT, timezone VARCHAR(150));")
+            conn.execute("create table if not exists calph (Id INTEGER PRIMARY KEY, offset FLOAT, range FLOAT);")
             conn.execute("insert into sunrise (long, lat, timezone) values ('%s' , '%s' , '%s')" %('12.6500','45.9500','Europe/Rome'))
+            conn.execute("insert into calph (offset, range) values ('%f' , '%f')" %(0,0))
             a=0
             while a<4:
                 conn.execute("insert into configure (label, start_hour, start_min, stop_hour, stop_min, manual, calendar, sunrise, temperature, ph,setemp,setph) values ('%s',%d, %d, %d, %d, %d, %d, %d, %d, %d,%f,%d)" %('label',0,0,0,0,0,0,0,0,0,0,0))
@@ -172,3 +174,14 @@ class Mydata():
         cursor.execute("select * from events where sDate<='%s' and eDate>='%s'" %(sDate,eDate))
         return cursor.fetchall()
         self.con_calendar.close()
+        
+    def view_calph(self):
+        cursor=self.db_con_conf()
+        cursor.execute("select * from calph where id = 1")
+        return cursor.fetchone()
+        self.con_configure.close()
+        
+    def update_calph(self,par,value):
+        cursor = self.db_con_conf()
+        cursor.execute("update calph set %s=%f where id = 1" %(par,value))
+        self.con_configure.commit()

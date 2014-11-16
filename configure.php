@@ -190,6 +190,26 @@ elseif(isset($_POST['submit'])&&($_POST['submit']=="Coordinate")){
 				$sql->execute();
 		
 			}}
+			
+			elseif(isset($_POST['submit'])&&($_POST['submit']=="SetOffset")){
+				$id = $_POST['id'];
+				if(isset($_POST['offset'])){
+					$offs = addslashes(filter_var($_POST['offset'], FILTER_SANITIZE_STRING));
+			
+					$sql=$db->prepare("update calph set offset='$offs' where id='$id'");
+					$sql->execute();
+			
+				}}
+				
+				elseif(isset($_POST['submit'])&&($_POST['submit']=="SetRange")){
+					$id = $_POST['id'];
+					if(isset($_POST['range'])){
+						$rang = addslashes(filter_var($_POST['range'], FILTER_SANITIZE_STRING));
+							
+						$sql=$db->prepare("update calph set range='$rang' where id='$id'");
+						$sql->execute();
+							
+					}}
 
 ?>
 
@@ -312,6 +332,19 @@ foreach($result as $row) {
 	echo "Lat: " . $row['lat'] . "\n";
 	echo "TimeZone: " . $row['timezone'] . "\n";
 	echo "\n";
+	echo "</br>";
+}
+
+$sql = $db->prepare('SELECT * FROM calph');
+$sql->execute();
+$resultcal = $sql->fetchAll();
+
+
+foreach($resultcal as $row) {
+	echo "Offset: " . $row['offset'] . "\n";
+	echo "Range: " . $row['range'] . "\n";
+	echo "\n";
+	echo "</br>";
 }
 
 ?>
@@ -341,11 +374,24 @@ foreach($result as $row) {
 <td><input class="button aqua" name="submit" type="submit" value="SetPh"></td>
 
 </tr>
-</table></td>
+</td>
 
+
+<td><?php echo $output[38] ?></td>
+<td><?php echo $output[39] ?></td>
+
+<tr>
+<td><input class="input" type="text" name="offset" value=""/></td>
+<td><input class="input" type="text" name="range" value=""/></td>
+</tr>
+<tr>
+<td><input class="button aqua" name="submit" type="submit" value="SetOffset"></td>
+<td><input class="button aqua" name="submit" type="submit" value="SetRange"></td>
+</tr>
+</table>
 <td>
 <table>
-<tr>
+
 <td><?php echo $output[33]?></td></tr>
 <tr><td><?php echo $output[34]?></td><td><?php echo $output[35]?></td><td><?php echo $output[36]?></td></tr>
 <tr><td><input class="input" type="text" name="long" value=""/></td>
@@ -353,8 +399,8 @@ foreach($result as $row) {
 <td><input class="input" type="text" name="zone" value=""/></td></tr>
 <tr><td><input class="button aqua" name="submit" type="submit" value="Coordinate"></td>
 <td><a href="javascript:popuptimezone()">Timezone</a></td></tr>
-</tr>
 </table></td>
+</td>
 
 </tr>
 </form>

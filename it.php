@@ -36,4 +36,5 @@ $output[33] = "Coordinate";
 $output[34] = "Longitudine";
 $output[35] = "Latitudine";
 $output[36] = "TimeZone";
-$output[37] = "Ora TimeZone";
+$output[38] = "Offset";
+$output[39] = "Range";

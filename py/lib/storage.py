@@ -42,6 +42,8 @@ class MyStorage(Thread):
     def phmeter(self):
         #lettura conversione ph
         #10 bit 1024
+        x = self.db.view_calph()
+        offset=float(x[1])
         VREF=5.089
         VREF_MAX=1.63
         Fattore_conversione=3.13
@@ -56,7 +58,7 @@ class MyStorage(Thread):
                 #logCritical("VREF_ADC %s" %VREF_ADC)
                 VREF_PHMETER=VREF_ADC*3.13
                 #logCritical("vref_phmeter %s" %VREF_PHMETER)
-                self.ph2=3.5*VREF_PHMETER
+                self.ph2=offset+(3.5*VREF_PHMETER)
                 #logCritical("ph %s" %self.ph)
                 #fd.close()
                 self.ph = "%.02f" %self.ph2
