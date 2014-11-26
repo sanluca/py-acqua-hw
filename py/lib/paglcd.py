@@ -51,6 +51,10 @@ class Myplcd():
             
 
     def pagina(self,pos,font):
+        try:
+            self.lcd = ablib.Daisy24(0,0x3E)
+        except:
+            pass
         self.view_real_time()
         self.actualTime()
         self.lcd.clear()
