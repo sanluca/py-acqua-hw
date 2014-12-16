@@ -160,13 +160,20 @@ elseif(isset($_POST['submit'])&&($_POST['submit']=="Uphours")){
 			$data->update_work('tot',$tot);
 }}
 
-elseif(isset($_POST['submit'])&&($_POST['submit']=="Coordinate")){
+elseif(isset($_POST['submit'])&&($_POST['submit']=="SetCoordinate")){
 	if(isset($_POST['long'])){
 		$long = addslashes(filter_var($_POST['long'], FILTER_SANITIZE_STRING));
 		$lat = addslashes(filter_var($_POST['lat'], FILTER_SANITIZE_STRING));
 		$zone =addslashes(filter_var($_POST['zone'], FILTER_SANITIZE_STRING));
+		$twolamp= $_POST['checklamp'];
+		$shift=addslashes(filter_var($_POST['shift'], FILTER_SANITIZE_STRING));
 		
-		$sql=$db->prepare("update sunrise set long='$long', lat='$lat', timezone='$zone' where id=1");
+		if ($twolamp==1){
+			$sql=$db->prepare("update sunrise set duelamp='$twolamp' where id=1");
+			$sql->execute();
+		}
+		
+		$sql=$db->prepare("update sunrise set long='$long', lat='$lat', timezone='$zone', shifthour='$shift' where id=1");
 		$sql->execute();
 		
 	}}
@@ -195,7 +202,7 @@ elseif(isset($_POST['submit'])&&($_POST['submit']=="Coordinate")){
 				$id = $_POST['id'];
 				if(isset($_POST['offset'])){
 					$offs = addslashes(filter_var($_POST['offset'], FILTER_SANITIZE_STRING));
-			
+					
 					$sql=$db->prepare("update calph set offset='$offs' where id='$id'");
 					$sql->execute();
 			
@@ -210,7 +217,20 @@ elseif(isset($_POST['submit'])&&($_POST['submit']=="Coordinate")){
 						$sql->execute();
 							
 					}}
-
+					//aggiornare via git
+					//elseif
+				//	$dir="http://ipmioserver/luigi/script.sh";
+					//$script= exec("$dir");
+					
+				//	if($script)
+					//{
+						//echo "tutt appost";
+					//}
+					//else
+					//{
+						//echo"errore";
+					//}
+					
 ?>
 
 <div id="templatemo_content_wrapper">
@@ -331,6 +351,8 @@ foreach($result as $row) {
 	echo "Long: " . $row['long'] . "\n";
 	echo "Lat: " . $row['lat'] . "\n";
 	echo "TimeZone: " . $row['timezone'] . "\n";
+	echo "Two Lamp: " . $row['duelamp'] . "\n";
+	echo "Shift Hour: " . $row['shifthour'] . "\n";
 	echo "\n";
 	echo "</br>";
 }
@@ -393,11 +415,14 @@ foreach($resultcal as $row) {
 <table>
 
 <td><?php echo $output[33]?></td></tr>
-<tr><td><?php echo $output[34]?></td><td><?php echo $output[35]?></td><td><?php echo $output[36]?></td></tr>
+<tr><td><?php echo $output[34]?></td><td><?php echo $output[35]?></td><td><?php echo $output[36]?></td><td><?php echo $output[40]?></td><td><?php echo $output[41]?></td></tr>
 <tr><td><input class="input" type="text" name="long" value=""/></td>
 <td><input class="input" type="text" name="lat" value=""/></td>
-<td><input class="input" type="text" name="zone" value=""/></td></tr>
-<tr><td><input class="button aqua" name="submit" type="submit" value="Coordinate"></td>
+<td><input class="input" type="text" name="zone" value=""/></td>
+<td><input type="checkbox" name="checklamp" value="1" /></td>
+<td><input class="input" type="number" min="0" max="23" name="shift" value="0"/></td></tr>
+<tr><td><input class="button aqua" name="submit" type="submit" value="SetCoordinate"></td>
+
 <td><a href="javascript:popuptimezone()">Timezone</a></td></tr>
 </table></td>
 </td>

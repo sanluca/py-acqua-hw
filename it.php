@@ -38,3 +38,5 @@ $output[35] = "Latitudine";
 $output[36] = "TimeZone";
 $output[38] = "Offset";
 $output[39] = "Range";
+$output[40] = "Two Lamp";
+$output[41] = "Shift Hour";

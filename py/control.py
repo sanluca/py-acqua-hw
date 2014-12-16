@@ -5,7 +5,7 @@
 # VERSIONE : 0.1                                                                                  
 #                                                                                                                    
 # E-MAIL: sanluca78@gmail.com                                                                                        
-# COPYRIGHT: (c) 2013                                                                       
+# COPYRIGHT: (c) 2013                                                                    
 # PROGRAMMA: Py-Acqua-hw 
 #This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,9 +13,6 @@
 # (at your option) any later version.                                                                          
 ###################################################################################################
 import time,sys,smtplib,ephem,datetime,pytz
-#from datetime import *
-#from datetime import datetime, timedelta
-#from time import localtime, strftime
 from threading import Thread
 from baseconfig import *
 sys.path.append("%slib" %workingDir)
@@ -131,6 +128,10 @@ class MyThread(Thread):
             llong=x[1]
             llat=x[2]
             zone1=x[3]
+            duelamp = x[4]
+            shifthour = x[5]
+            shift_hour= int(shifthour)*60
+            
             zone='%s' %zone1
         
             my_date = datetime.datetime.now(pytz.timezone(zone))
@@ -145,32 +146,48 @@ class MyThread(Thread):
             fmt = "%H:%M"
         
             utc_sun= o.previous_rising(ephem.Sun()).datetime().replace(tzinfo=pytz.utc)
+            utc_noon= o.previous_transit(ephem.Sun()).datetime().replace(tzinfo=pytz.utc)
             utc_set=o.previous_setting(ephem.Sun()).datetime().replace(tzinfo=pytz.utc)
         
             sunrise= utc_sun.astimezone(pytz.timezone(zone))
-            #noon=utc_noon.astimezone(pytz.timezone(zone))
+            noon=utc_noon.astimezone(pytz.timezone(zone))
             sunset= utc_set.astimezone(pytz.timezone(zone))
         
             newsunrise=sunrise.strftime(fmt)
-            #newnoon=noon.strftime(fmt)
+            newnoon=noon.strftime(fmt)
             newsunset=sunset.strftime(fmt)
 
             actual=my_date.strftime(fmt)
-            #logCritical("actual %s" %actual)
+            #logCritical("utc noon %s" %newnoon)
             #sunrise 2014-11-01 06:49:09.000005 noon 2014-11-01 11:52:59.000005 sunset 2014-11-01 16:56:13.000005
             campistart=newsunrise.split(':')
+            campifra=newnoon.split(':')
             campiend=newsunset.split(':')
             campiactual=actual.split(':')
             ho,mo=campiend
+            hme,mme=campifra
             hh,mm=campistart
             ha,ma=campiactual
-            minon= (int(hh)*60)+int(mm)
-            minoff=(int(ho)*60)+int(mo)
-            minact=(int(ha)*60)+int(ma)
+            minon= (int(hh)*60)+int(mm)+int(shift_hour)
+            minfra= (int(hme)*60)+int(mme)+int(shift_hour)
+            minoff=(int(ho)*60)+int(mo)+int(shift_hour)
+            minact=(int(ha)*60)+int(ma)+int(shift_hour)
             #logCritical("minon %s minoff %s minact %s" %(minon,minoff,minact))
             power=False
-            if minact >= minon and minact <= minoff:
-                power=True
+            #verifico se si usano due lampade differenti
+            
+            if duelamp==0:
+                
+                if minact >= minon and minact <= minoff:
+                    power=True
+                    #la prima lampada si accendera dal mattino al mezzogiorno, la seconda dal mezzogiorno alla sera     
+            else:
+                if minact >= minon and minact <= (minfra+60):
+                    if sunrise_id==1:
+                        power=True
+                if minact >= minfra and minact <= minoff:
+                    if sunrise_id==2:
+                        power=True
         
             if power==True:
                 self.power_rele_on(sunrise_id)
@@ -244,29 +261,10 @@ class MyThread(Thread):
             
             if power==True:
                 self.power_rele_on(temp_id)
-               # if id==1:
-                #    self.rel1=1
-                #if id==2:
-                #    self.rel2=1
-                #if id==3:
-                #    self.rel3=1
-                #if id==4:
-                 #   self.rel4=1
                 
             elif power==False:
                 self.power_rele_off(temp_id)
-               # if id==1:
-                 #   self.rel1=0
-                #if id==2:
-                 #   self.rel2=0
-                #if id==3:
-                 #   self.rel3=0
-                #if id==4:
-                  #  self.rel4=0
-
-            
-        
-                
+         
     def ph(self,ph_id):
         e=self.db.view_real_time()
         ph_real=e[2]
@@ -282,32 +280,13 @@ class MyThread(Thread):
                     power=True
             if power==True:
                 self.power_rele_on(ph_id)
-                #if id==1:
-                 #   self.rel1=1
-               # if id==2:
-                 #   self.rel2=1
-                #if id==3:
-                  #  self.rel3=1
-                #if id==4:
-                  #  self.rel4=1
                 
             elif power==False:
                 self.power_rele_off(ph_id)
-                #if id==1:
-                 #   self.rel1=0
-               # if id==2:
-                #    self.rel2=0
-                #if id==3:
-                #    self.rel3=0
-                #if id==4:
-                   # self.rel4=0
 
-        
-            
     def run(self):
         z=1
         while True:
-            #logCritical("while")
             self.actualtime()
             self.status(int(z))
             z+=1

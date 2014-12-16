@@ -32,9 +32,9 @@ class Mydata():
         conn = lite.connect(self.db_configure)
         if db_is_new:            
             conn.execute("create table if not exists configure (Id INTEGER PRIMARY KEY, label VARCHAR(150), start_hour INT, start_min INT, stop_hour INT, stop_min INT, manual INT, calendar INT, sunrise INT, temperature INT, ph INT, setemp FLOAT, setph INT);")
-            conn.execute("create table if not exists sunrise (Id INTEGER PRIMARY KEY, long FLOAT, lat FLOAT, timezone VARCHAR(150));")
+            conn.execute("create table if not exists sunrise (Id INTEGER PRIMARY KEY, long FLOAT, lat FLOAT, timezone VARCHAR(150), duelamp INT, shifthour INT);")
             conn.execute("create table if not exists calph (Id INTEGER PRIMARY KEY, offset FLOAT, range FLOAT);")
-            conn.execute("insert into sunrise (long, lat, timezone) values ('%s' , '%s' , '%s')" %('12.6500','45.9500','Europe/Rome'))
+            conn.execute("insert into sunrise (long, lat, timezone,duelamp,shifthour) values ('%s' , '%s' , '%s' , %d , %d)" %('12.6500','45.9500','Europe/Rome',0,0))
             conn.execute("insert into calph (offset, range) values ('%f' , '%f')" %(0,0))
             a=0
             while a<4:
@@ -72,33 +72,6 @@ class Mydata():
     def db_con_calendar(self):
         self.con_calendar = lite.connect(self.db_calendar)
         return self.con_calendar.cursor()
-    
-    def create_db(self):
-        
-        cursor=self.db_con_real()
-        cursor.execute("create table if not exists real_time (Id INTEGER PRIMARY KEY, temp_h2o FLOAT, ph FLOAT, pulse INT);")
-        cursor.execute("insert into real_time (temp_h2o, ph, pulse) values (%f , %f, %d)" %(0,0,0))
-        self.con_real_time.commit()
-        cursor=self.db_con_stor()
-        cursor.execute("create table if not exists storage (Id INTEGER PRIMARY KEY, temp_h2o FLOAT, ph FLOAT, pulse INT, hour INT, day INT, month INT, year INT, lu INT);")
-        self.con_storage.commit()
-        cursor=self.db_con_conf()
-        cursor.execute("create table if not exists configure (Id INTEGER PRIMARY KEY, label VARCHAR(150), start_hour INT, start_min INT, stop_hour INT, stop_min INT, rele1 INT, rele2 INT, rele3 INT, rele4 INT, manual INT, calendar INT, sunrise INT, temp INT);")
-        cursor.execute("create table if not exists sunrise (Id INTEGER PRIMARY KEY, long FLOAT, lat FLOAT);")
-        self.con_configure.commit()
-        
-    def populate_db(self):
-        self.con_real_time.execute("insert into real_time (temp_h2o, ph, pulse) values (%f , %f, %d)" %(0,0,0))
-        self.con_storage.execute("insert into storage (temp_h2o, ph, pulse, hour, day, month, year, lu) values (%f, %f, %d, %d, %d, %d, %d, %d)" %(0,0,0,0,0,0,0,0))
-        self.con_configure.execute("insert into configure (label, start_hour, start_min, stop_hour, stop_min, rele1, rele2, rele3, rele4, manual, calendar, sunrise) values (%s,%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)" %(0,0,0,0,0,0,0,0,0,0,0,0))
-        self.con_real_time.commit()
-        self.con_storage.commit()
-        self.con_configure.commit()
-        
-    def delete_table(self):
-        self.con_real_time.execute("drop table if exists real_time")
-        self.con_storage.execute("drop table if exists storage")
-        self.con_configure.execute("drop table if exists configure")
         
     def database_close(self):
         self.cur_real_time.close()

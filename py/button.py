@@ -58,10 +58,6 @@ class MyButton(Thread):
         self.plcd.pagina(0,True)
         i=0
         z=0
-        
-        #while True:
-            #self.plcd.pagina(0,True)
-            #time.sleep(20)
 
         while True:
             self.pos=self.plcd.returnPos()
@@ -96,18 +92,7 @@ class MyButton(Thread):
                         #time.sleep(5)
                         command=("shutdown -h now")
                         os.system(command)
-            #except:
-                #pass
-
-#            if self.lcd.pressed(2):
-#                if self.pos==2:
-#                    self.menuSet=True
-#                    self.plcd.pagina(2,False)
-
-#                if self.enter==True:
-#                    self.menuSet=False
-#                    self.plcd.pagina(self.pos,True)
-
+                        
                 if i==1200:
                     self.plcd.pagina(0,True)
                     self.ledlcd=False
