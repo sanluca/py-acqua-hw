@@ -5,8 +5,8 @@
 # VERSIONE : 0.1                                                                                  
 #                                                                                                                    
 # E-MAIL: sanluca78@gmail.com                                                                                        
-# COPYRIGHT: (c) 2013                                                                       
-# PROGRAMMA: Py-Temperature  
+# COPYRIGHT: (c) 2014                                                                       
+# PROGRAMMA: Py-Acqua-hw  
 #This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
@@ -27,10 +27,7 @@ class MyButton(Thread):
     plcd=Myplcd()
     pos=0
     enter=False
-    try:
-        lcd = ablib.Daisy24(0,0x3F)
-    except:
-        pass
+    lcd = ablib.Daisy24(0,0x3F)
     #lcd = ablib.Daisy24()
     ledlcd=False
     press1=False

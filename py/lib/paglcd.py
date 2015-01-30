@@ -5,8 +5,8 @@
 # VERSIONE : 0.1                                                                                  
 #                                                                                                                    
 # E-MAIL: sanluca78@gmail.com                                                                                        
-# COPYRIGHT: (c) 2013                                                                       
-# PROGRAMMA: Py-Temperature  
+# COPYRIGHT: (c) 2014                                                                       
+# PROGRAMMA: Py-Acqua-hw  
 #This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
@@ -19,10 +19,7 @@ from tools import *
 class Myplcd():
     pos=0
     db=Mydata()
-    try:
-        lcd = ablib.Daisy24(0,0x3E)
-    except:
-        pass
+    lcd = ablib.Daisy24(0,0x3E)
     
     def actualTime(self):
         actualTime=time.localtime()
@@ -51,10 +48,6 @@ class Myplcd():
             
 
     def pagina(self,pos,font):
-        try:
-            self.lcd = ablib.Daisy24(0,0x3E)
-        except:
-            pass
         self.view_real_time()
         self.actualTime()
         self.lcd.clear()
