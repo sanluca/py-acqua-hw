@@ -1,0 +1,136 @@
+============================
+= LuxCal Development Notes =
+============================
+
+Change log - version 4.2 / 4.3:
+==============================
+
+As of version 4.2.1:
+====================
+01. toolbox.php: For email notifications, sent via the PHP mail function, the 
+    the email will be sent to the recipients as Bcc (Blind carbon copy).
+02. lcmini.php: like for the full calendar, the event categories to be displayed 
+    in the mini calendar can now also be specified in URL of the mini calendar 
+    with the "cC" parameter. E.g. www.mycal.com/calendar/?cC[]=4&cC[]=6.
+03. settings.php, toolboxx.php, events.php, ai-{lang}.php: A new option has been 
+    added to the admin's Settings page to enable/disable the display of images 
+    in the day cells of the Month view page. Previously in Month view images 
+    were only displayed in the hover box.
+04. settings.php, toolboxx.php, toolbox.php, eventform1.php, ai-{lang}.php, 
+    search.php: The extra event description fields, extra field 1 & 2, can now 
+    each be set to "admin only", which means the field is only visible to users 
+    with manager or admin rights.
+05. search.php: When searching for text, the highlighting of the text found only 
+    worked for the event title. Changed so that the found text is highlighted in 
+    all fields.
+06. settings.php: After changing the time slot duration in day/week view, it 
+    always reverted to 10 minutes in stead of keeping the latest value. Solved.
+07. header.php: To improve the rendering speed of the calendar pages, external 
+    JavaScript scripts, except toolbox.js, are now loaded asynchronously.
+08. css.php: Viewport definition added to styles, to improve the initial display 
+    of the calendar on mobile devices.
+09. ui-{lang}.php, eventform0.php: Question mark moved from script to language 
+    files. Not all languages use the question mark character (?) for questions.
+10. importCSV.php: Imported multi-day events were shortened by 2 days. This bug
+    has been solved.
+11. header.php, year.php, month.php, week.php, day.php, css.php: arrow and cross 
+    images replaced by Unicode characters. Redundant image folder removed.
+12. toolbox.php, index.php: Function isMobile updated to the latest standards.
+13. eventreport.php: For repeating events, the date selected by the user will be 
+    displayed, rather than the first date of the date range.
+14. ui-czech.php, ug-czech.php, ai-czech.php: Czech user interface language file 
+    updated by jose_s.
+15. ui-russian.php, ai-russian.php: The Russian user interface language files 
+    have been updated by 0x3.
+16. search.php: A blank search text or a single ampersand is now allowed and 
+    will match any text, and therefore each event.
+17. css.php, header.php: The close button (X) of the Upcoming and Todo sidbars 
+    now turns red on mouseover.
+18. toolbox.js: The drag functions, to drag the Upcoming and Todo sidebars, have 
+    been simplified.
+19. retrieve.php: Event sorting (after retrieval) changed as follows: start time 
+    + date/time added, with the last added event at the top.
+20. ui-greek.php: Greek language pack added. The ui-file has been translated by 
+    Icehockey; the ai-files and ug-files are still in English.
+		
+As of version 4.3.0
+===================
+21. header.php: Viewport meta tag added to page headers, in order to better fit 
+    the calendar display on mobile devices with a limited screen size.
+22. index.php: The "footer enabled" character in the pages array was wrong for 
+    the login and the search page, which resulted in the suppression of the page 
+    footer on both pages.
+23. search.php: When leaving the search text field blank, in the search result, 
+    UTF-8 characters were not correctly displayed. Bug solved.
+24. header.php: In the admin drop down menu, the title "Administration" has been 
+    excluded from the possible selections.
+25. events.php, login.php, notify.php, sendchg.php: Transliteration limited to 
+    the calendar title only. No need to include the event title or other text.
+16. database.php, ai-{lang}.php: The restore function on the admin's database 
+    page, now accepts backup files produced by the MySQL as well as the SQLite 
+    version of LuxCal and also accepts backup files produced by external tools 
+    like phpMyAdmin and phpLiteAdmin. This makes it easy to switch from a MySQL 
+    to a SQLite calendar version and vice versa. The version of the backup file 
+    must match with the version of the calendar. Note: To import phpMyAdmin 
+    backup files into the SQLite version of LuxCal PHP should use SQLite 3.7.11 
+    or higher. 
+27. toolboxd.php: The getTables function sometimes retrieved wrong table names 
+    which could cause the backup command to fail. SQLite only.
+28. importCSV.php, importICS.php: When importing events from a csv-file or an 
+    iCal-file, <a>-tags are added to URL links in the description field, so that 
+    these links are displayed as hyperlinks in the calendar.
+29. header.php, toolbox.js: If on the Settings page the "link to parent page" is 
+    specified, the back button in the navigation bar was displayed in the stand- 
+    alone calendar as well as in the calendar displayed in an iframe. However, 
+    in an iframe the back button creates strange effects and therefore the 
+    button is now surpressed in the calendar which is loaded in an iframe.
+30. users.php, groups.php, categories.php: If, while editing multiple fields on 
+    the user, user groups or category page, a validation error occurred, all 
+    changed fields were reset to the original value, which means all changes had 
+    to be re-entered. Solved.
+31. toolboxx.php, events.php, categories.php, ai-{lang}.php: On the categories 
+    page the option has been added to specify a default time slot. If a users 
+    defines no end time for an event, and for the selected event category a 
+		default time slot has been defined, then the end time will be automatically 
+    set to start time + default time slot.
+32. toolboxx.php, events.php, categories.php, ui-{lang}.php ai-{lang}.php: For 
+    each event category the admin can specify that no overlapping events are 
+    allowed. If no overlapping is allowed, and a user adds/edits an event which 
+    overlaps with an existing event, an error message will be displayed. The 
+    text of the error message can also be specified by the admin for each 
+    category. Repeating events are not allowed when a category with overlap 
+    checking is selected.
+33. toolboxx.php, groups.php: For each user group it can now be specified if the 
+    users in the group can create private events, multi-day events and recurring 
+    events. For users, who are not allowed to use these features, the deselected  
+    features will not be shown in the Event window, resulting in a more simple 
+    Event window.
+34. smtptest.php: A syntax error in the script caused a blank page to display. 
+    Syntax error solved.
+35. events.php: When validating the event form fields, the validation errors for 
+    some fields were ignored and no error message was displayed.
+25. upgradexxx.php, toolboxx.php, lctools.php: The upgrade function and backup 
+    import function have been rewritten and moved to the toolboxx.php file. The 
+    calendar now automatically upgrades from LuxCal version 2.7.2 or later and 
+    via lctools.php MySQL as well as SQLite backup files as of LuxCal 2.7.2 can 
+    be imported.
+36. css.php, header.php, settings.php, ui-{lang}.php, ai-{lang}.php: A sidebar, 
+    similar to the Todo List and Upcoming List, with events to be approved has 
+    been added to the navigation bar. The To Approve list will only be available 
+    for users with manager rights or higher. Like the Todo and Upcoming lists, 
+    the To Approve list can ce enabled/disabled on the admin's Settings page.
+37. retrieve.php, retrieve2.php, settings.php, all views.php: An option has been 
+    added to the Settings page to enable/disable the display of the event owner 
+    name in front of the event title in all calendar views.
+38. header.php: In the Approve, Todo and Upcoming side bars, the date interval 
+    for which the events are displayed has been added to the top of the bar.
+39. admin_guide.html: The Administrator's Guide has been updated and completed 
+    with the new LuxCal 4.3 functionality.
+40. groups.php: When adding / editing a group with an invalid group name, the 
+    group was not added / changed, but no error message was displayed.
+40. ui-danish.php, ai-danish.php: The Danish user interface language files have 
+    been updated by John.
+41. toolboxx.php: On the admin's User groups page, the Admin group could be 
+    deleted, while the Read access group could not. This should be the other way 
+    around.
+42. many.php: Group filter added to the options panel and to the Search page.

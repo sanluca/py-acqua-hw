@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LuxCal Installation and Configuration Guide</title>
+<meta name="description" content="LuxCal web calendar - a LuxSoft product">
+<meta name="keywords" content="LuxSoft, LuxCal, LuxCal web calendar">
+<meta name="author" content="Roel Buining">
+<meta name="robots" content="nofollow">
+<!--[if IE]><link rel="shortcut icon" href="lcal.ico"><![endif]-->
+<link rel="icon" href="lcal.ico">
+<style type="text/css">
+* {padding:0; margin:0;}
+body {font: 12px arial, helvetica, sans-serif; background: #E0E0E0; color: #2B3856;}
+a {text-decoration:none; cursor:pointer;}
+h1 {font-size:18pt; text-shadow:grey 0.2em 0.3em 0.2em;}
+h3 {margin:20px 0 10px 0; font-size:14pt;}
+h4 {margin:30px 0 6px 0; font-size:12pt;}
+h5 {margin:15px 0 0 0; font-size:10pt;}
+h6 {margin:10px 0 0 0; font-size:9pt;}
+p { margin:6px 0; }
+ul, ol {margin:0 20px;}
+ol ol {list-style-type:lower-alpha;}
+code {display:table; line-height:1.5; background:#FFFFFF;}
+.floatR {float:right;}
+.center {text-align:center;}
+.redFlag {color:#DD3300;}
+header {padding:10px; background:#F2F2F2;}
+div.navBar {
+	position:absolute; top:48px; left:0; right:0;
+	background:#AAAAFF;
+	padding:2px 10px;
+	border:1px #808080;
+	border-style:solid none;
+	line-height:20px;
+	vertical-align:middle;
+}
+div.content {
+	position:absolute; top:100px; right:0px; bottom:50px; left:0px;
+	padding:0 4%;
+	overflow:auto;
+}
+div.endBar {
+	position:absolute; left:0; right:0; bottom:10px;
+	padding:0 1%;
+	background:#AAAAFF;
+	text-align:right;
+	border:1px #808080;
+	border-style:solid none;
+	font-size:0.8em;
+}
+.footLB {font:italic bold 1.1em arial,sans-serif; color:#0033FF;}
+.footLR {font:italic bold 1.1em arial,sans-serif; color:#AA0066;}
+</style>
+</head>
+
+<body>
+<header>
+<h5 class="floatR">a LuxSoft product</h5>
+<h1>LuxCal Event calendar</h1>
+</header>
+<div class="navBar">&nbsp;</div>
+<div class="content">
+
+<h3 class="center">Installation Guide - SQLite Version</h3>
+<!--
+<br>
+<center><h4 class="redFlag">THIS IS NOT THE LATEST VERSION OF LUXCAL</h4></center>
+<center><h4 class="redFlag">FOR THE LATEST VERSION GO TO <a href="http://www.luxsoft.eu">LUXSOFT</a></h4></center>
+<br>
+-->
+<h4>Table of Content</h4>
+<ol style="margin:0 40px">
+<li><p><a href="#lbl-1">Installation of Updates</a></p></li>
+<li><p><a href="#lbl-2">New Installation</a></p>
+<ol>
+<li><p><a href="#lbl-2a">Requirements</a></p></li>
+<li><p><a href="#lbl-2b">Before You Start</a></p></li>
+<li><p><a href="#lbl-2c">Installation Steps</a></p></li>
+<li><p><a href="#lbl-2d">Configuring / Customizing the Calendar</a></p></li>
+<li><p><a href="#lbl-2e">My Calendar doesn't Work</a></p></li>
+</ol></li>
+<li><p><a href="#lbl-3">Calendar Configuration</a></p>
+<ol>
+<li><p><a href="#lbl-3a">LuxCal Version Number and Database Parameters</a></p></li>
+<li><p><a href="#lbl-3b">Installing Automatic Periodic Functions</a></p></li>
+<li><p><a href="#lbl-3c">Installing a New Language</a></p></li>
+<li><p><a href="#lbl-3d">Using SMTP Mail for Reminders and Reports</a></p></li>
+</ol></li>
+<li><p><a href="#lbl-4">Installing Additional Calendars</a></p></li>
+<li><p><a href="#lbl-5">Adding the Calendar to an Existing Web Page</a></p>
+<ol>
+<li><p><a href="#lbl-5a">Link to the Calendar</a></p></li>
+<li><p><a href="#lbl-5b">Add a Sidebar with Upcoming Events</a></p></li>
+<li><p><a href="#lbl-5c">Embed a Mini Calendar</a></p></li>
+<li><p><a href="#lbl-5d">Embed the Full Calendar</a></p></li>
+<li><p><a href="#lbl-5e">Embed One Specific Calendar View Without Navigation Bar</a></p></li>
+<li><p><a href="#lbl-5f">Applying Filters to the Calendar</a></p></li>
+<li><p><a href="#lbl-5g">Single Sign On (SSO)</a></p></li>
+</ol></li>
+</ol>
+<br>
+
+<a id="lbl-1"></a><h4>1. Installation of Updates</h4>
+<p>To upgrade to a new version of the LuxCal Event Calendar follow the
+instructions in the file &quot;<kbd>release_notes_luxcal_xxx.html</kbd>&quot;
+(where xxx is the calendar version number).</p>
+
+<a id="lbl-2"></a><h4>2. New Installation</h4>
+
+<a id="lbl-2a"></a><h5>a. Requirements</h5>
+<p>For the installation of the LuxCal Event Calendar on the server of your hosting provider, you will need:</p>
+<ul>
+<li><p>A web accessible folder on a web server to install the LuxCal files.</p></li>
+<li><p>The web server should be able to run PHP-scripts (PHP 5.3 or higher).</p></li>
+</ul>
+
+<a id="lbl-2b"></a><h5>b. Before You Start</h5>
+<p>The SQLite database data is stored in a file located on your web server. The location of this 
+database file is important. If it's located in a web-accessible folder (document root or lower) 
+and no special measures are taken, this database file could be found, downloaded, and exploited. 
+The path to the database file(s) can be specified during the installation process and is stored 
+in the <kbd>lcconfig.php</kbd> file in the calendar root directory.
+To prevent unauthorized download of your database file(s), the following measures can be taken:</p>
+<ul>
+<li>During the installation process specify a not web-accessible folder for your database file(s).
+Most providers allow you to use folders above your document root, which are not web-accessible.</li>
+<li>If you're not allowed to use folders above the document root and your server is an Apache server, 
+create a file called ".htaccess" with the following content:<br>
+<code>Deny from all</code> 
+and store this file in the database folder.</li>
+</ul>
+
+<a id="lbl-2c"></a><h5>c. Installation Steps</h5>
+<p>To install the LuxCal Event Calendar on the server of your hosting provider, follow the next steps:</p>
+<ol>
+<li><p>Download and unzip the latest version of LuxCal (file: <kbd>luxcalxxx.zip</kbd>, where 'xxx' is the 
+	calendar version number) in a temporary location. This file contains the following two compressed files: 
+	luxcalxxx-calendar.zip and luxcalxxx-toolbox.zip. Unzip the file luxcalxxx-calendar.zip and upload all 
+	files and folders to a web accessible folder on the server where you wish to install LuxCal. Keep the 
+	file luxcalxxx-toolbox.zip for possible later use.
+<li><p>With your Web browser browse to the folder of the LuxCal installation; it will redirect you to the 
+	<kbd>installxxx.php</kbd> script ('xxx' is the calendar version number) and show the Installation page.</p></li>
+<li><p>On the Installation page read the instructions and enter the calendar and administrator details 
+	and select &quot;test&quot; If all tests passed successfully, select &quot;install/save&quot;. 
+	The script will create the SQLite database in the specified folder, define the necessary database 
+	tables and save your LuxCal version number and the database parameters in a file called <kbd>lcconfig.php</kbd> 
+	in the calendar's root folder.</p></li>
+<li><p>Launch the calendar by browsing to the calendar's URL to ensure the calendar displays properly.</p></li>
+<li><p>Keep a backup copy of the <kbd>lcconfig.php</kbd> file. It contains the LuxCal version number and the 
+	parameters for the database.</p></li>
+</ol>
+<p>Note: The file luxcalxxx-toolbox.zip (see step 2 above) contains the LuxCal tools which should be kept 
+	for later use and which should be uploaded to the calendar root folder only when needed.</p>
+	
+<a id="lbl-2d"></a><h5>d. Configuring / Customizing the Calendar</h5>
+<p>The Settings page in the administration menu on the navigation bar can be used to easily change the
+	calendar's configuration settings which are stored in the <kbd>settings</kbd> table of the database.
+	These settings, for instance, define the calendar title, the time zone, the language file to be used for
+	the user interface, the default initial view when the calendar is started, the number of weeks/months
+	displayed in the various views, the date and time format, and many other things.</p>
+<p>IMPORTANT: Currently the TimeZone is set to &quot;Europe/Amsterdam&quot;. If you are in a different time
+	zone, change the TimeZone to your local time zone. See the
+	<a href="http://us3.php.net/manual/en/timezones.php">PHP Supported Timezones</a> for possible values.</p>
+<p>The user interface style (colors, fonts, etc.) can be customized by editing the lctheme.php file in the 
+	css folder. This can be particularly useful when the calendar is embedded in an existing web page and 
+	should match the style of the parent web page.</p>
+
+<a id="lbl-2e"></a><h5>e. My Calendar doesn't Work</h5>
+<p>The most frequent problems:</p>
+<ul>
+<li><p>The calendar shows a blank page</p>
+<p>Often this problem is caused by the fact that the calendar cannot connect to the database, 
+for instance when the SQLite database file is not present or cannot be accessed.</p>
+<p>This error also occurs when the version of the PHP installation on your server is too low (see 
+Requirements above). In this case syntax errors may occur, which are logged in a log file on the server. 
+The location of this log file varies per provider. In this case ask your provider how to upgrade to 
+a higher PHP version.</p></li>
+<li><p>When logging in your name is not displayed at the right top of the window</p>
+When logging in, for instance as administrator, your name should appear in the right upper corner of 
+the window. Sometimes this doesn't happen and after logging in it still reads 'Public View'. This 
+problem occurs when 'sessions' are not enabled, or not working, in the PHP installation on your 
+server. This problem also occurs when cookies are not enabled in your browser.</p></li>
+</ul>
+<p>With the lctools.php script, which you can find in the LuxCal toolbox, you can check if your LuxCal 
+calendar installation is ready for use or to further analyse above problems.</p>
+
+<a id="lbl-3"></a><h4>3. Calendar Configuration</h4>
+
+<a id="lbl-3a"></a><h5>a. LuxCal Version Number and Database Parameters</h5>
+<p>During the LuxCal installation process a file called <kbd>lcconfig.php</kbd> is created and stored in
+the root folder of the calendar. If, when launching the calendar, the file <kbd>lcconfig.php</kbd> is
+not present in the calendar's root folder, it is assumed the calendar has not yet been installed and
+consequently the calendar's installation script will be started.</p>
+<p>The file <kbd>lcconfig.php</kbd> contains the following data (in the form of PHP variables):</p>
+<ul>
+<li><p><kbd>lcV:</kbd> The version number of the LuxCal installation. For example "4.3.0L". This version 
+		number is used by the calendar to check if the current calendar installation is up-to-date with the 
+		installed calendar files and to determine if the upgrade script should be run.</p></li>
+<li><p><kbd>dbType:</kbd> The type of database used. This can be either MySQL or SQLite.</p></li>
+<li><p><kbd>dbDir:</kbd> The name of the directory where the calendar database files are stored, 
+		relative to the calendar root directory.</p></li>
+<li><p><kbd>dbDef:</kbd> The default calendar. When multiple calendars are installed and no calendar 
+		is specified in the calendar URL, then this default calendar will be opened.</p></li>
+<li><p><kbd>dbSel:</kbd> This parameter specifies whether, in case of multiple calendars, a calendar 
+		selection menu should be present in the calendars Option Panel (for the admin only).</p></li>
+</ul>
+
+<a id="lbl-3b"></a><h5>b. Installing Automatic Periodic Functions</h5>
+<p>The following automatic periodical functions are available:</p>
+<ul>
+<li>Email notification messages for event due dates</li>
+<li>Daily email messages with calendar changes</li>
+<li>Daily export of events in iCalendar format</li>
+<li>Automatic deletion of expired events</li>
+<li>Automatic deletion of expired (unused) user accounts</li>
+</ul>
+<p>To make the automatic periodical functions work, a cron job needs to be created on the server (or
+on an external server), which executes the file <kbd>lcalcron.php</kbd>, in the root folder of the
+calendar, daily at approx. 2:00am. For cron job details see the header of the <kbd>lcalcron.php</kbd>
+file.</p>
+<p>If you are not familiar with cron jobs, ask your hosting provider for help. A general description 
+of how to define a cron job can be found in the header of the file 'lcalcron.php' in the calendar root 
+folder.</p>
+
+<h6>- The Email Notification Feature</h6>
+<p>For events entered in the calendar the user can choose to receive an email reminder (notification)
+one or several days before the event is due. When chosen, for recurring events (e.g. birthdays) an email
+notification will be sent to the user the selected number of days before each occurrence of the event.
+Imagine: never forget to buy flowers for your (girl)friend's birthday anymore!</p>
+<h6>- Receiving Calendar Changes by Email</h6>
+<p>In a multi-user environment it could be useful to be aware of changes being applied to the calendar
+content, i.e. a list with events added, edited and deleted. Such a list can be called up via the
+options panel. It is however also possible to have a list with changes automatically sent daily to one
+or more email addresses.</p>
+<p>Via the Settings page the administrator can specify the number of days to look back for changes and
+a list with email addresses. If the number of days to look back for changes is set to 0 (zero), no
+emails with changes will be sent.</p>
+<h6>- Daily Export of Events in iCalendar format</h6>
+<p>When enabled on the admin's Settings page, each day a file in iCalendar format (.ics extension) will 
+be created in the 'files' folder with all events occurring in the time range -1 week until +1 year. 
+These files can be imported by other calendar applications. The name of the file is the calendar name 
+with the characters ' ','/','\','?','*',':',';','{','}' replaced by an underscore and diacritics removed. 
+A new file will overwrite the previous one. </p>
+<h6>- Automatic Deletion of Expired Events</h6>
+<p>Events which due date has past can automatically be deleted. Via the Settings page the administrator
+can specify the number of days after an event's due date when an event will automatically be deleted.
+If the number of days is set to 0 (zero), no events will be deleted.</p>
+<p>Note: deleted events are flagged "deleted"; definitively removing deleted events from the database
+is done via the admin's Database page. </p>
+<h6>- Automatic Deletion of Expired (unused) User Accounts</h6>
+<p>The account of users who have not logged in during a certain number of days can automatically be
+deleted. Via the Settings page the administrator can specify the number of 'no login' days after which
+the user account will be deleted. If the number of 'no login' days is set to 0 (zero), no user accounts
+will be deleted.</p>
+<p>This function can be particularly useful when users are allowed to self-register (this feature can
+be switched on/off on the admin's Settings page).</p>
+
+<a id="lbl-3c"></a><h5>c. Installing a New Language</h5>
+<p>= Note: in the following text the part {language} (including the braces) of the file names represents
+		the name of the relevant language. =</p>
+<p>A new language for the user interface of the LuxCal calendar can be installed as follows:</p>
+<ul>
+<li>Download and unzip the desired language pack from the LuxSoft site.
+<p>If your language pack is not available:</p>
+<ul>
+<li><p>translate the files <kbd>lang/ai-english.php</kbd> and <kbd>lang/ui-english.php</kbd> (translate
+		the texts to the right of the => signs) and save the files with the names <kbd>ai-{newlang}.php</kbd>
+		and <kbd>ui-{newlang}.php</kbd> respectively.<br>
+		Use character encoding <strong>utf-8 without BOM</strong> (see note below).</p></li>
+<li><p>translate the file <kbd>lang/ug-english.php</kbd> (leave the html tags unchanged) and save it with
+		the name <kbd>ug-{newlang}.php</kbd>.<br>
+		Use character encoding <strong>utf-8 without BOM</strong> (see note below).</p></li>
+</ul>
+</li>
+<li><p>upload the files <kbd>ai-{newlang}.php</kbd>, <kbd>ui-{newlang}.php</kbd> and
+		<kbd>ug-{newlang}.php</kbd> to the <kbd>lang/</kbd> folder on the server.</p></li>
+<li><p>on the Settings page (see Calendar Configuration Settings in Section 4 below), change the user
+		interface language in the Calendar Settings to the new language.</p></li>
+<li><p>if the user interface language menu is displayed in the calendar's options panel, the new installed
+		language will automatically be added to the menu.</p></li>
+</ul>
+<p><b>IMPORTANT NOTE:</b> When using special characters (e.g. accents) in the language files, the ui and
+		ug files can best be saved with character encoding: <kbd>utf-8 without BOM</kbd> (BOM = Byte Order Mark).
+		If your text editor does not support <kbd>utf-8 without BOM</kbd>, you can download and use Notepad++
+		(<a href="http://notepad-plus.sourceforge.net/uk/site.htm">Notepad++ on Sourceforge</a>). This is an 
+		excellent free text editor!</p>
+
+<a id="lbl-3d"></a><h5>d. Using SMTP Mail for Reminders and Reports</h5>
+<p>Reminder emails and email reports (triggered by a cron job) are sent by default via the PHP mail system.
+		If however, email authentication is required, the admin can choose on the Settings page, under General, 
+		to use an SMTP mail server.</p>
+<p>Before choosing SMTP mail on the admin's Settings page, the following SMTP mail server parameters must 
+		be specified on the Settings page:</p>
+<ul>
+<li>SMTP server address</li>
+<li>SMTP port number (often port 25 or, if SSL enabled, 465.</li>
+<li>SSL (Secure Socket Layer) enabled/disabled</li>
+<li>SMTP server user name</li>
+<li>SMTP server password</li>
+</ul>
+<p>Note: TLS (Transport Layer Security) is not supported.</p>
+<p>If you don't know what parameters to use, ask your mail provider for the correct parameters.</p>
+<p>Example: To use a gmail SMTP server with your "my.mail@gmail.com" email address, the SMTP settings on
+		the Settings page should be as follows:</p>
+<ul>
+<li>SMTP server address: smtp.gmail.com</li>
+<li>SMTP port number: 465</li>
+<li>SSL (Secure Socket Layer): enabled</li>
+<li>SMTP server user name: my.mail</li>
+<li>SMTP server password: mygmailpassword</li>
+</ul>
+<p>The tool called "smtptest.php", which you can find in the LuxCal toolbox, can be used to test the SMTP 
+settings specified on the Settings page.</p>
+
+<a id="lbl-4"></a><h4>4. Installing Additional Calendars</h4>
+<p>During the initial installation one calendar with its SQLite database will be installed.
+<p>There are two ways to add additional calendars:</p>
+<ol>
+<li>Start the installxxx.php script (xxx is the calendar version), which ran automatically during the 
+initial installation, a subsequent time directly via your browser (www.yoursite.xxx/calfolder/installxxx.php).
+The installation script allows you to install multiple calendars, to change the default calendar and 
+folder and to change the administrator credentials.</li>
+<li>After the initial installation, upload the LuxCal tool <kbd>lctools.php</kbd> from the LuxCal toolbox 
+and launch the tool via your browser. Via this tool you can create additional calendars and it offers you 
+various other functions to manage your calendar installtion.</li>
+</ol>
+
+<a id="lbl-5"></a><h4>5. Adding the Calendar to an Existing Web Page</h4>
+<p>To use the calendar on an other web site, the following possibilities are available:</p>
+<ul>
+<li><p>link to the calendar's URL, which will open the calendar in a new page.</p></li>
+<li><p>Add an Upcoming Events Sidebar. This light-weight list shows all public events for the coming x days.</p></li>
+<li><p>embed a mini calendar, which can be used to view events and - if enabled by the admin - add, edit
+and delete events.</p></li>
+<li><p>embed the full calendar with navigation bar, which the visitor can use to change the options the
+calendar.</p></li>
+<li><p>embed one specific calendar view without navigation bar. The visitor cannot navigate to other views
+and cannot change the options of the calendar</p></li>
+</ul>
+
+<a id="lbl-5a"></a><h5>a. Link to the Calendar</h5>
+<p>To link to the LuxCal calendar in an existing web page and open it in a new window, the following HTML
+code can be used:</p>
+<code>&lt;a href="http://www.mycalsite.xx/luxcal/" target="_blank"&gt;Go To My Calendar&lt;/a&gt;</code>
+<p>If you want to display a subset of the available events, see "Applying Filters to the Calendar" below.</p>
+
+<a id="lbl-5b"></a><h5>b. Add a Sidebar with Upcoming Events or ToDo list</h5>
+<p>A sidebar with public upcoming events or a ToDo list for the coming x days can be added to your web page.
+ The sidebar is placed in a &lt;div&gt;-tag container, can be placed at any location and is fully customizable. 
+An example is shown on the LuxCal Demo page of the LuxSoft web site. The sidebar can be added to your web 
+page by adding the following lines of code to the &lt;head&gt;-section of your web page:</p>
+<code>&lt;link rel="stylesheet" type="text/css" href="mycalendarfolder/css/css_sbar.php"&gt;</code>
+<code>&lt;script type="text/javascript" src="mycalendarfolder/common/toolbox.js"&gt;&lt;/script&gt;</code>
+<p>and adding the following lines of code to the body of your web page:</p>
+<code>&lt;?php</code>
+<code>$sbClass = {sidebar class}; <span class='redFlag'>*</span></code>
+<code>$sbCal = {calendar ID}; <span class='redFlag'>*</span></code>
+<code>$sbContent = {sidebar content}; <span class='redFlag'>*</span></code>
+<code>$sbHeader = {sidebar title}; <span class='redFlag'>*</span></code>
+<code>$sbGroups = {list of user groups for which events to show}; <span class='redFlag'>*</span></code>
+<code>$sbCats = {list of event categories to show}; <span class='redFlag'>*</span></code>
+<code>$sbUsersIn = {list of users to include}; <span class='redFlag'>*</span></code>
+<code>$sbUsersEx = {list of users to exclude}; <span class='redFlag'>*</span></code>
+<code>$sbMaxNbr = {max. number of events to show}; <span class='redFlag'>*</span></code>
+<code>$sbUpDays = {max. number of days to show}; <span class='redFlag'>*</span></code>
+<code>$sbWeekDay = {week day for which events to show}; <span class='redFlag'>*</span></code>
+<code>include './mycalendarfolder/lcsbar.php';</code>
+<code>?&gt;</code>
+<p><span class='redFlag'>*</span> These parameters are optional and can be omitted. See explanation hereafter.</p>
+<p>Explanation of the lines of code:</p>
+All parameters indicated by {....}, including the braces, are text strings between single or double quotes.
+<ul>
+<li><kbd>&lt;?php</kbd>: start PHP and <kbd>?&gt;</kbd>: end PHP. If the lines of code are added to a PHP section,
+these PHP-tags can be omitted.</li>
+<li><kbd>$sbClass</kbd>: This is the class of the container &lt;div&gt;-tag which is used in the CSS to define the style
+for the sidebar container. This line of code is optional and will default to 'sideBar'. The styles for 'sideBar'
+are defined in the file <kbd>css/css_sbar.php</kbd> of your calendar installation.</li>
+<li><kbd>$sbCal</kbd>: This is the name of the calendar database file (without extension) to be used. If not
+specified, the default calendar from the lcconfig.php file will be taken.</li>
+<li><kbd>$sbContent</kbd>: This variable defines the content of the sidebar. If its value is 'todo', the sidebar 
+will show the ToDo list, which is a list with events requiring an action. In this case an interactive checkbox is 
+displayed in front of each event which can be checked/unchecked by each visitor. This line of code is optional and 
+when omitted the sidebar content will default to the upcoming events list.</li>
+<li><kbd>$sbHeader</kbd>: The title of the sidebar. This line of code is optional. If not specified, the title of the
+sidebar will be taken from the language files.</li>
+<li><kbd>$sbGroups</kbd>: This is a list with one or more user group ID numbers (see admin's User Group page) 
+for which events should be included in the sidebar. The ID numbers should be separated by commas. This line of 
+code is optional. If not specified, the events of all user groups will be included.</li>
+<li><kbd>$sbCats</kbd>: This is a list with one or more event category ID numbers (see admin's Categories page) 
+that should be included in the sidebar. Just the value 0 (zero) means 'show all event categories'. The ID numbers 
+should be separated by commas. This line of code is optional. If not specified, all event categories will be included.</li>
+<li><kbd>$sbUsersIn</kbd>: This is a list with one or more user ID numbers that should be included in the sidebar 
+(for user IDs see admin's Users page). The ID numbers should be separated by commas. This line of code is optional. 
+If not specified, the events of all users will be included.</li>
+<li><kbd>$sbUsersEx</kbd>: Same as above, but for users to be excluded (for user IDs see admin's Users page). 
+If $sbUsersIn is specified, $sbUsersEx will be ignored.</li>
+<li><kbd>$sbMaxNbr</kbd>: Maximum number of events to show in the sidebar.</li>
+<li><kbd>$sbUpDays</kbd>: Maximum number of day to show. If not specified, the number of "Days to look ahead in sidebar" 
+from the admin's Settings page will be taken</li>
+<li><kbd>$sbWeekDay</kbd>: The week day for which events should be shown. 1 = Monday, 2 = Tuesday, . . . 7 = Sunday. 
+If specified, the $sbUpDays (see above) will automatically be set to 1. If not specified, events will be shown for 
+all days of the week.</li>
+<li><kbd>include</kbd>: At this place the sidebar code will be included.</li>
+</ul>
+<p>In the above lines of code you should replace <kbd>mycalendarfolder</kbd> by the name of the root folder of your 
+calendar installation.</p>
+<p>The file <kbd>css_sbar.php</kbd> contains the default style for the sidebar container &lt;div&gt;, which should be
+tailored to your needs. In the same file you can customize the style, colors, fonts, etc. of the sidebar content.
+The title of the sidebar can be set per sidebar and the events in the sidebar can be filtered on the event
+sequence number and/or user ID. This allows for more than one sidebar per site, each with its own title and a
+different list of events.</p>
+<p>Example of two sidebar definitions for the same website which are complementary:</p>
+<code>&lt;?php</code>
+<code>$sbClass = 'sideBar1';</code>
+<code>$sbHeader = 'Birthdays/Holidays';</code>
+<code>$sbCats = '2,4';</code>
+<code>include './mycalendarfolder/lcsbar.php';</code>
+<code>?&gt;</code>
+<code>&lt;?php</code>
+<code>$sbClass = 'sideBar2';</code>
+<code>$sbHeader = 'All other events';</code>
+<code>$sbCats = '1,3,5';</code>
+<code>$sbUpDays = '7';</code>
+<code>include './mycalendarfolder/lcsbar.php';</code>
+<code>?&gt;</code>
+<p>For each event the following will be displayed: date, time and title. Via the admin's Settings page, under 
+"Stand-Alone Sidebar", you can choose whether further event details should be shown in a pop-up box (like in 
+the full LuxCal calendar) when hovering an event and if URLs from the event description (if any) should be 
+displayed in the sidebar as a hyperlink. On the same Settings page you can specify the number of days to look 
+ahead for events in the sidebar.</p>
+<p>The sidebar is using the database and tools of the full calendar and therefore the full calendar should be
+present in the "mycalendarfolder" (see code above).</p>
+
+<a id="lbl-5c"></a><h5>c. Embed a Mini Calendar</h5>
+<p>A mini calendar with a (minimum) width of 160px can be embedded in your web site. An example is shown on
+the LuxCal Demo page of the LuxSoft web site. The mini calendar can be displayed in an inline frame (iframe)
+using the following HTML code:</p>
+<code>&lt;iframe id="lcmini" src="http://www.mysite.xx/luxcal/lcmini.php"&gt;&lt;/iframe&gt;</code>
+<p>If you want to display a subset of the available events, see "Applying Filters to the Calendar" below.</p>
+<p>Via the CSS styles of your site, the id <kbd>lcmini</kbd> can be used to position and define the style of the
+iframe containing the mini calendar. The style for id <kbd>lcmini</kbd> could for instance look as follows:</p>
+<code>#lcmini { position:absolute; right:100px; top:15%; width:210px; height:233px; overflow:hidden;}</code>
+<p>If you want the height of the mini calendar to vary automatically depending on the month to display (4, 5 or
+6 weeks) you should add the following JavaScript code, which dynamically adjusts the height of the iframe, to the
+<kbd>&lt;head&gt;</kbd> section of the parent web page:</p>
+<code>
+&lt;script type="text/javascript"&gt; function setHeight(newHeight){var plus=(document.all)?8:0; document.getElementById('lcmini').style.height=newHeight+plus+'px';}&lt;/script&gt;
+</code>
+<p><b>Please note</b>: Automatic adjusting of the iframe height only works if the calendar is located in the
+same domain as the parent page. If not, the iframe height is set to cope with displaying 6 weeks.</p>
+
+<a id="lbl-5d"></a><h5>d. Embed the Full Calendar</h5>
+<p>To embed the full LuxCal calendar in an existing web page, an inline frame (iframe) can be used. This can
+for example be done with the following HTML code:</p>
+<code>&lt;iframe id="luxcal" src="http://www.mysite.xx/luxcal/?cP=2"&gt;&lt;/iframe&gt;</code>
+<p>With parameter <kbd>cP</kbd> the default view can be set (e.g. year: <kbd>cP=1</kbd>, month: <kbd>cP=2</kbd>, . . . ,upcoming:
+<kbd>cP=7</kbd>)</p>
+<p>If you want to display a subset of the available events, see "Applying Filters to the Calendar" below.</p>
+<p>Via the CSS styles of your site, the id <kbd>luxcal</kbd> can be used to position and define the style of the
+iframe containing the luxcal calendar. The style for id <kbd>luxcal</kbd> could for instance look as follows:</p>
+<code>#luxcal { width:80%; height:800px; margin:20px; border-style:solid; border-width:1px; border-color:grey; }</code>
+
+<a id="lbl-5e"></a><h5>e. Embed One Specific Calendar View without Navigation Bar</h5>
+<p>To embed the LuxCal calendar without navigation bar, the parameter <kbd>hdr=0</kbd> should be added to the
+URL as follows:</p>
+<code>&lt;iframe src="http://www.mysite.xx/luxcal/?hdr=0&amp;cP=2"&gt;&lt;/iframe&gt;</code>
+<p>Without navigation bar the visitor will not be able to navigate the calendar and select other views.
+The following parameters can be added to select the view to display and the user-interface language:</p>
+<ul>
+<li><kbd>cP</kbd> to set the view (e.g. year: <kbd>cP=1</kbd>, month: <kbd>cP=2</kbd>, . . . , upcoming:
+<kbd>cP=7</kbd>)</li>
+<li><kbd>cL</kbd> to set the user-interface language (e.g. French: <kbd>cL=Francais</kbd>). The specified
+language must be present in the <kbd>lang/</kbd> folder)</li>
+</ul>
+<br>
+<p>For example the HTML code to show the Upcoming Events page without navigation bar, in the French language
+looks as follows:</p>
+<code>&lt;iframe id="luxcal" src="http://www.mysite.xx/luxcal/?hdr=0&amp;cP=7&amp;cL=Francais"&gt;&lt;/iframe&gt;</code>
+<p>Via the CSS styles of your site, the id <kbd>luxcal</kbd> can be used to position and define the style of the
+iframe containing the LuxCal calendar. The style for id <kbd>luxcal</kbd> could for instance look as follows:</p>
+<code>#luxcal { width:80%; height:800px; margin:20px; border-style:solid; border-width:1px; border-color:grey; }</code>
+<p><b>Important:</b>
+<br>
+The parameter <kbd>hdr=0</kbd> is remembered via the PHP session mechanism; this means that if you access
+the embedded calendar without navigation bar, then thereafter, when accessing your normal (not-embedded)
+calendar when your session is still active (max. one hour) you will also see no navigation bar. This can be
+solved by adding the parameter <kbd>hdr=1</kbd> to the URL of your normal calendar.</p>
+<p>If you want to display a subset of the available events, see "Applying Filters to the Calendar" below.</p>
+
+<a id="lbl-5f"></a><h5>f. Applying Filters to the Calendar</h5>
+<p>When using a link to the calendar, embed a minicalendar or embed the full calendar, parameters can be added 
+to the calendar URL to specify which events hould be shown. When adding parameters, the following syntax should 
+be used: The first parameter starts with a '?' and parameters are separated by an '&', like:
+<kbd>www.mysite.net/calendar?par1=3&par2=7</kbd>. If a parameter can have several values it can be passed as an 
+array by adding square brackets toe the parameter name, like: <kbd>www.mysite.net/calendar?par1[]=3&par1[]=7</kbd>.</p>
+<p>Parameter cG can be added to the URL to specify the IDs of one or several user groups for which events 
+should be displayed. Parameter cC can be added to the URL to specify the IDs of one or several event categories 
+for which events should be displayed. The user group IDs and event category IDs can be found on the admin's 
+User Group page and Categories page respectively. For example, to specify a user group, with ID 4 the parameter 
+<kbd>"?cG[]=4"</kbd> should be added to the URL. If the events of a second user group, for instance, with ID 6 
+should be displayed as well, then <kbd>"?cG[]=4&cG[]=6"</kbd> should be added to the URL. The same counts for the
+cC parameter when specifying one or more event categories to show.</p>
+<p>Example:<br>
+If you want to display a calendar without header (navigation bar) showing events from users in the user groups 
+with IDs 4 and 7 and only showing events in event category 2, then the link should be like:
+<kbd>www.mysite.net/calendar?hdr=0&cG[]=4&cG[]=4&cC[]=2</kbd>.
+
+<a id="lbl-5g"></a><h5>g. Single Sign On (SSO)</h5>
+<p>When the calendar is embedded in a PHP-based website where users have to log in, users logged in on the
+parent website can be logged in to the calendar automatically in a secure way, using PHP sessions.</p>
+<p>To achieve this the parent website scripts should:</p>
+<ul>
+<li>start PHP sessions, if not done already, by adding the following PHP statement to the parent website
+PHP script:<br><code>session_start();</code>
+PHP sessions must be started before anything is sent out to the browser (like header information), so this
+statement must be added somewhere at the start of the script.</li>
+<li>save the user name or the user email address in the session variable 'lcUser' by adding the following
+statement to the parent website PHP script at any point before the iframe statement with the calendar URL:
+<code>$_SESSION['lcUser'] = '&lt;user email&gt;';</code>The part <code>&lt;user email&gt;</code> is a string 
+with the user email address which corresponds to the email address required to log the user in to the calendar 
+(specified by the admin when the calendar user account was created).</li>
+</ul>
+<br>
+<p>Because PHP session data are stored on the server, the user name / email address are not visible to
+the users.</p>
+<br><h5>&nbsp;- End of Installation Guide -</h5>
+<br>
+</div>
+<div class="endBar">
+	design 2016 - powered by <a href="http://www.luxsoft.eu"><span class="footLB">Lux</span><span class="footLR">Soft</span></a>
+</div>
+<br>&nbsp;
+</body>
+</html>

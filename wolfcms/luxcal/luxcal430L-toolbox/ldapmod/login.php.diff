@@ -1,0 +1,27 @@
+25,30d24
+< // check for LDAP integration
+< if ((isset($set['ldapServer'])) && ($set['ldapServer']==1)){
+<   require './common/ldap.php';
+< }
+< 
+< 
+169,180c163
+< 
+<                 if ((isset($set['ldapServer'])) && ($set['ldapServer']==1)){
+<                    $ret=auth_ldap($l_un_em,$l_pword);
+<                    if($ret != ''){ $msg = $ret; break; } 
+<                 }
+<                 if(strpos($l_pword,'LDAP') === false){
+<                   $md5_pw = md5($l_pword);
+<                 }else{
+<                   $md5_pw = $l_pword;  // has been set to the right value by auth_ldap
+<                 }
+< 
+< 		//$md5_pw = md5($l_pword);
+---
+> 		$md5_pw = md5($l_pword);
+294c277
+< ?>
+---
+> ?>
+\ No newline at end of file

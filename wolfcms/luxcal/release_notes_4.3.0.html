@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LuxCal Release Notes and Upgrade Instructions</title>
+<meta name="description" content="LuxCal web calendar - a LuxSoft product">
+<meta name="keywords" content="LuxSoft, LuxCal, LuxCal web calendar">
+<meta name="author" content="Roel Buining">
+<meta name="robots" content="nofollow">
+<!--[if IE]><link rel="shortcut icon" href="lcal.ico"><![endif]-->
+<link rel="icon" href="lcal.ico">
+<style type="text/css">
+* { padding:0; margin:0; }
+body {
+	font:12px arial, helvetica, sans-serif;
+	background:#E0E0E0;
+	color:#2B3856;
+}
+a {text-decoration:none; cursor:pointer;}
+h1 {font-size:18pt; text-shadow:grey 0.2em 0.3em 0.2em;}
+h3 {margin:20px 0 10px 0; font-size:14pt;}
+h4 {margin:10px 0 0 0; font-size:12pt;}
+h5 {margin:10px 0 0 0; font-size:11pt;}
+h6 {margin:10px 0; font-size:10pt;}
+ul, ol {margin:0 20px;}
+li {margin:10px 0;}
+.top {background:#F2F2F2;	padding:10px;}
+.floatR {float:right;}
+.center {text-align:center;}
+.marginLR {margin:0 40px;}
+.flag {color:#FF3300;}
+.redFlag {color:#DD3300; font-weight:bold;}
+.footLB {font:italic bold 1.1em arial,sans-serif; color:#0033FF;}
+.footLR {font:italic bold 1.1em arial,sans-serif; color:#AA0066;}
+.navBar {
+	width:100%;
+	background:#AAAAFF;
+	padding:2px 10px;
+	border-top:1px solid #808080;
+	border-bottom:1px solid #808080;
+	line-height:20px;
+	vertical-align:middle;
+}
+.endBar {
+	clear:left;
+	background:#AAAAFF;
+	padding:0px 10px;
+	text-align:right;
+	border-top:1px solid #808080;
+	border-bottom:1px solid #808080;
+	font-size:0.8em;
+}
+.content {padding:10px;}
+</style>
+</head>
+
+<body>
+<div class="top">
+<h4 class="floatR">a LuxSoft product</h4>
+<h1>LuxCal Event calendar</h1>
+</div>
+<div class="navBar">&nbsp;</div>
+<div class="content marginLR">
+
+<h3 class="center">Release Notes - SQLite Version</h3>
+<!--
+<br>
+<center><h4 class="redFlag">THIS IS NOT THE LATEST VERSION OF LUXCAL</h4></center>
+<center><h4 class="redFlag">FOR THE LATEST VERSION GO TO <a href="http://www.luxsoft.eu">LUXSOFT</a></h4></center>
+<br>
+-->
+<br><h4>Installation Instructions - First Time</h4>
+<p>For first-time installations of the LuxCal Event Calendar, follow the instructions 
+in the <kbd>installation_guide.html</kbd>.</p>
+<br>
+<h4>Installation Instructions - Upgrade to a new version</h4>
+<p>To upgrade your LuxCal calendar to a new version follow the Upgrade Instructions below.</p>
+<br>
+<h4>LuxCal 4.3.0 - Release date: 14.12.2015</h4>
+<h5 class="redFlag">Important Notes for LuxCal 4.3:</h5>
+<ol class="redFlag">
+<li>Major Release: This LuxCal version is a major release with many changes, 
+improvements and bug fixes. This version is using an SQLite database for each 
+installed calendar. Before upgrading you may want to read the change log, which 
+can be viewed in the release notes on the LuxCal web site in the LuxCal Forum 
+under What's New.</li>
+<li>Database: This version has a number of new capabilities, and therefore the 
+structure of the database has changed.
+Before going any further be sure to back up your database (via the admin's 
+Database page) and store the backup file in a safe place.</li>
+</ol>
+
+<h5>Upgrade Instructions</h5>
+<p>Carefully follow the next steps:</p>
+<ol>
+<li>IMPORTANT: Create a backup copy of your current calendar via the Database 
+		page of the Administration drop-down menu in the navigation bar of the 
+		calendar and backup your full calendar installation (the calendar root 
+		folder and all sub-folders) to a temporary location.</li>
+<li>Delete all LuxCal files and folders from the calendar folder on the server,
+		<span class="redFlag">EXCEPT YOUR SQLite DATABASE FOLDER AND ITS CONTENTS 
+		AND EXCEPT THE FILE lcconfig.php IN THE CALENDAR ROOT FOLDER</span>.</li>
+<li>The LuxCal SQLite zip-file you've downloaded contains the following two 
+		compresssed files: luxcalxxx-calendar.zip and luxcalxxx-toolbox.zip. Unzip 
+		the file luxcalxxx-calendar.zip and upload all files and folders to the 
+		calendar root on the server. Keep the file luxcalxxx-toolbox.zip for 
+		possible later use.</li>
+<li>Launch the calendar by browsing to the calendar root on the server. The 
+		upgrade script will start automatically and if the upgrade is successful, 
+		select Start Calendar.</li>
+<li>If the calendar is displayed successfully, delete the following files from 
+		the calendar root: <kbd>installxxx.php</kbd> and <kbd>upgradexxx.php</kbd> 
+		(where 'xxx' is the calendar version number)</li>
+<li>Save a backup copy of the file <kbd>lcconfig.php</kbd>, with the LuxCal 
+		version number and the calendar database parameters, which is located in the 
+		calendar root folder.</li>
+<li>IMPORTANT: If you have tailored the styles sheet file, the language files or
+		other files of your previous calendar installation, apply the changes to the 
+		new file(s).</li>
+</ol>
+			
+<h5>Multiple Calendars</h5>
+<p>This LuxCal version supports multiple calendars, each using its own SQLite 
+calendar database. These calendars are fully independent and have their own 
+settings. For further details on how to install multiple calendars see the 
+<kbd>installation_guide.html</kbd> - section 4.</p>
+
+<h5>Periodic Functions</h5>
+<p>Note: If you want to use the calendar's periodic functions, like sending email 
+reminders, exporting events in iCalendar format, etc., you need to set up a cron 
+job which runs daily at approx. 2 AM and starts the <kbd>lcalcron.php</kbd> script 
+in the calendar's root folder. Details on how to define a cron job can be found 
+in the header of the file <kbd>lcalcron.php</kbd>.
+Depending on the configuration settings, the <kbd>lcalcron.php</kbd> script will 
+execute the following functions:</p>
+<ul>
+<li>sending of email reminders</li>
+<li>sending of emails with calendar changes *)</li>
+<li>exporting events in iCalendar format *)</li>
+<li>checking if events have expired and should be deleted *)</li>
+<li>checking if user accounts have expired and should be deleted *)</li>
+</ul>
+<p>*) if activated on the admin's Settings page</p>
+
+<h5>Language Files</h5>
+<p>If you have translated one of the user interface language files into an other 
+language, you should be aware of the following.</p>
+<p>Each user-interface language is defined in three language files: ({lang} is 
+the name of the language)</p>
+<ul>
+<li>lang/ug-{lang}.php file: User guide for the calendar users</li>
+<li>lang/ui-{lang}.php file: User interface texts for the calendar pages</li>
+<li>lang/ai-{lang}.php file: User interface texts for the admin pages</li>
+</ul>
+<p><b>For the language files character encoding "utf-8 without BOM" (BOM = Byte 
+Order Mark) is recommended.</b></p>
+<p>All language files included in the LuxCal download are up to date with this 
+LuxCal version. However, for certain languages we could not translate the new 
+and changed texts. These texts were added / changed in English and still need to 
+be translated.</p>
+
+<h5>Change Log</h5>
+<p>The full change log can be viewed on the <a href="http://www.luxsoft.eu/" target="_blank"><b>
+<i> LuxSoft web site</i></b></a> in the release notes in the LuxCal forum under 
+"What's New". A detailed, more technical, list of changes can be found in the 
+Developper's Notes in the file DevNotes-xx.txt in the calendar root folder.</p>
+<br><h5>&nbsp;- End of Release Notes -</h5>
+<br>
+</div>
+<div class="endBar">
+	design 2016 - powered by <a href="http://www.luxsoft.eu"><span class="footLB">Lux</span><span class="footLR">Soft</span></a>
+</div>
+<br>&nbsp;
+</body>
+</html>

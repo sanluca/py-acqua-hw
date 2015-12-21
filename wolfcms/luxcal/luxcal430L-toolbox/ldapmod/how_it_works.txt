@@ -1,0 +1,71 @@
+ldap integration for LuxCal 410L:
+
+How it works:
+-------------
+
+Basically, the authentication process against the local user 
+database is delegated to an LDAP server.
+
+Since a local password is not needed (it is stored in LDAP),
+the password field of the local user DB serves as
+- an indicator for doing LDAP auth instead of local auth
+- a storage for the users unique LDAP login, which is not the
+  real name in most cases. 
+
+(As an implication, setting a new password for a user as admin
+from within Luxcal turns this user into a *local* one.
+So don't do that unless explicitly wanted.)
+
+Integration details:
+--------------------
+Using ldaptools.php, the settings table of a LuxCal calendar
+is extended by LDAP connection data, *plus* a flag to use
+LDAP at all. 
+
+No automatic verification is done, so it it the admins duty
+to test the configuration for useful results (Action 'Test').
+In a next step ('Import users'), selected users can be added
+to the calendar user table.
+
+In Luxcal itself, when the flag mentioned is set, the ldap auth 
+code is loaded. At login, it is checked if the local password
+entry for the user contains the LDAP indicator.
+If so, ldap auth is done and, in case of success, the password
+string for the subsequent call of LuxCals local auth is
+set to a value which passes.
+
+If the LDAP indicator does not exist in the password field,
+ldap auth and password manipulation is simply omitted and 
+the given password has to be a valid local one for login.
+
+Caveats:
+--------
+
+- LDAP auth between LuxCal and the LDAP server is done
+  as configured - if you use pure LDAP without SSL
+  encryption (ldap://... or Port 389), passwords will
+  be visible during network transfer, regardless of
+  how the LuxCal login page is accessed. 
+
+- Any Admin or user action to change the password for a
+  user imported from LDAP either fails completely (since
+  the user can't figure out the 'old' password needed),
+  or turns the user into a local one, which leads to
+  inconsistent behaviour regarding login name, login
+  password, and 'real name'. Do not do that.
+  
+  A user can change his password on the ldap server
+  with the mechanisms supplied by the server, if needed.
+
+- Integration has been tested with OpenLDAP - style
+  servers only. 
+  Sometimes MS- "Active directory" is denoted as a kind 
+  of LDAP, too. It isn't - at least not in a manner
+  suitable to work with this extension.
+
+- ldaptools.php has to be secured the same way as 
+  lctools.php, as it has direct db access.    
+       
+    
+Martin Dziobek, HLRS Uni Stuttgart, dziobek@hlrs.de
+7/2014
