@@ -2,10 +2,10 @@
 ###################################################################################################                                                                                              
 #                                                                                               
 # DEVELOPERS : Luca Sanna                                                                        
-# VERSIONE : 0.1                                                                                  
+# VERSIONE : 2.0                                                                                  
 #                                                                                                                    
 # E-MAIL: sanluca78@gmail.com                                                                                        
-# COPYRIGHT: (c) 2014                                                                       
+# COPYRIGHT: (c) 2015                                                                      
 # PROGRAMMA: Py-Acqua-hw  
 #This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
 # (at your option) any later version.                                                                          
 ###################################################################################################
 import time,sys,os,ablib
-from database_sqlite import *
+from database import *
 from tools import *
 
 class Myplcd():

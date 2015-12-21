@@ -2,10 +2,10 @@
 ###################################################################################################                                                                                              
 #                                                                                               
 # DEVELOPERS : Luca Sanna                                                                        
-# VERSIONE : 0.1                                                                                  
+# VERSIONE : 2                                                                                  
 #                                                                                                                    
 # E-MAIL: sanluca78@gmail.com                                                                                        
-# COPYRIGHT: (c) 2014                                                                    
+# COPYRIGHT: (c) 2015                                                                    
 # PROGRAMMA: Py-Acqua-hw 
 #This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,13 +17,14 @@ from threading import Thread
 from baseconfig import *
 sys.path.append("%slib" %workingDir)
 #db
-from database_sqlite import *
+from database import *
 from ablib import Pin
 from tools import *
-#PA24 'J4.11'  :  56, #PA24
-#PA25 'J4.13'  :  57, #PA25
-#PA26 'J4.15'  :  58, #PA26
-#PA27 'J4.17'  :  59, #PA27
+#outpup
+#'J4.25'  :  40, #PA8
+#'J4.27'  :  38, #PA6
+#'J4.29'  : 124, #PC28
+#'J4.31'  : 100, #PC4
 
 class MyThread(Thread):
     db=Mydata()
@@ -32,10 +33,10 @@ class MyThread(Thread):
     rel2=0
     rel3=0
     rel4=0
-    rele1 = Pin('J4.13','OUTPUT')
-    rele2 = Pin('J4.15','OUTPUT')
-    rele3 = Pin('J4.17','OUTPUT')
-    rele4 = Pin('J4.19','OUTPUT')
+    rele1 = Pin('J4.25','OUTPUT')
+    rele2 = Pin('J4.27','OUTPUT')
+    rele3 = Pin('J4.29','OUTPUT')
+    rele4 = Pin('J4.31','OUTPUT')
     
     def actualtime(self):
         actualTime=time.localtime()

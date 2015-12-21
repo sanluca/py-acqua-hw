@@ -2,10 +2,10 @@
 ###################################################################################################                                                                                              
 #                                                                                               
 # DEVELOPERS : Luca Sanna                                                                        
-# VERSIONE : 0.1                                                                                  
+# VERSIONE : 2.0                                                                                  
 #                                                                                                                    
 # E-MAIL: sanluca78@gmail.com                                                                                        
-# COPYRIGHT: (c) 2014                                                                       
+# COPYRIGHT: (c) 2015                                                                       
 # PROGRAMMA: Py-Acqua-hw  
 #This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,6 +33,11 @@ class MyButton(Thread):
     press1=False
     menuSet=False
     intro=True
+    #input
+#PA24 'J4.11'  :  56, #PA24
+#PA25 'J4.13'  :  57, #PA25
+    in1 = Pin('J4.11','INPUT')
+    in2 = Pin('J4.13','INPUT')
 
     #if lcd.pressed(0):
     def actualTime(self):

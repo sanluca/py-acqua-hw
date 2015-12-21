@@ -2,10 +2,10 @@
 ###################################################################################################                                                                                              
 #                                                                                               
 # DEVELOPERS : Luca Sanna                                                                        
-# VERSIONE : 0.1                                                                                  
+# VERSIONE : 2                                                                                  
 #                                                                                                                    
 # E-MAIL: sanluca78@gmail.com                                                                                        
-# COPYRIGHT: (c) 2014                                                                       
+# COPYRIGHT: (c) 2015                                                                      
 # PROGRAMMA: Py-Acqua-hw  
 #This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
 import time,sys,math,smtplib
 from ablib import DS18B20
 from threading import Thread
-from database_sqlite import *
+from database import *
 from tools import *
 class MyStorage(Thread):
     db=Mydata()
