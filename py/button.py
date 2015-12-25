@@ -27,7 +27,10 @@ class MyButton(Thread):
     plcd=Myplcd()
     pos=0
     enter=False
-    lcd = ablib.Daisy24(0,0x3F)
+    try:
+        lcd = ablib.Daisy24(0,0x3F)
+    except:
+        pass
     #lcd = ablib.Daisy24()
     ledlcd=False
     press1=False
