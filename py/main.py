@@ -42,8 +42,11 @@ class mainprogram(daemon.DaemonApp):
         self.ctrl = MyThread()
         self.ctrl.start()
         #button lcd
-        self.b = MyButton()
-        self.b.start()
+        try:
+            self.b = MyButton()
+            self.b.start()
+        except:
+            pass
         #storage
         self.store=MyStorage()
         self.store.start()

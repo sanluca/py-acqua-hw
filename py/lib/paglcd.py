@@ -19,7 +19,10 @@ from tools import *
 class Myplcd():
     pos=0
     db=Mydata()
-    lcd = ablib.Daisy24(0,0x3E)
+    try:
+        lcd = ablib.Daisy24(0,0x3E)
+    except:
+        pass
     
     def actualTime(self):
         actualTime=time.localtime()
