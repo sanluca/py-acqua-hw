@@ -19,7 +19,7 @@ sys.path.append("%slib" %workingDir)
 #db
 #from database_sqlite import *
 from paglcd import *
-import ablib
+from ablib import *
 from tools import *
 #logCritical("")
 class MyButton(Thread):
@@ -27,10 +27,7 @@ class MyButton(Thread):
     plcd=Myplcd()
     pos=0
     enter=False
-    try:
-        lcd = ablib.Daisy24(0,0x3F)
-    except:
-        pass
+    lcd = ablib.Daisy24(0,0x3F)
     #lcd = ablib.Daisy24()
     ledlcd=False
     press1=False
