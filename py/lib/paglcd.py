@@ -67,6 +67,9 @@ class Myplcd():
         if pos==0:
             if self.minute < 10:
                 self.lcd.putstring("%s/%s/%s-%s:0%s" %(self.day,self.month,self.year,self.hour,self.minute))
+                
+            elif self.hour < 10:
+                self.lcd.putstring("%s/%s/%s-0%s:%s" %(self.day,self.month,self.year,self.hour,self.minute))
 
             else:
                 self.lcd.putstring("%s/%s/%s-%s:%s" %(self.day,self.month,self.year,self.hour,self.minute))
