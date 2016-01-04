@@ -206,15 +206,16 @@ class MyThread(Thread):
         try:
             self.actualtime()
             #da rivedere
-            if self.day < 10 and self.month > 10:
-                indata="%s-%s-0%s" %(self.year,self.month,self.day)
-            elif self.month < 10 and self.day > 10:
-                indata="%s-0%s-%s" %(self.year,self.month,self.day)
-            elif self.day < 10 and self.month < 10:
-                indata="%s-0%s-0%s" %(self.year,self.month,self.day)
-            else:
-                indata="%s-%s-%s" %(self.year,self.month,self.day)
+            #if self.day < 10 and self.month > 10:
+               # indata="%s-%s-0%s" %(self.year,self.month,self.day)
+            #elif self.month < 10 and self.day > 10:
+                #indata="%s-0%s-%s" %(self.year,self.month,self.day)
+            #elif self.day < 10 and self.month < 10:
+               # indata="%s-0%s-0%s" %(self.year,self.month,self.day)
+            #else:
+               # indata="%s-%s-%s" %(self.year,self.month,self.day)
                 
+            indata=(time.strftime("%d-%m-%Y"))
             zerodata="9999-00-00"
             x = self.db.view_calendar(indata,zerodata)
             self.arrayy=[]
