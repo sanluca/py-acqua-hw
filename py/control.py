@@ -296,22 +296,30 @@ class MyThread(Thread):
             
             if self.rel1==1:
                 self.rele1.on()
+                self.db.update_real_time('status','rel1',1)
             else:
                 self.rele1.off()
+                self.db.update_real_time('status','rel1',0)
                 
             if self.rel2==1:
                 self.rele2.on()
+                self.db.update_real_time('status','rel2',1)
             else:
                 self.rele2.off()
+                self.db.update_real_time('status','rel2',0)
                 
             if self.rel3==1:
                 self.rele3.on()
+                self.db.update_real_time('status','rel3',1)
             else:
                 self.rele3.off()
+                self.db.update_real_time('status','rel3',0)
                 
             if self.rel4==1:
                 self.rele4.on()
+                self.db.update_real_time('status','rel4',1)
             else:
                 self.rele4.off()
+                self.db.update_real_time('status','rel4',0)
 
             time.sleep(20)

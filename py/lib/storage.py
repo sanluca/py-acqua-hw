@@ -33,7 +33,7 @@ class MyStorage(Thread):
                 if self.actual == None:
                     pass
                 else:
-                    self.db.update_real_time('temp_h2o',float(self.actual))
+                    self.db.update_real_time('real_time','temp_h2o',float(self.actual))
                     break
             except Exception,e:
                 logCritical("except dallas %s" %e)
@@ -66,7 +66,7 @@ class MyStorage(Thread):
                 if self.ph == None:
                     pass
                 else:
-                    self.db.update_real_time('ph',float(self.ph))
+                    self.db.update_real_time('real_time','ph',float(self.ph))
                     break
             except Exception,e:
                 logCritical("except phmeter %s" %e)
