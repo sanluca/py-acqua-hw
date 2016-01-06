@@ -218,7 +218,8 @@ class MyThread(Thread):
             indata=time.strftime("%Y-%m-%d")
             logCritical("indata %s" %indata)
             zerodata="9999-00-00"
-            x = self.db.view_calendar(indata,zerodata)
+            x = self.db.view_calendar(str(indata),str(zerodata))
+            logCritical("x %s" %x)
             self.arrayy=[]
             for b in x:
                 title=str(b[3])
