@@ -215,7 +215,8 @@ class MyThread(Thread):
             #else:
                # indata="%s-%s-%s" %(self.year,self.month,self.day)
                 
-            indata=(time.strftime("%d-%m-%Y"))
+            indata=time.strftime("%Y-%m-%d")
+            logCritical("indata %s" %indata)
             zerodata="9999-00-00"
             x = self.db.view_calendar(indata,zerodata)
             self.arrayy=[]

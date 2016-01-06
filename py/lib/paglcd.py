@@ -73,6 +73,8 @@ class Myplcd():
 
             else:
                 self.lcd.putstring("%s/%s/%s-%s:%s" %(self.day,self.month,self.year,self.hour,self.minute))
+            
+            #self.lcd.putstring((time.strftime("%Y-%m-%d")))
 
             self.lcd.setcurpos(0,1)
             self.lcd.putstring("%s gradi" %self.temp)
