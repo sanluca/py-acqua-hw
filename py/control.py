@@ -205,21 +205,12 @@ class MyThread(Thread):
     def db_calendar(self,id,label):
         try:
             self.actualtime()
-            #da rivedere
-            #if self.day < 10 and self.month > 10:
-               # indata="%s-%s-0%s" %(self.year,self.month,self.day)
-            #elif self.month < 10 and self.day > 10:
-                #indata="%s-0%s-%s" %(self.year,self.month,self.day)
-            #elif self.day < 10 and self.month < 10:
-               # indata="%s-0%s-0%s" %(self.year,self.month,self.day)
-            #else:
-               # indata="%s-%s-%s" %(self.year,self.month,self.day)
-                
+            
             indata=time.strftime("%Y-%m-%d")
-            logCritical("indata %s" %indata)
+            #logCritical("indata %s" %indata)
             zerodata="9999-00-00"
             x = self.db.view_calendar(str(indata),str(zerodata))
-            logCritical("x %s" %x)
+            #logCritical("x %s" %x)
             self.arrayy=[]
             for b in x:
                 title=str(b[3])
@@ -228,10 +219,10 @@ class MyThread(Thread):
                 stime=(b[18])
                 etime=(b[19])
                 
-                logCritical("sdate %s edate %s" %(sdate,edate))
+                #logCritical("sdate %s edate %s" %(sdate,edate))
                             
                 if (sdate == indata):
-                    logCritical("sdate edate calendar")
+                    #logCritical("sdate edate calendar")
                     campistart=stime.split(':')
                     campiend=etime.split(':')
                     ho,mo=campiend
