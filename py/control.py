@@ -228,7 +228,8 @@ class MyThread(Thread):
                 etime=(b[19])
                 #da rivedere
                 logCritical("sdate %s edate %s" %(sdate,edate)
-                if (sdate == indata):# and edate == zerodata) or (sdate <= indata and edate >= indata):
+                # and edate == zerodata) or (sdate <= indata and edate >= indata):
+                if (sdate == indata):
                     logCritical("sdate edate calendar")
                     campistart=stime.split(':')
                     campiend=etime.split(':')
