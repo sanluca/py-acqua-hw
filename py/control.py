@@ -226,12 +226,10 @@ class MyThread(Thread):
                 edate=(b[16])
                 stime=(b[18])
                 etime=(b[19])
-                #da rivedere
                 
                 logCritical("sdate %s edate %s" %(sdate,edate)
                             
                 if (sdate == indata):
-                    
                     logCritical("sdate edate calendar")
                     campistart=stime.split(':')
                     campiend=etime.split(':')
