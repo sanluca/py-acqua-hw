@@ -57,7 +57,7 @@ class Mydata():
         command=("chmod 777 /media/data/py-acqua-hw/py/db/storage.db")
         os.system(command)
         
-        self.db_calendar = '/media/data/py-acqua-hw/luxcal410-calendar/db/mycal.cdb'
+        self.db_calendar = '/media/data/py-acqua-hw/wolfcms/luxcal/luxcal430L-calendar/db/mycal.cdb'
         
     def db_con_real(self):
         self.con_real_time = lite.connect(self.db_real_time)
