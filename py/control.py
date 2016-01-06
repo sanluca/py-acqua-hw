@@ -227,7 +227,7 @@ class MyThread(Thread):
                 stime=(b[18])
                 etime=(b[19])
                 
-                logCritical("sdate %s edate %s" %(sdate,edate)
+                logCritical("sdate %s edate %s" %(sdate,edate))
                             
                 if (sdate == indata):
                     logCritical("sdate edate calendar")
