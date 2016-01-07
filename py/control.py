@@ -221,7 +221,7 @@ class MyThread(Thread):
                 
                 #logCritical("sdate %s edate %s" %(sdate,edate))
                             
-                if (sdate == indata):
+                if (sdate == indata) or (sdate <= indata and edate >= indata):
                     #logCritical("sdate edate calendar")
                     campistart=stime.split(':')
                     campiend=etime.split(':')
