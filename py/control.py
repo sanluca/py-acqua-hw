@@ -292,7 +292,7 @@ class MyThread(Thread):
                 self.power_rele_off(ph_id)
                 
     def on_pwm(self):
-        a=seld.db.view_pwm('pwm2')
+        a=self.db.view_pwm('pwm2')
         period=a[1]
         duty_cycle=[2]
         enable=[3]
