@@ -20,6 +20,7 @@ sys.path.append("%slib" %workingDir)
 from database import *
 from ablib import Pin
 from tools import *
+from pwm import *
 #outpup
 #'J4.25'  :  40, #PA8
 #'J4.27'  :  38, #PA6
@@ -28,6 +29,7 @@ from tools import *
 
 class MyThread(Thread):
     db=Mydata()
+    pwm=Mypwm()
     array=[]
     rel1=0
     rel2=0
@@ -288,6 +290,11 @@ class MyThread(Thread):
                 
             elif power==False:
                 self.power_rele_off(ph_id)
+    def on_pwm(self):
+        self.pwm.pwm_export(2)
+        self.pwm.pwm_period(2,1000000)
+        self.pwm.pwm_duty_cycle(2,500000)
+        self.pwm.pwm_enable(2,1)
 
     def run(self):
         z=1
