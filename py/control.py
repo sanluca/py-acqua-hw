@@ -300,7 +300,7 @@ class MyThread(Thread):
         z=1
         while True:
             self.actualtime()
-            self.on_pwm
+            self.on_pwm()
             self.status(int(z))
             z+=1
             if z==5:
