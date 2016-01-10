@@ -290,11 +290,17 @@ class MyThread(Thread):
                 
             elif power==False:
                 self.power_rele_off(ph_id)
+                
     def on_pwm(self):
+        a=seld.db.view_pwm('pwm2')
+        period=a[1]
+        duty_cycle=[2]
+        enable=[3]
+        
         self.pwm.pwm_export(2)
-        self.pwm.pwm_period(2,1000000)
-        self.pwm.pwm_duty_cycle(2,500000)
-        self.pwm.pwm_enable(2,1)
+        self.pwm.pwm_period(2,period)
+        self.pwm.pwm_duty_cycle(2,duty_cycle)
+        self.pwm.pwm_enable(2,enable)
 
     def run(self):
         z=1

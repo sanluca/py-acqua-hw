@@ -36,8 +36,14 @@ class Mydata():
             conn.execute("create table if not exists configure (Id INTEGER PRIMARY KEY, label VARCHAR(150), start_hour INT, start_min INT, stop_hour INT, stop_min INT, manual INT, calendar INT, sunrise INT, temperature INT, ph INT, setemp FLOAT, setph INT);")
             conn.execute("create table if not exists sunrise (Id INTEGER PRIMARY KEY, long FLOAT, lat FLOAT, timezone VARCHAR(150), duelamp INT, shifthour INT);")
             conn.execute("create table if not exists calph (Id INTEGER PRIMARY KEY, offset FLOAT, range FLOAT);")
+            conn.execute("create table if not exists pwm2 (Id INTEGER PRIMARY KEY, period INT, duty_cycle INT, enable INT);")
+            conn.execute("create table if not exists pwm3 (Id INTEGER PRIMARY KEY, period INT, duty_cycle INT, enable INT);")
             conn.execute("insert into sunrise (long, lat, timezone,duelamp,shifthour) values ('%s' , '%s' , '%s' , %d , %d)" %('12.6500','45.9500','Europe/Rome',0,0))
             conn.execute("insert into calph (offset, range) values ('%f' , '%f')" %(0,0))
+            conn.execute("insert into pwm2 (period,duty_cycle,enable) values (%d ,%d,%d)" %(1000000,60000,1))
+            conn.execute("insert into pwm3 (period,duty_cycle,enable) values (%d ,%d,%d)" %(0,0,0))
+            conn.execute("insert into calph (offset, range) values ('%f' , '%f')" %(0,0))
+            
             a=0
             while a<4:
                 conn.execute("insert into configure (label, start_hour, start_min, stop_hour, stop_min, manual, calendar, sunrise, temperature, ph,setemp,setph) values ('%s',%d, %d, %d, %d, %d, %d, %d, %d, %d,%f,%d)" %('label',0,0,0,0,0,0,0,0,0,0,0))
@@ -160,3 +166,9 @@ class Mydata():
         cursor = self.db_con_conf()
         cursor.execute("update calph set %s=%f where id = 1" %(par,value))
         self.con_configure.commit()
+        
+    def view_pwm(self,data):
+        cursor=self.db_con_conf()
+        cursor.execute("select * from %s where id = 1" %data)
+        return cursor.fetchone()
+        self.con_configure.close()
