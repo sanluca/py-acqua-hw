@@ -35,6 +35,7 @@ class MyThread(Thread):
     rel2=0
     rel3=0
     rel4=0
+    expwm=False
     rele1 = Pin('J4.25','OUTPUT')
     rele2 = Pin('J4.27','OUTPUT')
     rele3 = Pin('J4.29','OUTPUT')
@@ -296,8 +297,9 @@ class MyThread(Thread):
         period=a[1]
         duty_cycle=[2]
         enable=[3]
-        
-        self.pwm.pwm_export(2)
+        if self.expwm==False:
+            self.pwm.pwm_export(2)
+            self.expwm=True
         self.pwm.pwm_period(2,period)
         self.pwm.pwm_duty_cycle(2,duty_cycle)
         self.pwm.pwm_enable(2,enable)
