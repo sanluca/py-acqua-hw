@@ -297,9 +297,14 @@ class MyThread(Thread):
         period=a[1]
         duty_cycle=[2]
         enable=[3]
+        
         if self.expwm==False:
-            self.pwm.pwm_export(2)
-            self.expwm=True
+            try:
+                self.pwm.pwm_export(2)
+                self.expwm=True
+            except:
+                self.expwm=True
+                
         self.pwm.pwm_period(2,period)
         self.pwm.pwm_duty_cycle(2,duty_cycle)
         self.pwm.pwm_enable(2,enable)
