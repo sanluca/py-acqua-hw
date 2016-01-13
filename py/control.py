@@ -40,6 +40,11 @@ class MyThread(Thread):
     rele2 = Pin('J4.27','OUTPUT')
     rele3 = Pin('J4.29','OUTPUT')
     rele4 = Pin('J4.31','OUTPUT')
+    #pwm
+    pwm.pwm_export(2)
+    pwm.pwm_period(2,1000000)
+    pwm.pwm_duty_cycle(2,100000)
+    pwm.pwm_enable(2,1)
     
     def actualtime(self):
         actualTime=time.localtime()
@@ -298,22 +303,22 @@ class MyThread(Thread):
         duty_cycle=[2]
         enable=[3]
         
-        if self.expwm==False:
-            self.pwm.pwm_export(2)
+#        if self.expwm==False:
+ #           self.pwm.pwm_export(2)
             
                 
-        self.pwm.pwm_period(2,period)
+        #self.pwm.pwm_period(2,period)
         self.pwm.pwm_duty_cycle(2,duty_cycle)
         
-        if self.expwm==False:
-            self.pwm.pwm_enable(2,enable)
-            self.expwm=True
+        #if self.expwm==False:
+         #   self.pwm.pwm_enable(2,enable)
+         #   self.expwm=True
 
     def run(self):
         z=1
         while True:
             self.actualtime()
-            #self.on_pwm()
+            self.on_pwm()
             self.status(int(z))
             z+=1
             if z==5:
