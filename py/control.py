@@ -312,7 +312,7 @@ class MyThread(Thread):
                 
         #self.pwm.pwm_period(2,period)
         self.pwm.pwm_duty_cycle(2,duty)
-        if self.p=>1000000:
+        if self.p >= 1000000:
             self.p=0
         
         #if self.expwm==False:
