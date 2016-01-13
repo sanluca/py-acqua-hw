@@ -303,9 +303,9 @@ class MyThread(Thread):
         period=a[1]
         duty_cycle=a[2]
         enable=a[3]
-        if self.p == 1000000:
+        if self.p == 900000:
             self.p=0
-        self.p+=100000
+        self.p+=10000
         duty=duty_cycle+self.p
         
 #        if self.expwm==False:
@@ -358,4 +358,4 @@ class MyThread(Thread):
                 self.rele4.off()
                 self.db.update_real_time('status','rel4',0)
 
-            time.sleep(20)
+            time.sleep(0.5)
