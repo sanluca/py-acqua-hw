@@ -303,6 +303,8 @@ class MyThread(Thread):
         period=a[1]
         duty_cycle=a[2]
         enable=a[3]
+        if self.p == 1000000:
+            self.p=0
         self.p+=100000
         duty=duty_cycle+self.p
         
@@ -312,8 +314,7 @@ class MyThread(Thread):
                 
         #self.pwm.pwm_period(2,period)
         self.pwm.pwm_duty_cycle(2,duty)
-        if self.p >= 1000000:
-            self.p=0
+        
         
         #if self.expwm==False:
          #   self.pwm.pwm_enable(2,enable)
