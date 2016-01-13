@@ -40,7 +40,7 @@ class Mydata():
             conn.execute("create table if not exists pwm3 (Id INTEGER PRIMARY KEY, period INT, duty_cycle INT, enable INT);")
             conn.execute("insert into sunrise (long, lat, timezone,duelamp,shifthour) values ('%s' , '%s' , '%s' , %d , %d)" %('12.6500','45.9500','Europe/Rome',0,0))
             conn.execute("insert into calph (offset, range) values ('%f' , '%f')" %(0,0))
-            conn.execute("insert into pwm2 (period,duty_cycle,enable) values (%d ,%d,%d)" %(1000000,60000,1))
+            conn.execute("insert into pwm2 (period,duty_cycle,enable) values (%d ,%d,%d)" %(1000000,600000,1))
             conn.execute("insert into pwm3 (period,duty_cycle,enable) values (%d ,%d,%d)" %(0,0,0))
             conn.execute("insert into calph (offset, range) values ('%f' , '%f')" %(0,0))
             
