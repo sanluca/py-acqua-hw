@@ -45,6 +45,7 @@ class MyThread(Thread):
     pwm.pwm_period(2,1000000)
     pwm.pwm_duty_cycle(2,100000)
     pwm.pwm_enable(2,1)
+    p=0
     
     def actualtime(self):
         actualTime=time.localtime()
@@ -302,13 +303,17 @@ class MyThread(Thread):
         period=a[1]
         duty_cycle=a[2]
         enable=a[3]
+        self.p+=100000
+        duty=duty_cycle+self.p
         
 #        if self.expwm==False:
  #           self.pwm.pwm_export(2)
             
                 
         #self.pwm.pwm_period(2,period)
-        self.pwm.pwm_duty_cycle(2,duty_cycle)
+        self.pwm.pwm_duty_cycle(2,duty)
+        if self.p=>1000000:
+            self.p=0
         
         #if self.expwm==False:
          #   self.pwm.pwm_enable(2,enable)
