@@ -300,8 +300,8 @@ class MyThread(Thread):
     def on_pwm(self):
         a=self.db.view_pwm('pwm2')
         period=a[1]
-        duty_cycle=[2]
-        enable=[3]
+        duty_cycle=a[2]
+        enable=a[3]
         
 #        if self.expwm==False:
  #           self.pwm.pwm_export(2)
