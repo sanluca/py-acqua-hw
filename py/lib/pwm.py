@@ -23,7 +23,7 @@ class Mypwm():
     
     def pwm_export(self,n):
         
-        command="echo %s > /sys/class/pwm/pwmchip0/export" %n
+        command="echo %s > /sys/class/pwm/pwmchip0/export" %str(n)
         os.system(command)
         
         #f = open('/sys/class/pwm/pwmchip0/export','w')
@@ -32,7 +32,7 @@ class Mypwm():
         
     def pwm_unexport(self,n):
         
-        command=("echo %s > /sys/class/pwm/pwmchip0/unexport" %n)
+        command=("echo %s > /sys/class/pwm/pwmchip0/unexport" %str(n))
         os.system(command)
         
         #f = open('/sys/class/pwm/pwmchip0/unexport','w')
@@ -41,7 +41,7 @@ class Mypwm():
         
     def pwm_period(self,n,p):
         
-        command= "echo %s > /sys/class/pwm/pwmchip0/pwm%s/period" %(p,n)
+        command= "echo %s > /sys/class/pwm/pwmchip0/pwm%s/period" %(str(p),str(n))
         os.system(command)
         
         #f = open('/sys/class/pwm/pwmchip0/pwm%s/period' %str(n),'w')
@@ -50,7 +50,7 @@ class Mypwm():
         
     def pwm_duty_cycle(self,n,p):
         
-        command= "echo %s > /sys/class/pwm/pwmchip0/pwm%s/duty_cycle" %(p,n)
+        command= "echo %s > /sys/class/pwm/pwmchip0/pwm%s/duty_cycle" %(str(p),str(n))
         os.system(command)
         
         #f = open('/sys/class/pwm/pwmchip0/pwm%s/duty_cycle' %str(n),'w')
@@ -59,7 +59,7 @@ class Mypwm():
         
     def pwm_enable(self,n,p):
         
-        command= "echo %s > /sys/class/pwm/pwmchip0/pwm%s/enable" %(p,n)
+        command= "echo %s > /sys/class/pwm/pwmchip0/pwm%s/enable" %(str(p),str(n))
         os.system(command)
         
         #f = open('/sys/class/pwm/pwmchip0/pwm%s/enable' %str(n),'w')
