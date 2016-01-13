@@ -15,6 +15,7 @@
 
 import sqlite3 as lite
 import sys,os
+from tools import *
 
 class Mypwm():
     
@@ -51,6 +52,7 @@ class Mypwm():
     def pwm_duty_cycle(self,n,p):
         
         command= "echo %s > /sys/class/pwm/pwmchip0/pwm%s/duty_cycle" %(str(p),str(n))
+        logCritical("command %s" %command)
         os.system(command)
         
         #f = open('/sys/class/pwm/pwmchip0/pwm%s/duty_cycle' %str(n),'w')
