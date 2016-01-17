@@ -305,7 +305,7 @@ class MyThread(Thread):
         enable=a[3]
         if self.p == 1000000:
             self.p=0
-        self.p+=100
+        self.p+=50000
         duty=duty_cycle+self.p
         
 #        if self.expwm==False:
