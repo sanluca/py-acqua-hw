@@ -33,7 +33,7 @@ class Mydata():
         db_is_new = not os.path.exists(self.db_configure)
         conn = lite.connect(self.db_configure)
         if db_is_new:            
-            conn.execute("create table if not exists configure (Id INTEGER PRIMARY KEY, label VARCHAR(150), start_hour INT, start_min INT, stop_hour INT, stop_min INT, manual INT, calendar INT, sunrise INT, temperature INT, ph INT, setemp FLOAT, setph INT);")
+            conn.execute("create table if not exists configure (Id INTEGER PRIMARY KEY, label VARCHAR(150), start_hour INT, start_min INT, stop_hour INT, stop_min INT, manual INT, calendar INT, sunrise INT, temperature INT, ph INT, setemp FLOAT, setph INT, pwm INT);")
             conn.execute("create table if not exists sunrise (Id INTEGER PRIMARY KEY, long FLOAT, lat FLOAT, timezone VARCHAR(150), duelamp INT, shifthour INT);")
             conn.execute("create table if not exists calph (Id INTEGER PRIMARY KEY, offset FLOAT, range FLOAT);")
             conn.execute("create table if not exists pwm2 (Id INTEGER PRIMARY KEY, period INT, duty_cycle INT, enable INT);")
@@ -46,7 +46,7 @@ class Mydata():
             
             a=0
             while a<4:
-                conn.execute("insert into configure (label, start_hour, start_min, stop_hour, stop_min, manual, calendar, sunrise, temperature, ph,setemp,setph) values ('%s',%d, %d, %d, %d, %d, %d, %d, %d, %d,%f,%d)" %('label',0,0,0,0,0,0,0,0,0,0,0))
+                conn.execute("insert into configure (label, start_hour, start_min, stop_hour, stop_min, manual, calendar, sunrise, temperature, ph,setemp,setph,pwm) values ('%s',%d, %d, %d, %d, %d, %d, %d, %d, %d,%f,%d,%d)" %('label',0,0,0,0,0,0,0,0,0,0,0,0))
                 a=a+1
         conn.commit()
         conn.close()
