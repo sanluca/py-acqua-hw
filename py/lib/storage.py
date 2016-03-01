@@ -17,11 +17,17 @@ from ablib import DS18B20
 from threading import Thread
 from database import *
 from tools import *
+from pub import *
 class MyStorage(Thread):
     db=Mydata()
     lista=[]
     lista1=[]
     midnight=0
+    mq=MyPub()
+    
+    def archive(self):
+        a=self.db.view_archive()
+        self.arch=a[1]
     
     def dallas(self):
         while True:
@@ -34,6 +40,7 @@ class MyStorage(Thread):
                     pass
                 else:
                     self.db.update_real_time('real_time','temp_h2o',float(self.actual))
+                    self.mq.pub('home/acquario/temperatura' ,'%s' %str(self.actual))
                     break
             except Exception,e:
                 logCritical("except dallas %s" %e)
@@ -67,6 +74,7 @@ class MyStorage(Thread):
                     pass
                 else:
                     self.db.update_real_time('real_time','ph',float(self.ph))
+                    self.mq.pub('home/acquario/ph' ,'%s' %str(self.ph))
                     break
             except Exception,e:
                 logCritical("except phmeter %s" %e)
@@ -85,6 +93,7 @@ class MyStorage(Thread):
     
     def run(self):
         while True:
+            self.archive()
             actualTime=time.localtime()
             year=actualTime[0]
             month=actualTime[1]
@@ -110,7 +119,8 @@ class MyStorage(Thread):
                     pulse=0
                     lu = len(self.lista)
                     #self.insert_storage(day,month,year, hour, float(media1), float(minu), float(maxi) ,lu)
-                    self.insert_storage(float(temp_h2o), float(ph), pulse,hour,day,month,year,lu)
+                    if self.arch==1:
+                        self.insert_storage(float(temp_h2o), float(ph), pulse,hour,day,month,year,lu)
                     self.lista=[]
                     self.midnight=1
 

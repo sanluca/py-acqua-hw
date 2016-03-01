@@ -38,11 +38,13 @@ class Mydata():
             conn.execute("create table if not exists calph (Id INTEGER PRIMARY KEY, offset FLOAT, range FLOAT);")
             conn.execute("create table if not exists pwm2 (Id INTEGER PRIMARY KEY, period INT, duty_cycle INT, enable INT);")
             conn.execute("create table if not exists pwm3 (Id INTEGER PRIMARY KEY, period INT, duty_cycle INT, enable INT);")
+            conn.execute("create table if not exists archive (Id INTEGER PRIMARY KEY, archive INT);")
             conn.execute("insert into sunrise (long, lat, timezone,duelamp,shifthour) values ('%s' , '%s' , '%s' , %d , %d)" %('12.6500','45.9500','Europe/Rome',0,0))
             conn.execute("insert into calph (offset, range) values ('%f' , '%f')" %(0,0))
             conn.execute("insert into pwm2 (period,duty_cycle,enable) values (%d ,%d,%d)" %(1000000,600000,1))
             conn.execute("insert into pwm3 (period,duty_cycle,enable) values (%d ,%d,%d)" %(0,0,0))
             conn.execute("insert into calph (offset, range) values ('%f' , '%f')" %(0,0))
+            conn.execute("insert into archive (archive) values (%d)" %(0))
             
             a=0
             while a<4:
@@ -170,5 +172,11 @@ class Mydata():
     def view_pwm(self,data):
         cursor=self.db_con_conf()
         cursor.execute("select * from %s where id = 1" %data)
+        return cursor.fetchone()
+        self.con_configure.close()
+        
+    def view_archive(self):
+        cursor=self.db_con_conf()
+        cursor.execute("select * from archive where id = 1")
         return cursor.fetchone()
         self.con_configure.close()
