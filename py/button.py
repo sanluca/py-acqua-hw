@@ -47,7 +47,12 @@ class MyButton(Thread):
         self.day=actualTime[2]
         self.hour=actualTime[3]
         self.minute=actualTime[4]
-
+        
+    def event_in1(self):
+        pass
+    
+    def event_in2(self):
+        pass
 
     def run(self):
         if self.intro==True:
@@ -62,6 +67,14 @@ class MyButton(Thread):
         z=0
 
         while True:
+            
+            #verifico i due ingressi esterni alla scheda
+            #input1=self.in1.digitalRead()==0
+            #input2=self.in2.digitalRead()==0
+            self.in1.set_edge("rising", self.event_in1)
+            self.in2.set_edge("rising", self.event_in2)
+            
+            
             self.pos=self.plcd.returnPos()
             time.sleep(0.2)
             z+=1

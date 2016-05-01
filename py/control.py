@@ -45,6 +45,11 @@ class MyThread(Thread):
     pwm.pwm_period(2,1000000)
     pwm.pwm_duty_cycle(2,100000)
     pwm.pwm_enable(2,1)
+    
+    pwm.pwm_export(3)
+    pwm.pwm_period(3,1000000)
+    pwm.pwm_duty_cycle(3,100000)
+    pwm.pwm_enable(3,1)
     p=0
     
     def actualtime(self):
@@ -87,6 +92,7 @@ class MyThread(Thread):
             sunrise=int(b[8])
             temperature=int(b[9])
             ph=int(b[10])
+            pwm=int(b[11])
             
             if id==status_id:
 
@@ -101,6 +107,9 @@ class MyThread(Thread):
                     self.temperature(id)
                 if ph==1:
                     self.ph(id)
+                
+                if pwm==1:
+                    self.pwm(id)
                 
     def manual(self,manual_id):
         while True:
@@ -298,8 +307,12 @@ class MyThread(Thread):
             elif power==False:
                 self.power_rele_off(ph_id)
                 
-    def on_pwm(self):
+    def on_pwm(self,id):
+        
+        
         a=self.db.view_pwm('pwm2')
+        b=self.db.view_pwm('pwm2')
+        
         period=a[1]
         duty_cycle=a[2]
         enable=a[3]
@@ -308,12 +321,11 @@ class MyThread(Thread):
         self.p+=50000
         duty=duty_cycle+self.p
         
-#        if self.expwm==False:
- #           self.pwm.pwm_export(2)
+        if id==1:
+            self.pwm.pwm_duty_cycle(2,self.p)
             
-                
-        #self.pwm.pwm_period(2,period)
-        self.pwm.pwm_duty_cycle(2,self.p)
+        if id==2:
+            self.pwm.pwm_duty_cycle(3,self.p)
         
         
         #if self.expwm==False:
