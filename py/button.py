@@ -76,6 +76,8 @@ class MyButton(Thread):
                 self.event_in1()
             input2=self.in2.digitalRead()==0
             
+            logCritical("input2 %s" %input2)
+            
             self.pos=self.plcd.returnPos()
             time.sleep(0.2)
             z+=1
