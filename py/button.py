@@ -72,21 +72,9 @@ class MyButton(Thread):
         while True:
             
             #verifico i due ingressi esterni alla scheda
-            input1=self.in1.digitalRead()==0
-            input2=self.in2.digitalRead()==0
-            
-            if input1==1:
+            if self.in1.digitalRead()==0:
                 self.event_in1()
-            #try:
-        	   #self.in1.set_edge("both", self.event_in1)
-            #except:
-                #pass
-            
-            #try:
-                #self.in2.set_edge("both", self.event_in2)
-            #except:
-                #pass
-            
+            input2=self.in2.digitalRead()==0
             
             self.pos=self.plcd.returnPos()
             time.sleep(0.2)
