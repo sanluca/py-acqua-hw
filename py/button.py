@@ -54,8 +54,8 @@ class MyButton(Thread):
     def event_in2(self):
         self.db.update_real_time('status','in2',1)
         
-    in1.set_edge("both", event_in1)
-    in2.set_edge("both", event_in2)
+    #in1.set_edge("both", event_in1)
+    #in2.set_edge("both", event_in2)
 
     def run(self):
         if self.intro==True:
@@ -72,8 +72,11 @@ class MyButton(Thread):
         while True:
             
             #verifico i due ingressi esterni alla scheda
-            #input1=self.in1.digitalRead()==0
-            #input2=self.in2.digitalRead()==0
+            input1=self.in1.digitalRead()==0
+            input2=self.in2.digitalRead()==0
+            
+            if input1==1:
+                self.event_in1()
             #try:
         	   #self.in1.set_edge("both", self.event_in1)
             #except:
