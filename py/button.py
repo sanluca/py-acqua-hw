@@ -72,12 +72,12 @@ class MyButton(Thread):
             #input1=self.in1.digitalRead()==0
             #input2=self.in2.digitalRead()==0
             try:
-        	   self.in1.set_edge("rising", self.event_in1)
+        	   self.in1.set_edge("both", self.event_in1)
             except:
                 pass
             
             try:
-                self.in2.set_edge("rising", self.event_in2)
+                self.in2.set_edge("both", self.event_in2)
             except:
                 pass
             
