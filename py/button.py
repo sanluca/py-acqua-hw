@@ -54,8 +54,8 @@ class MyButton(Thread):
     def event_in2(self):
         self.db.update_real_time('status','in2',1)
         
-    in1.set_edge("both", self.event_in1)
-    in2.set_edge("both", self.event_in2)
+    in1.set_edge("both", event_in1)
+    in2.set_edge("both", event_in2)
 
     def run(self):
         if self.intro==True:
