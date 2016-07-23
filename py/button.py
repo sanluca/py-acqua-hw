@@ -49,10 +49,10 @@ class MyButton(Thread):
         self.minute=actualTime[4]
         
     def event_in1(self):
-        pass
+        self.db.update_real_time('status','in1',1)
     
     def event_in2(self):
-        pass
+        self.db.update_real_time('status','in2',1)
 
     def run(self):
         if self.intro==True:

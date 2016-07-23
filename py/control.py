@@ -307,7 +307,7 @@ class MyThread(Thread):
             elif power==False:
                 self.power_rele_off(ph_id)
                 
-    def on_pwm(self,id):
+    def pwm(self,id):
         
         
         a=self.db.view_pwm('pwm2')
@@ -336,7 +336,7 @@ class MyThread(Thread):
         z=1
         while True:
             self.actualtime()
-            self.on_pwm()
+            #self.on_pwm()
             self.status(int(z))
             z+=1
             if z==5:
