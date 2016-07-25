@@ -81,7 +81,7 @@ class MyButton(Thread):
             if self.in2.digitalRead()==0:
                 self.event_in2(1)
             else:
-                self.event_in1(0)
+                self.event_in2(0)
             
             #logCritical("input2 %s" %input2)
             
