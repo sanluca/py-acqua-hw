@@ -48,7 +48,7 @@ class MyButton(Thread):
         self.hour=actualTime[3]
         self.minute=actualTime[4]
         
-    def event_in1(self,stat):
+    def event_in1():
         #self.db.update_real_time('status','in1',int(stat))
         self.db.update_real_time('status','in1',1)
     
