@@ -38,9 +38,6 @@ class MyButton(Thread):
 #PA25 'J4.13'  :  57, #PA25
     in1 = Pin('J4.11','INPUT')
     in2 = Pin('J4.13','INPUT')
-    
-    def __init__(self,gpio):
-        self.gpio=gpio
 
     #if lcd.pressed(0):
     def actualTime(self):
