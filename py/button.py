@@ -51,7 +51,7 @@ class MyButton(Thread):
         self.hour=actualTime[3]
         self.minute=actualTime[4]
         
-    def event_in1():
+    def event_in1(self):
         #self.db.update_real_time('status','in1',int(stat))
         self.db.update_real_time('status','in1',1)
     
@@ -72,7 +72,7 @@ class MyButton(Thread):
         self.plcd.pagina(0,True)
         i=0
         z=0
-        self.in1.set_edge('rising', self.event_in1())
+        self.in1.set_edge('rising', self.event_in1)
 
         while True:
             
