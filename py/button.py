@@ -38,6 +38,9 @@ class MyButton(Thread):
 #PA25 'J4.13'  :  57, #PA25
     in1 = Pin('J4.11','INPUT')
     in2 = Pin('J4.13','INPUT')
+    
+    def __init__(self,gpio):
+        self.gpio=gpio
 
     #if lcd.pressed(0):
     def actualTime(self):
@@ -55,7 +58,7 @@ class MyButton(Thread):
     def event_in2(self,stat):
         self.db.update_real_time('status','in2',int(stat))
         
-    in1.set_edge("rising", event_in1)
+    #in1.set_edge("rising", event_in1)
     #in2.set_edge("both", event_in2)
 
     def run(self):
@@ -69,6 +72,7 @@ class MyButton(Thread):
         self.plcd.pagina(0,True)
         i=0
         z=0
+        self.in1.set_edge('rising', self.event_in1())
 
         while True:
             
@@ -77,12 +81,10 @@ class MyButton(Thread):
                 #self.event_in1(1)
             #else:
                 #self.event_in1(0)
-                
-            
-            if self.in2.digitalRead()==0:
-                self.event_in2(1)
-            else:
-                self.event_in2(0)
+            #if self.in2.digitalRead()==0:
+                #self.event_in2(1)
+            #else:
+                #self.event_in2(0)
             
             #logCritical("input2 %s" %input2)
             
