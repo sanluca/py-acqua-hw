@@ -2431,7 +2431,7 @@ class Daisy24():
 
 #--------------------------------------------------------------
 
-w1path = "/sys/bus/w1/devices/w1 bus master"
+w1path = "/sys/bus/w1/devices/w1_bus_master1"
 
 def w1buslist():
 
