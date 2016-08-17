@@ -50,7 +50,7 @@ class MyButton(Thread):
         
     def event_in1(self):
         #self.db.update_real_time('status','in1',int(stat))
-        self.db.update_real_time('status','in1',1)
+        self.db.update_real_time('status','in1',self.in1.digitalRead())
 
     def event_in2(self):
         #self.db.update_real_time('status','in1',int(stat))
@@ -74,8 +74,8 @@ class MyButton(Thread):
         self.plcd.pagina(0,True)
         i=0
         z=0
-        self.in1.set_edge('rising', self.event_in1)
-        self.in1.set_edge('falling', self.event_in2)
+        self.in1.set_edge('both', self.event_in1)
+        #self.in1.set_edge('falling', self.event_in2)
 
         while True:
             
