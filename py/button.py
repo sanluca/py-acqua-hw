@@ -51,8 +51,13 @@ class MyButton(Thread):
     def event_in1(self):
         #self.db.update_real_time('status','in1',int(stat))
         self.db.update_real_time('status','in1',1)
+
+    def event_in2(self):
+        #self.db.update_real_time('status','in1',int(stat))
+        self.db.update_real_time('status','in1',0)
+
     
-    def event_in2(self,stat):
+    def event_in3(self,stat):
         self.db.update_real_time('status','in2',int(stat))
         
     #in1.set_edge("rising", event_in1)
@@ -70,6 +75,7 @@ class MyButton(Thread):
         i=0
         z=0
         self.in1.set_edge('rising', self.event_in1)
+        self.in1.set_edge('falling', self.event_in2)
 
         while True:
             
