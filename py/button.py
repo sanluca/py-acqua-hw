@@ -49,16 +49,10 @@ class MyButton(Thread):
         self.minute=actualTime[4]
         
     def event_in1(self):
-        #self.db.update_real_time('status','in1',int(stat))
         self.db.update_real_time('status','in1',self.in1.digitalRead())
 
     def event_in2(self):
-        #self.db.update_real_time('status','in1',int(stat))
-        self.db.update_real_time('status','in1',0)
-
-    
-    def event_in3(self,stat):
-        self.db.update_real_time('status','in2',int(stat))
+        self.db.update_real_time('status','in2',self.in2.digitalRead())
         
     #in1.set_edge("rising", event_in1)
     #in2.set_edge("both", event_in2)
@@ -75,21 +69,9 @@ class MyButton(Thread):
         i=0
         z=0
         self.in1.set_edge('both', self.event_in1)
-        #self.in1.set_edge('falling', self.event_in2)
+        self.in2.set_edge('both', self.event_in2)
 
         while True:
-            
-            #verifico i due ingressi esterni alla scheda
-            #if self.in1.digitalRead()==0:
-                #self.event_in1(1)
-            #else:
-                #self.event_in1(0)
-            #if self.in2.digitalRead()==0:
-                #self.event_in2(1)
-            #else:
-                #self.event_in2(0)
-            
-            #logCritical("input2 %s" %input2)
             
             self.pos=self.plcd.returnPos()
             time.sleep(0.2)
