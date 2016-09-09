@@ -20,12 +20,13 @@ class Mydata():
     def __init__(self):
         self.db_real_time = '/var/tmp/real_time.db'
         db_is_new = not os.path.exists(self.db_real_time)
-        conn = lite.connect(self.db_real_time)
+        conn = lite.connect(self.db_real_time, isolation_level=None)
         if db_is_new:
             conn.execute("create table if not exists real_time (Id INTEGER PRIMARY KEY, temp_h2o FLOAT, ph FLOAT, pulse INT);")
             conn.execute("insert into real_time (temp_h2o, ph, pulse) values (%f , %f, %d)" %(0,0,0))
             conn.execute("create table if not exists status (Id INTEGER PRIMARY KEY, in1 INT, in2 INT,rel1 INT, rel2 INT, rel3 INT, rel4 INT);")
             conn.execute("insert into status (in1,in2,rel1,rel2,rel3,rel4) values (%d , %d, %d,%d,%d,%d)" %(0,0,0,0,0,0))
+            conn.execute("PRAGMA wal_checkpoint=FULL")
         conn.commit()
         conn.close()
         
@@ -68,7 +69,7 @@ class Mydata():
         self.db_calendar = '/media/data/py-acqua-hw/wolfcms/luxcal/luxcal430L-calendar/db/mycal.cdb'
         
     def db_con_real(self):
-        self.con_real_time = lite.connect(self.db_real_time)
+        self.con_real_time = lite.connect(self.db_real_time,check_same_thread=False, isolation_level=None, timeout=10)
         return self.con_real_time.cursor()
     
     def db_con_conf(self):
