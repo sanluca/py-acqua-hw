@@ -76,7 +76,8 @@ class Myplcd():
             self.pos=1
             
         elif pos==2:
-            self.lcd.putstring("Pass")
+            self.lcd.putstring("Stato")      
+                    
             #view_label(1)
             #self.lcd.putstring("%s" %(self.label))
             self.pos=2
