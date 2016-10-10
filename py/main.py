@@ -23,6 +23,7 @@ from database import *
 from control import *
 from button import *
 from storage import *
+from pwm import *
 
 db=Mydata()
 #db.create_db()
@@ -50,6 +51,9 @@ class mainprogram(daemon.DaemonApp):
         #storage
         self.store=MyStorage()
         self.store.start()
+        
+        self.pwm=MyPwm()
+        self.pwm.start()
 
     def restart(self):
         """Effettua la richiesta di reinizializzazione di py-temperature:

@@ -21,7 +21,7 @@ from database import *
 from ablib import Pin
 from tools import *
 from pwm import *
-#outpup
+#output
 #'J4.25'  :  40, #PA8
 #'J4.27'  :  38, #PA6
 #'J4.29'  : 124, #PC28
@@ -41,16 +41,16 @@ class MyThread(Thread):
     rele3 = Pin('J4.29','OUTPUT')
     rele4 = Pin('J4.31','OUTPUT')
     #pwm
-    pwm.pwm_export(2)
-    pwm.pwm_period(2,1000000)
-    pwm.pwm_duty_cycle(2,100000)
-    pwm.pwm_enable(2,1)
+    #pwm.pwm_export(2)
+    #pwm.pwm_period(2,1000000)
+    #pwm.pwm_duty_cycle(2,100000)
+    #pwm.pwm_enable(2,1)
     
-    pwm.pwm_export(3)
-    pwm.pwm_period(3,1000000)
-    pwm.pwm_duty_cycle(3,100000)
-    pwm.pwm_enable(3,1)
-    p=0
+    #pwm.pwm_export(3)
+    #pwm.pwm_period(3,1000000)
+    #pwm.pwm_duty_cycle(3,100000)
+    #pwm.pwm_enable(3,1)
+    #p=0
     
     def actualtime(self):
         actualTime=time.localtime()
@@ -101,15 +101,15 @@ class MyThread(Thread):
                 if man == 0 and calendar == 1 and sunrise == 0 and temperature == 0 and ph == 0:
                     self.db_calendar(id,label)
                 if man == 0 and calendar == 0 and sunrise == 1 and temperature == 0 and ph == 0:
-                    self.sunrise(id)
+                    self.sunrise(id,pwm)
                 
                 if temperature== 1:
                     self.temperature(id)
                 if ph==1:
                     self.ph(id)
                 
-                if pwm==1:
-                    self.pwm(id)
+                #if pwm==1:
+                    #self.pwm.calc_hour_pwm()
                 
     def manual(self,manual_id):
         while True:
@@ -124,6 +124,7 @@ class MyThread(Thread):
                     stop_hour=int(b[4])
                     stop_min=int(b[5])
                     man=int(b[6])
+                    pwm_led=int(b[11])
                     if id==manual_id:
                         self.array.append([start_hour,start_min,stop_hour,stop_min,man])
 
@@ -132,16 +133,23 @@ class MyThread(Thread):
                         actual= (int(self.hour)*60)+int(self.minute)
                         minon= (int(interval[0])*60)+int(interval[1])
                         minoff=(int(interval[2])*60)+int(interval[3])
-                        if actual >= minon and actual <= minoff:
-                            self.power_rele_on(manual_id)
+                        
+                        if pwm_led==0:
+                            if actual >= minon and actual <= minoff:
+                                self.power_rele_on(manual_id)
 
+                            else:
+                                self.power_rele_off(manual_id)
+                                
                         else:
-                            self.power_rele_off(manual_id)
+                            minfra=0
+                            self.pwm.calc_hour_pwm(id,minon,minoff,minfra,actual)
+                            
                 break
             except Exception,e:
                 logCritical("control manual %s" %e)
                 time.sleep(1)
-    def sunrise(self,sunrise_id):
+    def sunrise(self,sunrise_id,led_pwm):
         try:
             x = self.db.view_sunrise()
             llong=x[1]
@@ -207,12 +215,17 @@ class MyThread(Thread):
                 if minact >= minfra and minact <= minoff:
                     if sunrise_id==2:
                         power=True
-        
-            if power==True:
-                self.power_rele_on(sunrise_id)
+            
+            if led_pwm==0:
+                if power==True:
+                    self.power_rele_on(sunrise_id)
                 
-            elif power==False:
-                self.power_rele_off(sunrise_id)
+                elif power==False:
+                    self.power_rele_off(sunrise_id)
+                    
+            else:
+                
+                self.pwm.calc_hour_pwm(id,minon,minoff,minfra,minact)
                 
         except Exception,e:
             logCritical("control sunrise %s" %e)
@@ -307,15 +320,43 @@ class MyThread(Thread):
             elif power==False:
                 self.power_rele_off(ph_id)
                 
-    def pwm(self,id):
-        
-        
+    def pwm(self,id,hour):
+        tempo=time.time()
         a=self.db.view_pwm('pwm2')
-        b=self.db.view_pwm('pwm2')
+        period_2=a[1]
+        duty_cycle_2=a[2]
+        enable_2=a[3]
+        start_2=a[4]
+        stop_2=a[5]
+        on_2=a[6]
         
-        period=a[1]
-        duty_cycle=a[2]
-        enable=a[3]
+        b=self.db.view_pwm('pwm3')
+        period_3=a[1]
+        duty_cycle_3=a[2]
+        enable_3=a[3]
+        start_3=a[4]
+        stop_3=a[5]
+        on_3=a[6]
+        
+        #min 500000
+        #max 1000000
+        
+        minuti=int(hour)*60
+        pwm_min=1000000/minuti
+        hour=hour * 3600
+        stop =tempo + hour
+        
+        if on_2==0:
+            self.db.update_pwm('pwm2','start',float(tempo))
+            self.db.update_pwm('pwm2','stop',float(stop))
+            self.db.update_pwm('pwm2','on',1)
+            
+        
+        
+        
+        
+        
+        
         if self.p == 1000000:
             self.p=0
         self.p+=50000

@@ -37,13 +37,13 @@ class Mydata():
             conn.execute("create table if not exists configure (Id INTEGER PRIMARY KEY, label VARCHAR(150), start_hour INT, start_min INT, stop_hour INT, stop_min INT, manual INT, calendar INT, sunrise INT, temperature INT, ph INT, setemp FLOAT, setph INT, pwm INT);")
             conn.execute("create table if not exists sunrise (Id INTEGER PRIMARY KEY, long FLOAT, lat FLOAT, timezone VARCHAR(150), duelamp INT, shifthour INT);")
             conn.execute("create table if not exists calph (Id INTEGER PRIMARY KEY, offset FLOAT, range FLOAT);")
-            conn.execute("create table if not exists pwm2 (Id INTEGER PRIMARY KEY, period INT, duty_cycle INT, enable INT);")
-            conn.execute("create table if not exists pwm3 (Id INTEGER PRIMARY KEY, period INT, duty_cycle INT, enable INT);")
+            conn.execute("create table if not exists pwm2 (Id INTEGER PRIMARY KEY, period INT, duty_cycle INT, enable INT, start FLOAT, stop FLOAT,on INT);")
+            conn.execute("create table if not exists pwm3 (Id INTEGER PRIMARY KEY, period INT, duty_cycle INT, enable INT, start FLOAT, stop FLOAT,on INT);")
             conn.execute("create table if not exists archive (Id INTEGER PRIMARY KEY, archive INT);")
             conn.execute("insert into sunrise (long, lat, timezone,duelamp,shifthour) values ('%s' , '%s' , '%s' , %d , %d)" %('12.6500','45.9500','Europe/Rome',0,0))
             conn.execute("insert into calph (offset, range) values ('%f' , '%f')" %(0,0))
-            conn.execute("insert into pwm2 (period,duty_cycle,enable) values (%d ,%d,%d)" %(1000000,600000,1))
-            conn.execute("insert into pwm3 (period,duty_cycle,enable) values (%d ,%d,%d)" %(1000000,600000,1))
+            conn.execute("insert into pwm2 (period,duty_cycle,enable,start,stop,on) values (%d ,%d,%d,%f,%f,%d)" %(1000000,600000,1,0,0,0))
+            conn.execute("insert into pwm3 (period,duty_cycle,enable,start,stop,on) values (%d ,%d,%d,%f,%f,%d)" %(1000000,600000,1,0,0,0))
             conn.execute("insert into calph (offset, range) values ('%f' , '%f')" %(0,0))
             conn.execute("insert into archive (archive) values (%d)" %(0))
             
@@ -175,6 +175,11 @@ class Mydata():
         cursor.execute("select * from %s where id = 1" %data)
         return cursor.fetchone()
         self.con_configure.close()
+        
+    def update_pwm(self,data,par,value):
+        cursor = self.db_con_conf()
+        cursor.execute("update %s set %s=%f where id = 1" %(data,par,value))
+        self.con_configure.commit()
         
     def view_archive(self):
         cursor=self.db_con_conf()
