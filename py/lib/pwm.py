@@ -50,6 +50,14 @@ class MyPwm(Thread):
         command= "echo %s > /sys/class/pwm/pwmchip0/pwm%s/enable" %(str(p),str(n))
         os.system(command)
         
+    def actualtime(self):
+        actualTime=time.localtime()
+        self.year=actualTime[0]
+        self.month=actualTime[1]
+        self.day=actualTime[2]
+        self.hour=actualTime[3]
+        self.minute=actualTime[4]
+        
         
     def view_pwm(self):
         tempo=time.time()
@@ -59,7 +67,8 @@ class MyPwm(Thread):
         self.enable_2=a[3]
         self.start_2=a[4]
         self.stop_2=a[5]
-        self.on_2=a[6]
+        self.mezza_2=a[6]
+        self.on_2=a[7]
         
         b=self.db.view_pwm('pwm3')
         self.period_3=a[1]
@@ -67,11 +76,36 @@ class MyPwm(Thread):
         self.enable_3=a[3]
         self.start_3=a[4]
         self.stop_3=a[5]
-        self.on_3=a[6]
+        self.mezza_3=a[6]
+        self.on_3=a[7]
         
-    def calc_hour_pwm(self,start,stop,fra,actual):
-        pass
-    
+    def calc_hour_pwm(self):
+        self.actualtime()
+        hour=self.stop_2-self.start_2
+        minuti=hour/60
+        pwm_min=1000000/minuti
+        actual= (int(self.hour)*60)+int(self.minute)
+        
+        if self.mezza_2==0:
+            self.mezza_2=(self.stop-self.start)/2
+        
+        if actual >= self.start_2 and actual <= self.mezza_2:
+            duty=self.duty_cycle+pwm_min
+            self.db.update_pwm('pwm2','duty_cycle',duty)
+            self.db.update_pwm('pwm3','duty_cycle',duty)
+            self.pwm_duty_cycle(2,duty)
+            self.pwm_duty_cycle(3,duty)
+            
+        elif actual >= self.mezza_2 and actual <= self.stop_2:
+            duty=self.duty_cycle-pwm_min
+            self.db.update_pwm('pwm2','duty_cycle',duty)
+            self.db.update_pwm('pwm3','duty_cycle',duty)
+            self.pwm_duty_cycle(2,duty)
+            self.pwm_duty_cycle(3,duty)
+        else:
+            self.pwm_duty_cycle(2,100000)
+            self.pwm_duty_cycle(3,100000)
+        
     
     def run(self):
         self.pwm_export(2)
@@ -83,21 +117,11 @@ class MyPwm(Thread):
         self.pwm_period(3,1000000)
         self.pwm_duty_cycle(3,100000)
         self.pwm_enable(3,1)
-        #da finire bisogna passargli ora start ora stop calcolare quante ore sta acceso e regolare il pwm
+
         while True:
-            tempo=time.time()
-            
             self.view_pwm()
-            
-            minuti=int(hour)*60
-            pwm_min=1000000/minuti
-            hour=hour * 3600
-            stop =tempo + hour
-            
-            if self.on_2==0:
-                self.db.update_pwm('pwm2','start',float(tempo))
-                self.db.update_pwm('pwm2','stop',float(stop))
-                self.db.update_pwm('pwm2','on',1)
+            self.calc_hour_pwm()
             
             
             time.sleep(60)
+            

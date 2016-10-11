@@ -143,7 +143,10 @@ class MyThread(Thread):
                                 
                         else:
                             minfra=0
-                            self.pwm.calc_hour_pwm(id,minon,minoff,minfra,actual)
+                            #self.pwm.calc_hour_pwm(minon,minoff,minfra,actual)
+                            self.db.update_pwm('pwm2','start',minon)
+                            self.db.update_pwm('pwm2','stop',minoff)
+                            self.db.update_pwm('pwm2','mezza',minfra)
                             
                 break
             except Exception,e:
@@ -224,8 +227,10 @@ class MyThread(Thread):
                     self.power_rele_off(sunrise_id)
                     
             else:
-                
-                self.pwm.calc_hour_pwm(id,minon,minoff,minfra,minact)
+                #self.pwm.calc_hour_pwm(minon,minoff,minfra,minact)
+                self.db.update_pwm('pwm2','start',minon)
+                self.db.update_pwm('pwm2','stop',minoff)
+                self.db.update_pwm('pwm2','mezza',minfra)
                 
         except Exception,e:
             logCritical("control sunrise %s" %e)
@@ -320,64 +325,10 @@ class MyThread(Thread):
             elif power==False:
                 self.power_rele_off(ph_id)
                 
-    def pwm(self,id,hour):
-        tempo=time.time()
-        a=self.db.view_pwm('pwm2')
-        period_2=a[1]
-        duty_cycle_2=a[2]
-        enable_2=a[3]
-        start_2=a[4]
-        stop_2=a[5]
-        on_2=a[6]
-        
-        b=self.db.view_pwm('pwm3')
-        period_3=a[1]
-        duty_cycle_3=a[2]
-        enable_3=a[3]
-        start_3=a[4]
-        stop_3=a[5]
-        on_3=a[6]
-        
-        #min 500000
-        #max 1000000
-        
-        minuti=int(hour)*60
-        pwm_min=1000000/minuti
-        hour=hour * 3600
-        stop =tempo + hour
-        
-        if on_2==0:
-            self.db.update_pwm('pwm2','start',float(tempo))
-            self.db.update_pwm('pwm2','stop',float(stop))
-            self.db.update_pwm('pwm2','on',1)
-            
-        
-        
-        
-        
-        
-        
-        if self.p == 1000000:
-            self.p=0
-        self.p+=50000
-        duty=duty_cycle+self.p
-        
-        if id==1:
-            self.pwm.pwm_duty_cycle(2,self.p)
-            
-        if id==2:
-            self.pwm.pwm_duty_cycle(3,self.p)
-        
-        
-        #if self.expwm==False:
-         #   self.pwm.pwm_enable(2,enable)
-         #   self.expwm=True
-
     def run(self):
         z=1
         while True:
             self.actualtime()
-            #self.on_pwm()
             self.status(int(z))
             z+=1
             if z==5:
