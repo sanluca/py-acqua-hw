@@ -30,6 +30,8 @@ class Mydata():
             conn.execute("PRAGMA wal_checkpoint=FULL")
         conn.commit()
         conn.close()
+        command=("chmod 777 /var/tmp/*")
+        os.system(command)
         
         self.db_configure = '/media/data/py-acqua-hw/py/db/configure.db'
         db_is_new = not os.path.exists(self.db_configure)
