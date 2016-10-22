@@ -22,6 +22,7 @@ class Mydata():
         db_is_new = not os.path.exists(self.db_real_time)
         conn = lite.connect(self.db_real_time, isolation_level=None)
         if db_is_new:
+            conn.execute('PRAGMA journal_mode=wal')
             conn.execute("create table if not exists real_time (Id INTEGER PRIMARY KEY, temp_h2o FLOAT, ph FLOAT, pulse INT);")
             conn.execute("insert into real_time (temp_h2o, ph, pulse) values (%f , %f, %d)" %(0,0,0))
             conn.execute("create table if not exists status (Id INTEGER PRIMARY KEY, in1 INT, in2 INT,rel1 INT, rel2 INT, rel3 INT, rel4 INT);")
