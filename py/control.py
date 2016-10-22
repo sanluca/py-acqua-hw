@@ -29,7 +29,7 @@ from pwm import *
 
 class MyThread(Thread):
     db=Mydata()
-    pwm=Mypwm()
+    pwm=MyPwm()
     array=[]
     rel1=0
     rel2=0
