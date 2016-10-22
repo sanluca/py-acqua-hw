@@ -205,21 +205,21 @@ class MyThread(Thread):
             #logCritical("minon %s minoff %s minact %s" %(minon,minoff,minact))
             power=False
             #verifico se si usano due lampade differenti
-            
-            if duelamp==0:
-                
-                if minact >= minon and minact <= minoff:
-                    power=True
-                    #la prima lampada si accendera dal mattino al mezzogiorno, la seconda dal mezzogiorno alla sera     
-            else:
-                if minact >= minon and minact <= (minfra+60):
-                    if sunrise_id==1:
-                        power=True
-                if minact >= minfra and minact <= minoff:
-                    if sunrise_id==2:
-                        power=True
-            
             if led_pwm==0:
+                if duelamp==0:
+                
+                    if minact >= minon and minact <= minoff:
+                        power=True
+                    #la prima lampada si accendera dal mattino al mezzogiorno, la seconda dal mezzogiorno alla sera     
+                else:
+                    if minact >= minon and minact <= (minfra+60):
+                        if sunrise_id==1:
+                            power=True
+                    if minact >= minfra and minact <= minoff:
+                        if sunrise_id==2:
+                            power=True
+            
+            #if led_pwm==0:
                 if power==True:
                     self.power_rele_on(sunrise_id)
                 
