@@ -33,7 +33,7 @@ class MyStorage(Thread):
         while True:
             try:
                 #1-wire pin 35
-                sensor = DS18B20("000006286dbc")
+                sensor = DS18B20("000005a11adb")
                 self.actual1 = sensor.getTemp()
                 self.actual = "%.02f" %self.actual1
                 if self.actual == None:
